@@ -1,0 +1,226 @@
+﻿<Window x:Class="Core.InquiriesWindows.InquiriesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Assign"
+        BorderBrush="DimGray"
+        BorderThickness="1"
+        WindowStyle="None"
+        WindowState="Normal"
+        ResizeMode="CanMinimize"
+        Loaded="Window_Loaded"
+        Closing="Window_Closing"
+        FontFamily="Times New Roman"
+        WindowStartupLocation="CenterScreen"
+        Height="260"
+        Width="380">
+    <Window.Resources>
+
+        <Style x:Key="LabelStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="Blue"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+        </Style>
+
+        <Style x:Key="InputComboBoxStyle" BasedOn="{StaticResource ComboBoxFlatStyle}" TargetType="{x:Type ComboBox}">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+    </Window.Resources>
+    <Grid Background="#FFF1F1F1">
+        <Grid Background="White" Margin="0,0,0,55">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="5" Opacity="0.3" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+            </Grid.Effect>
+            <Grid Height="20" Background="Transparent" MouseDown="Grid_MouseDown" VerticalAlignment="Top"/>
+
+            <TextBlock Text="Assign"
+                       FontSize="32"
+                       FontStyle="Italic"
+                       Foreground="#FF9211E8"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       Margin="20,20"
+                       Panel.ZIndex="1000">
+            </TextBlock>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+
+                <Button>
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Height" Value="20"/>
+                            <Setter Property="Width" Value="30"/>
+                            <Setter Property="Background" Value="White"/>
+                            <EventSetter Event="Click" Handler="Minimize_Click"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border CornerRadius="0" Background="{TemplateBinding Background}" BorderBrush="Gray">
+                                            <Image Margin="4" Source="/Images/Icons/Minimize.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="DarkGray"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <Button>
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Height" Value="20"/>
+                            <Setter Property="Width" Value="30"/>
+                            <Setter Property="Background" Value="DarkRed"/>
+                            <EventSetter Event="Click" Handler="CloseWindow_Click"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border CornerRadius="0" Background="{TemplateBinding Background}" BorderBrush="Gray">
+                                            <Image Margin="5" Source="/Images/Icons/close.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Red"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="25,80,10,10">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Register Code: " Style="{StaticResource LabelStyle}"/>
+                    <TextBlock Text="{Binding RegisterCode}" Style="{StaticResource LabelStyle}"/>
+                </StackPanel>
+                <StackPanel Margin="20,15,0,0" Orientation="Horizontal">
+                    <TextBlock Text="Estimation Name " Width="120" Style="{StaticResource LabelStyle}"/>
+                    <ComboBox x:Name="EstimationList"
+                              Width="155" 
+                              SelectedValuePath="EstimationID"
+                              DisplayMemberPath="EstimationName"
+                              SelectedValue="{Binding EstimationID}"
+                              SelectionChanged="EstimationList_SelectionChanged"
+                              Style="{StaticResource InputComboBoxStyle}">
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Margin="20,15,0,0" Orientation="Horizontal">
+                    <TextBlock Text="Salesman Name " Width="120" Style="{StaticResource LabelStyle}"/>
+                    <ComboBox x:Name="SalesmanList"
+                              Width="155" 
+                              SelectedValuePath="SalesmanID"
+                              DisplayMemberPath="SalesmanName"
+                              SelectedValue="{Binding SalesmanID}"
+                              Style="{StaticResource InputComboBoxStyle}">
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+
+        </Grid>
+
+        <StackPanel Margin="0,0,25,10" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+
+
+
+            <Button x:Name="Save"
+                    Margin="20,0"
+                    Height="35"
+                    Width="100"
+                    Click="Save_Click">
+
+                <Button.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Gray"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="Content" Value="Save"/>
+                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="FontFamily" Value="Times New Roman"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0,0,0,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image x:Name="ButtonImage" Margin="10,5,5,5" Source="/Images/Icons/Save.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0">
+
+                                            </ContentPresenter>
+                                        </StackPanel>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="DarkGray"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+
+                </Button.Resources>
+
+            </Button>
+
+            <Button x:Name="Cancel"
+                    Height="35"
+                    Width="100"
+                    Click="Cancel_Click">
+
+                <Button.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="DarkRed"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="Content" Value="Cancel"/>
+                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="FontFamily" Value="Times New Roman"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0,0,0,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image x:Name="ButtonImage" Margin="5" Source="/Images/Icons/Error.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                                            </ContentPresenter>
+                                        </StackPanel>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Red"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+
+                </Button.Resources>
+            </Button>
+
+        </StackPanel>
+
+    </Grid>
+</Window>

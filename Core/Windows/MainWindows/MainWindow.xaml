@@ -1,0 +1,113 @@
+﻿<Window x:Class="Core.Windows.MainWindows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:CN="clr-namespace:Core.Controls"
+        mc:Ignorable="d"
+        Title="Dashboard"
+        Style="{StaticResource WindowStyle}"
+        WindowState="Maximized"
+        Loaded="Window_Loaded"
+        Closing="Window_Closing"
+        WindowStartupLocation="CenterScreen"
+        Width="1500"
+        Height="800">
+    <Border x:Name="WindowBorder" Style="{StaticResource WindowBorderStyle}" Margin="0">
+        <Grid>
+            <CN:WindowControls Maximize="True"/>
+            <CN:WindowIcon/>
+            <Grid x:Name="Controls" Background="White" Margin="0,140,0,25"/>
+            <Grid Height="140" Background="LightGray" VerticalAlignment="Top">
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="5" Opacity="0.3" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+                </Grid.Effect>
+                <TabControl Style="{StaticResource TabControlTab}">
+                    <TabControl.Resources>
+                        <Style TargetType="TabItem" BasedOn="{StaticResource TabItemStyle}"/>
+                    </TabControl.Resources>
+
+                    <TabItem Header="TabItem" Width="100" Visibility="Hidden"/>
+
+                    <TabItem Header="Home" IsSelected="True">
+                        <StackPanel Height="95" 
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                Margin="75,0,0,0">
+
+                            <Button Width="90" 
+                                    Height="90" 
+                                    ToolTip="Trinding"
+                                    DataContext="{Binding AccessTendaring}"
+                                    Style="{StaticResource TabButton}"
+                                    Click="Trinding_Click">
+                                <Image Source="/Images/Tendaring.png" Margin="5"/>
+                            </Button>
+
+                            <Button Width="90" 
+                                    Height="90" 
+                                    ToolTip="Projects"
+                                    DataContext="{Binding AccessProjects}"
+                                    Style="{StaticResource TabButton}"
+                                    Click="Projects_Click">
+                                <Image Source="/Images/Status2.png" Margin="5"/>
+                            </Button>
+
+                            <Button Width="90" 
+                                    Height="90" 
+                                    ToolTip="Store"
+                                    DataContext="{Binding AccessItems}"
+                                    Style="{StaticResource TabButton}"
+                                    Click="Store_Click">
+                                <Image Source="/Images/Store1.png" Margin="5"/>
+                            </Button>
+
+                            <Button Width="90" 
+                                    Height="90" 
+                                    ToolTip="Finance"
+                                    DataContext="{Binding AccessFinance}"
+                                    Style="{StaticResource TabButton}"
+                                    Click="Finance_Click">
+                                <Image Source="/Images/Finance.png" Margin="5"/>
+                            </Button>
+
+                        </StackPanel>
+                    </TabItem>
+
+                    <TabItem Header="Setting">
+                        <StackPanel Height="95" 
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                Margin="75,0,0,0">
+
+                        </StackPanel>
+                    </TabItem>
+
+                    <TabItem Header="Help">
+                        <StackPanel Height="95" 
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                Margin="75,0,0,0">
+
+                        </StackPanel>
+                    </TabItem>
+
+                </TabControl>
+            </Grid>
+
+
+            <Grid  Height="25" VerticalAlignment="Bottom">
+                <Grid Background="LightGray">
+                    <TextBlock Text="{Binding UserName}" FontFamily="Times New Roman" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBlock Text="{Binding Source={x:Static sys:DateTime.Today}, StringFormat='dddd - dd / MM / yyyy'}" FontFamily="Times New Roman" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                </Grid>
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="5" Opacity="0.5" Direction="90" RenderingBias="Quality" ShadowDepth="0.5"/>
+                </Grid.Effect>
+            </Grid>
+            <Grid x:Name="LoadingControl" Background="Black" Opacity="0.75" Visibility="Collapsed" Panel.ZIndex="10000"/>
+        </Grid>
+    </Border>
+
+</Window>
