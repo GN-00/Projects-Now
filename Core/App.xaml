@@ -25,6 +25,7 @@
             <Setter Property="Margin" Value="10"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Setter Property="Background" Value="White"/>
             <Setter Property="Effect">
                 <Setter.Value>
                     <DropShadowEffect BlurRadius="5" Opacity="0.3" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
@@ -876,7 +877,7 @@
         <!--#region TabControl-->
 
         <Style x:Key="TabControlTab" TargetType="TabControl">
-            <Setter Property="Height" Value="120"/>
+            <Setter Property="Height" Value="90"/>
             <Setter Property="Margin" Value="0,20,0,0"/>
             <Setter Property="Background" Value="#FFF1F1F1"/>
             <Setter Property="BorderBrush" Value="Transparent"/>

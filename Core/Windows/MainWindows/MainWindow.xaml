@@ -23,7 +23,7 @@
                 <Grid.Effect>
                     <DropShadowEffect BlurRadius="5" Opacity="0.3" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
                 </Grid.Effect>
-                <TabControl Style="{StaticResource TabControlTab}">
+                <TabControl Style="{StaticResource TabControlTab}" Height="120">
                     <TabControl.Resources>
                         <Style TargetType="TabItem" BasedOn="{StaticResource TabItemStyle}"/>
                     </TabControl.Resources>
@@ -32,9 +32,9 @@
 
                     <TabItem Header="Home" IsSelected="True">
                         <StackPanel Height="95" 
-                                Orientation="Horizontal"
-                                VerticalAlignment="Center"
-                                Margin="75,0,0,0">
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Margin="75,0,0,0">
 
                             <Button Width="90" 
                                     Height="90" 

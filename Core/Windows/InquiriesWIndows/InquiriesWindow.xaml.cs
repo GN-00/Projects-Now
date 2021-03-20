@@ -1,20 +1,22 @@
 ﻿using System;
 using Dapper;
+using Core.Data;
+using Core.Enums;
 using System.Linq;
 using System.Windows;
-using ProjectsNow.Enums;
+using Core.Data.General;
 using System.Reflection;
+using Core.Data.UserData;
 using System.Windows.Data;
-using System.Windows.Input;
-using ProjectsNow.Database;
 using System.Windows.Media;
+using System.Windows.Input;
 using System.Data.SqlClient;
-using ProjectsNow.Controllers;
 using System.Windows.Controls;
+using Core.Data.InquiriesData;
 using System.Collections.Generic;
+using Core.Windows.MessageWindows;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using ProjectsNow.Windows.MessageWindows;
 
 namespace Core.Windows.InquiriesWindows
 {
@@ -24,25 +26,27 @@ namespace Core.Windows.InquiriesWindows
 
         bool isLoading = true;
         Statuses status = Statuses.New;
-        ObservableCollection<Inquiry> InquiriesData;
-        ObservableCollection<InquiryYear> YearsData;
+
+        ObservableCollection<Inquiry> inquiriesData;
+        ObservableCollection<Year> yearsData;
         public InquiriesWindow()
         {
             InitializeComponent();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             {
-                InquiriesData = InquiryController.GetInquiries(connection, UserData, Statuses.New, DateTime.Now.Year);
-                YearsData = InquiryController.GetInquiriesYears(connection, UserData, Statuses.New);
+                inquiriesData = GetInquires(connection, status, DateTime.Now.Year);
+                yearsData = GetYears(connection, status);
             }
             DataContext = new { UserData };
 
-            viewData = new CollectionViewSource() { Source = InquiriesData };
+            viewData = new CollectionViewSource() { Source = inquiriesData };
             InquiriesList.ItemsSource = viewData.View;
-            YearsList.ItemsSource = YearsData;
-            YearsList.SelectedItem = YearsData.Where(item => item.Year == DateTime.Now.Year).FirstOrDefault();
+            YearsList.ItemsSource = yearsData;
+
+            YearsList.SelectedItem = yearsData.Where(item => item.Value == DateTime.Now.Year).FirstOrDefault();
             YearValue.Text = DateTime.Now.Year.ToString();
 
             viewData.Filter += DataFilter;
@@ -63,7 +67,7 @@ namespace Core.Windows.InquiriesWindows
 
             if (InquiriesList.SelectedItem is Inquiry inquiryData)
             {
-                if (inquiryData.QuotationID == null)
+                if (inquiryData.QuotationId == null)
                     EditButton.Visibility = AssignButton.Visibility = DeleteButton.Visibility = Visibility.Visible;
                 else
                     EditButton.Visibility = AssignButton.Visibility = DeleteButton.Visibility = Visibility.Collapsed;
@@ -79,162 +83,151 @@ namespace Core.Windows.InquiriesWindows
 
             if (InquiriesList.SelectedItem is Inquiry inquiryData)
             {
-                if (inquiryData.QuotationID == null)
+                if (inquiryData.QuotationId == null)
                     EditButton.Visibility = AssignButton.Visibility = DeleteButton.Visibility = Visibility.Visible;
                 else
                     EditButton.Visibility = AssignButton.Visibility = DeleteButton.Visibility = Visibility.Collapsed;
             }
-        }
-        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
-        }
-        private void Minimize_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-        private void CloseWindow_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
             InquiryWindow inquiryWindow = new InquiryWindow()
             {
+                InquiryData = new Inquiry(),
                 UserData = this.UserData,
                 WindowMode = Actions.New,
-                InquiriesDataToUpdate = InquiriesData,
+                InquiriesDataToUpdate = inquiriesData,
             };
             inquiryWindow.ShowDialog();
         }
         private void Edit_ClicK(object sender, RoutedEventArgs e)
         {
-            if (InquiriesList.SelectedItem is Inquiry inquiry)
-            {
-                User usedBy;
-                Quotation quotation;
-                using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-                {
-                    usedBy = UserController.CheckUserInquiryID(connection, inquiry.InquiryID);
-                    quotation = InquiryController.CheckQuotation(connection, inquiry.InquiryID);
+            //if (InquiriesList.SelectedItem is Inquiry inquiry)
+            //{
+            //    User usedBy;
+            //    Quotation quotation;
+            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //    {
+            //        usedBy = UserController.CheckUserInquiryID(connection, inquiry.InquiryID);
+            //        quotation = InquiryController.CheckQuotation(connection, inquiry.InquiryID);
 
-                    if (usedBy == null)
-                    {
-                        UserData.InquiryID = inquiry.InquiryID;
-                        UserController.UpdateInquiryID(connection, UserData);
-                    }
-                }
+            //        if (usedBy == null)
+            //        {
+            //            UserData.InquiryID = inquiry.InquiryID;
+            //            UserController.UpdateInquiryID(connection, UserData);
+            //        }
+            //    }
 
-                if (quotation != null)
-                {
-                    if (quotation.QuotationStatus != Statuses.Running.ToString())
-                    {
-                        CMessageBox.Show($"Access", $"Can't edit this Inquiry!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
-                        return;
-                    }
-                }
+            //    if (quotation != null)
+            //    {
+            //        if (quotation.QuotationStatus != Statuses.Running.ToString())
+            //        {
+            //            CMessageBox.Show($"Access", $"Can't edit this Inquiry!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
+            //            return;
+            //        }
+            //    }
 
-                if (usedBy == null || usedBy.UserID == UserData.UserID)
-                {
-                    var inquiryWindow = new InquiryWindow()
-                    {
-                        UserData = this.UserData,
-                        WindowMode = Actions.Edit,
-                        InquiryData = inquiry,
-                    };
-                    inquiryWindow.ShowDialog();
-                }
-                else
-                {
-                    CMessageBox.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
-                }
-            }
+            //    if (usedBy == null || usedBy.UserID == UserData.UserID)
+            //    {
+            //        var inquiryWindow = new InquiryWindow()
+            //        {
+            //            UserData = this.UserData,
+            //            WindowMode = Actions.Edit,
+            //            InquiryData = inquiry,
+            //        };
+            //        inquiryWindow.ShowDialog();
+            //    }
+            //    else
+            //    {
+            //        CMessageBox.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
+            //    }
+            //}
         }
         private void Assign_Click(object sender, RoutedEventArgs e)
         {
-            if (InquiriesList.SelectedItem is Inquiry inquiry)
-            {
-                User usedBy;
-                Quotation quotation;
-                using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-                {
-                    usedBy = UserController.CheckUserInquiryID(connection, inquiry.InquiryID);
-                    quotation = InquiryController.CheckQuotation(connection, inquiry.InquiryID);
+            //if (InquiriesList.SelectedItem is Inquiry inquiry)
+            //{
+            //    User usedBy;
+            //    Quotation quotation;
+            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //    {
+            //        usedBy = UserController.CheckUserInquiryID(connection, inquiry.InquiryID);
+            //        quotation = InquiryController.CheckQuotation(connection, inquiry.InquiryID);
 
-                    if (usedBy == null || usedBy.UserID == UserData.UserID)
-                    {
-                        UserData.InquiryID = inquiry.InquiryID;
-                        UserController.UpdateInquiryID(connection, UserData);
-                    }
-                }
+            //        if (usedBy == null || usedBy.UserID == UserData.UserID)
+            //        {
+            //            UserData.InquiryID = inquiry.InquiryID;
+            //            UserController.UpdateInquiryID(connection, UserData);
+            //        }
+            //    }
 
-                if (quotation != null)
-                {
-                    if (quotation.QuotationStatus != Statuses.Running.ToString())
-                    {
-                        CMessageBox.Show($"Access", $"Can't edit this Inquiry!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
-                        return;
-                    }
-                }
+            //    if (quotation != null)
+            //    {
+            //        if (quotation.QuotationStatus != Statuses.Running.ToString())
+            //        {
+            //            CMessageBox.Show($"Access", $"Can't edit this Inquiry!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
+            //            return;
+            //        }
+            //    }
 
-                if (usedBy == null || usedBy.UserID == UserData.UserID)
-                {
-                    var assignWindow = new AssignWindow()
-                    {
-                        UserData = this.UserData,
-                        InquiryData = inquiry,
-                    };
-                    assignWindow.ShowDialog();
-                }
-                else
-                {
-                    CMessageBox.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
-                }
-            }
+            //    if (usedBy == null || usedBy.UserID == UserData.UserID)
+            //    {
+            //        var assignWindow = new AssignWindow()
+            //        {
+            //            UserData = this.UserData,
+            //            InquiryData = inquiry,
+            //        };
+            //        assignWindow.ShowDialog();
+            //    }
+            //    else
+            //    {
+            //        CMessageBox.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
+            //    }
+            //}
         }
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            if (InquiriesList.SelectedItem is Inquiry inquiry)
-            {
-                User usedBy;
-                Quotation quotation;
-                using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-                {
-                    usedBy = UserController.CheckUserInquiryID(connection, inquiry.InquiryID);
-                    quotation = InquiryController.CheckQuotation(connection, inquiry.InquiryID);
+            //if (InquiriesList.SelectedItem is Inquiry inquiry)
+            //{
+            //    User usedBy;
+            //    Quotation quotation;
+            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //    {
+            //        usedBy = UserController.CheckUserInquiryID(connection, inquiry.InquiryID);
+            //        quotation = InquiryController.CheckQuotation(connection, inquiry.InquiryID);
 
-                    if (usedBy == null || usedBy.UserID == UserData.UserID)
-                    {
-                        UserData.InquiryID = inquiry.InquiryID;
-                        UserController.UpdateInquiryID(connection, UserData);
-                    }
-                }
+            //        if (usedBy == null || usedBy.UserID == UserData.UserID)
+            //        {
+            //            UserData.InquiryID = inquiry.InquiryID;
+            //            UserController.UpdateInquiryID(connection, UserData);
+            //        }
+            //    }
 
-                if (quotation != null)
-                {
-                    CMessageBox.Show($"Access", $"Can't delete this Inquiry!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
-                    return;
-                }
+            //    if (quotation != null)
+            //    {
+            //        CMessageBox.Show($"Access", $"Can't delete this Inquiry!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
+            //        return;
+            //    }
 
-                if (usedBy == null || usedBy.UserID == UserData.UserID)
-                {
-                    MessageBoxResult result = CMessageBox.Show("Deleting", $"Do you want to Delete Inquiy: \n{inquiry.RegisterCode}?", CMessageBoxButton.YesNo, CMessageBoxImage.Warning);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-                        {
-                            connection.Execute($"Delete From [Inquiry].[Inquiries] Where InquiryID = {inquiry.InquiryID}");
-                            connection.Execute($"Delete From [Inquiry].[ProjectsContacts] Where InquiryID = {inquiry.InquiryID}");
-                            InquiriesData.Remove(inquiry);
-                        }
-                    }
-                }
-                else
-                {
-                    CMessageBox.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
-                }
-            }
+            //    if (usedBy == null || usedBy.UserID == UserData.UserID)
+            //    {
+            //        MessageBoxResult result = CMessageBox.Show("Deleting", $"Do you want to Delete Inquiy: \n{inquiry.RegisterCode}?", CMessageBoxButton.YesNo, CMessageBoxImage.Warning);
+            //        if (result == MessageBoxResult.Yes)
+            //        {
+            //            using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //            {
+            //                connection.Execute($"Delete From [Inquiry].[Inquiries] Where InquiryID = {inquiry.InquiryID}");
+            //                connection.Execute($"Delete From [Inquiry].[ProjectsContacts] Where InquiryID = {inquiry.InquiryID}");
+            //                InquiriesData.Remove(inquiry);
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        CMessageBox.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
+            //    }
+            //}
         }
 
         #region Filters
@@ -281,12 +274,10 @@ namespace Core.Windows.InquiriesWindows
                 e.Accepted = true;
             }
         }
-
         private void ApplyFilter(object sender, KeyEventArgs e)
         {
             viewData.View.Refresh();
         }
-
         private void DeleteFilter_Click(object sender, RoutedEventArgs e)
         {
             foreach (PropertyInfo property in filterProperties)
@@ -305,15 +296,15 @@ namespace Core.Windows.InquiriesWindows
             status = Statuses.All;
             StatusName.Text = $"All Inquiries";
             StatusName.Foreground = YearValue.Foreground = Brushes.Black;
-            using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             {
-                viewData.Source = InquiriesData = InquiryController.GetInquiries(connection, UserData, Statuses.All, DateTime.Now.Year);
-                YearsData = InquiryController.GetInquiriesYears(connection, UserData, Statuses.All);
+                inquiriesData = GetInquires(connection, status, DateTime.Now.Year);
+                yearsData = GetYears(connection, status);
             }
             InquiriesList.ItemsSource = viewData.View;
-            YearsList.ItemsSource = YearsData;
+            YearsList.ItemsSource = yearsData;
 
-            YearsList.SelectedItem = YearsData.FirstOrDefault(i => i.Year == DateTime.Now.Year);
+            YearsList.SelectedItem = yearsData.FirstOrDefault(i => i.Value == DateTime.Now.Year);
             YearValue.Text = DateTime.Now.Year.ToString();
 
             CollectionChanged(sender, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -328,16 +319,15 @@ namespace Core.Windows.InquiriesWindows
             status = Statuses.New;
             StatusName.Text = $"New Inquiries";
             StatusName.Foreground = YearValue.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF9211E8"));
-
-            using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             {
-                viewData.Source = InquiriesData = InquiryController.GetInquiries(connection, UserData, Statuses.New, DateTime.Now.Year);
-                YearsData = InquiryController.GetInquiriesYears(connection, UserData, Statuses.New);
+                inquiriesData = GetInquires(connection, status, DateTime.Now.Year);
+                yearsData = GetYears(connection, status);
             }
             InquiriesList.ItemsSource = viewData.View;
-            YearsList.ItemsSource = YearsData;
+            YearsList.ItemsSource = yearsData;
 
-            YearsList.SelectedItem = YearsData.FirstOrDefault(i => i.Year == DateTime.Now.Year);
+            YearsList.SelectedItem = yearsData.FirstOrDefault(i => i.Value == DateTime.Now.Year);
             YearValue.Text = DateTime.Now.Year.ToString();
 
             CollectionChanged(sender, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -352,15 +342,15 @@ namespace Core.Windows.InquiriesWindows
             status = Statuses.Running;
             StatusName.Text = $"Under Work Inquiries";
             StatusName.Foreground = YearValue.Foreground = Brushes.Blue;
-            using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             {
-                viewData.Source = InquiriesData = InquiryController.GetInquiries(connection, UserData, Statuses.Running, DateTime.Now.Year);
-                YearsData = InquiryController.GetInquiriesYears(connection, UserData, Statuses.Running);
+                inquiriesData = GetInquires(connection, status, DateTime.Now.Year);
+                yearsData = GetYears(connection, status);
             }
             InquiriesList.ItemsSource = viewData.View;
-            YearsList.ItemsSource = YearsData;
+            YearsList.ItemsSource = yearsData;
 
-            YearsList.SelectedItem = YearsData.FirstOrDefault(i => i.Year == DateTime.Now.Year);
+            YearsList.SelectedItem = yearsData.FirstOrDefault(i => i.Value == DateTime.Now.Year);
             YearValue.Text = DateTime.Now.Year.ToString();
 
             CollectionChanged(sender, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -372,13 +362,13 @@ namespace Core.Windows.InquiriesWindows
         {
             if (!isLoading)
             {
-                if (YearsList.SelectedItem is InquiryYear yearData)
+                if (YearsList.SelectedItem is Year yearData)
                 {
-                    YearValue.Text = yearData.Year.ToString();
+                    YearValue.Text = yearData.Value.ToString();
                     DeleteFilter_Click(sender, e);
-                    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+                    using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                     {
-                        viewData.Source = InquiriesData = InquiryController.GetInquiries(connection, UserData, status, yearData.Year);
+                        viewData.Source = inquiriesData = GetInquires(connection, status, yearData.Value);
                     }
                     InquiriesList.ItemsSource = viewData.View;
                     CollectionChanged(sender, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -387,5 +377,25 @@ namespace Core.Windows.InquiriesWindows
             }
         }
 
+        public static ObservableCollection<Inquiry> GetInquires(SqlConnection connection, Statuses status, int year)
+        {
+            var query = $"Select * From [Inquiry].[_InquiresView] ";
+                query += $"Where RegisterYear = {DateTime.Now.Year} ";
+
+            if(status != Statuses.All) 
+                query += $"And Status = '{status}'";
+
+            var records = connection.Query<Inquiry>(query);
+            return new ObservableCollection<Inquiry>(records);
+        }
+        private static ObservableCollection<Year> GetYears(SqlConnection connection, Statuses status)
+        {
+            var query = $"Select * From [Inquiry].[_Years] ";
+            if (status != Statuses.All)
+                query += $"Where Status = '{status}'";
+
+            var records = connection.Query<Year>(query);
+            return new ObservableCollection<Year>(records);
+        }
     }
 }
