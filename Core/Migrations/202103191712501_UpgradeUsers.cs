@@ -31,7 +31,6 @@
         public override void Down()
         {
             DropColumn("User._Users", "AccessInquiries");
-            DropColumn("User._Users", "AccessInquiriesData");
             DropColumn("User._Users", "AccessQuote");
             DropColumn("User._Users", "AccessQuotations");
             DropColumn("User._Users", "AccessCustomers");

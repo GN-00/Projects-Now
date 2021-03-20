@@ -95,14 +95,6 @@
     <Compile Include="Migrations\202103191636105_NewStart.designer.cs">
       <DependentUpon>202103191636105_NewStart.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202103191647466_TransferUsersData.cs" />
-    <Compile Include="Migrations\202103191647466_TransferUsersData.designer.cs">
-      <DependentUpon>202103191647466_TransferUsersData.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103191650140_TransferEmployeesData.cs" />
-    <Compile Include="Migrations\202103191650140_TransferEmployeesData.designer.cs">
-      <DependentUpon>202103191650140_TransferEmployeesData.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202103191712501_UpgradeUsers.cs" />
     <Compile Include="Migrations\202103191712501_UpgradeUsers.designer.cs">
       <DependentUpon>202103191712501_UpgradeUsers.cs</DependentUpon>
@@ -115,17 +107,9 @@
     <Compile Include="Migrations\202103201153447_InquiryData.designer.cs">
       <DependentUpon>202103201153447_InquiryData.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202103201203440_TransferInquiriesData.cs" />
-    <Compile Include="Migrations\202103201203440_TransferInquiriesData.designer.cs">
-      <DependentUpon>202103201203440_TransferInquiriesData.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202103201259419_QuotationData.cs" />
     <Compile Include="Migrations\202103201259419_QuotationData.designer.cs">
       <DependentUpon>202103201259419_QuotationData.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103201353491_TransferQuotationsData.cs" />
-    <Compile Include="Migrations\202103201353491_TransferQuotationsData.designer.cs">
-      <DependentUpon>202103201353491_TransferQuotationsData.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windows\InquiriesWindows\InquiriesWindow.xaml.cs">
@@ -173,12 +157,6 @@
     <EmbeddedResource Include="Migrations\202103191636105_NewStart.resx">
       <DependentUpon>202103191636105_NewStart.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103191647466_TransferUsersData.resx">
-      <DependentUpon>202103191647466_TransferUsersData.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103191650140_TransferEmployeesData.resx">
-      <DependentUpon>202103191650140_TransferEmployeesData.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103191712501_UpgradeUsers.resx">
       <DependentUpon>202103191712501_UpgradeUsers.cs</DependentUpon>
     </EmbeddedResource>
@@ -188,14 +166,8 @@
     <EmbeddedResource Include="Migrations\202103201153447_InquiryData.resx">
       <DependentUpon>202103201153447_InquiryData.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103201203440_TransferInquiriesData.resx">
-      <DependentUpon>202103201203440_TransferInquiriesData.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103201259419_QuotationData.resx">
       <DependentUpon>202103201259419_QuotationData.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103201353491_TransferQuotationsData.resx">
-      <DependentUpon>202103201353491_TransferQuotationsData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

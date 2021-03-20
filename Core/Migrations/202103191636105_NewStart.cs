@@ -34,6 +34,34 @@
                     OtherAllowance = c.Double(nullable: false),
                 });
 
+            Sql($"Insert Into [User].[_Employees] " +
+                $"(Id, " +
+                $"UserId, " +
+                $"IdNumber, " +
+                $"FirstName, " +
+                $"Job, " +
+                $"BasicSalary, " +
+                $"HousingAllowance, " +
+                $"TransportationAllowance, " +
+                $"OtherAllowance) " +
+
+                $"Select " +
+                $"EmployeeID,  " +
+                $"EmployeeID As UserId,  " +
+                $"EmployeeID As IdNumber,  " +
+                $"EmployeeName, " +
+                $"EmployeeJob," +
+                $"0," +
+                $"0," +
+                $"0," +
+                $"0 " +
+                $"From [User].[Employees]");
+
+            AlterColumn("User._Employees", "Id", c => c.Int(nullable: false, identity: true));
+
+            AddPrimaryKey("User._Employees", "Id");
+            CreateIndex("User._Employees", "Id");
+
 
             CreateTable(
                 "User._Users",
@@ -59,7 +87,35 @@
                     AccessProjects = c.Boolean(),
                     AccessItems = c.Boolean(),
                     AccessFinance = c.Boolean(),
-                }); 
+                });
+
+            Sql($"Insert Into [User].[_Users] " +
+                $"(Id, " +
+                $"UserName, " +
+                $"Password, " +
+                $"UserCode, " +
+                $"Administrator, " +
+                $"AccessTendaring, " +
+                $"AccessProjects," +
+                $"AccessItems," +
+                $"AccessFinance) " +
+
+                $"Select " +
+                $"UserID,  " +
+                $"UserName, " +
+                $"Password," +
+                $"UserCode, " +
+                $"Administrator, " +
+                $"AccessTendaring, " +
+                $"AccessProjects, " +
+                $"AccessItems, " +
+                $"AccessFinance " +
+                $"From [User].[Users]");
+
+            AlterColumn("User._Users", "Id", c => c.Int(nullable: false, identity: true));
+
+            AddPrimaryKey("User._Users", "Id");
+            CreateIndex("User._Users", "Id");
         }
         
         public override void Down()

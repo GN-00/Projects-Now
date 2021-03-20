@@ -24,13 +24,12 @@
                 "(SELECT MAX(Date) AS LastDate " +
                 "FROM Finance._VAT AS VAT_1 " +
                 "WHERE(Date <= GETDATE())) AS LastUpdate ON Finance._VAT.Date = LastUpdate.LastDate ");
-
         }
         
         public override void Down()
         {
             DropTable("Finance._VAT");
-            DropTable("Finance._LAstVAT");
+            Sql("Drop View Finance._LAstVAT");
         }
     }
 }
