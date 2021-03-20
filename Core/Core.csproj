@@ -82,6 +82,9 @@
       <DependentUpon>WindowIcon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\Constants.cs" />
+    <Compile Include="Data\CustomersData\Consultant.cs" />
+    <Compile Include="Data\CustomersData\Contact.cs" />
+    <Compile Include="Data\CustomersData\Customer.cs" />
     <Compile Include="Data\Database.cs" />
     <Compile Include="Data\General\Year.cs" />
     <Compile Include="Data\InquiriesData\Inquiry.cs" />
@@ -110,6 +113,18 @@
     <Compile Include="Migrations\202103201259419_QuotationData.cs" />
     <Compile Include="Migrations\202103201259419_QuotationData.designer.cs">
       <DependentUpon>202103201259419_QuotationData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103201758590_CustomerData.cs" />
+    <Compile Include="Migrations\202103201758590_CustomerData.designer.cs">
+      <DependentUpon>202103201758590_CustomerData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103201957056_ContactData.cs" />
+    <Compile Include="Migrations\202103201957056_ContactData.designer.cs">
+      <DependentUpon>202103201957056_ContactData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103202009080_ConsultantData.cs" />
+    <Compile Include="Migrations\202103202009080_ConsultantData.designer.cs">
+      <DependentUpon>202103202009080_ConsultantData.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windows\InquiriesWindows\InquiriesWindow.xaml.cs">
@@ -168,6 +183,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103201259419_QuotationData.resx">
       <DependentUpon>202103201259419_QuotationData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103201758590_CustomerData.resx">
+      <DependentUpon>202103201758590_CustomerData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103201957056_ContactData.resx">
+      <DependentUpon>202103201957056_ContactData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103202009080_ConsultantData.resx">
+      <DependentUpon>202103202009080_ConsultantData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -672,9 +696,7 @@
   <ItemGroup>
     <Resource Include="Images\Zoom.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\CustomersData\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
