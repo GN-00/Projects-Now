@@ -126,6 +126,10 @@
     <Compile Include="Migrations\202103202009080_ConsultantData.designer.cs">
       <DependentUpon>202103202009080_ConsultantData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103202021409_ProjectsContactsData.cs" />
+    <Compile Include="Migrations\202103202021409_ProjectsContactsData.designer.cs">
+      <DependentUpon>202103202021409_ProjectsContactsData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windows\InquiriesWindows\InquiriesWindow.xaml.cs">
       <DependentUpon>InquiriesWindow.xaml</DependentUpon>
@@ -192,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103202009080_ConsultantData.resx">
       <DependentUpon>202103202009080_ConsultantData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103202021409_ProjectsContactsData.resx">
+      <DependentUpon>202103202021409_ProjectsContactsData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

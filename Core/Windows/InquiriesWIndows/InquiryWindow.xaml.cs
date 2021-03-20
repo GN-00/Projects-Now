@@ -15,29 +15,32 @@ using Core.Data.UserData;
 using Core.Data.QuotationsData;
 using Core.Data;
 using Dapper.Contrib.Extensions;
+using Core.Data.CustomersData;
 
 namespace Core.Windows.InquiriesWindows
 {
     public partial class InquiryWindow : Window
     {
         public User UserData { get; set; }
+        public Actions WindowMode { get; set; }
         public Inquiry InquiryData { get; set; }
         public Quotation QuotationData { get; set; }
-        public Actions WindowMode { get; set; }
         public ObservableCollection<Inquiry> InquiriesDataToUpdate { get; set; }
 
         bool isSaving = false;
-        //Customer customerData;
-        //Consultant consultantData;
+        Customer customerData;
+        Consultant consultantData;
         Inquiry newInquiryData = new Inquiry();
         List<int> contactsIDs = new List<int>();
-        //ObservableCollection<Customer> customers;
-        //CollectionViewSource viewProjectContacts;
-        //ObservableCollection<Contact> projectContacts;
+        ObservableCollection<Customer> customers;
+        CollectionViewSource viewProjectContacts;
+        ObservableCollection<Contact> projectContacts;
+
         public InquiryWindow()
         {
             InitializeComponent();
         }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             newInquiryData.Update(InquiryData);
