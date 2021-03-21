@@ -67,7 +67,7 @@ namespace Core.Windows.InquiriesWindows
 
             if (InquiriesList.SelectedItem is Inquiry inquiryData)
             {
-                if (inquiryData.QuotationId == null)
+                if (inquiryData.Status == "New")
                     EditButton.Visibility = AssignButton.Visibility = DeleteButton.Visibility = Visibility.Visible;
                 else
                     EditButton.Visibility = AssignButton.Visibility = DeleteButton.Visibility = Visibility.Collapsed;
@@ -83,7 +83,7 @@ namespace Core.Windows.InquiriesWindows
 
             if (InquiriesList.SelectedItem is Inquiry inquiryData)
             {
-                if (inquiryData.QuotationId == null)
+                if (inquiryData.Status == "New")
                     EditButton.Visibility = AssignButton.Visibility = DeleteButton.Visibility = Visibility.Visible;
                 else
                     EditButton.Visibility = AssignButton.Visibility = DeleteButton.Visibility = Visibility.Collapsed;
@@ -379,7 +379,7 @@ namespace Core.Windows.InquiriesWindows
 
         public static ObservableCollection<Inquiry> GetInquires(SqlConnection connection, Statuses status, int year)
         {
-            var query = $"Select * From [Inquiry].[_InquiresView] ";
+            var query = $"Select * From [Inquiry].[_InquiriesView] ";
                 query += $"Where RegisterYear = {DateTime.Now.Year} ";
 
             if(status != Statuses.All) 

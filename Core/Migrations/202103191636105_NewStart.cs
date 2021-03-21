@@ -69,8 +69,7 @@
                     IdNumber = c.Int(nullable: false),
                     PassportNumber = c.Int(),
                     Title = c.String(maxLength: 10),
-                    FirstName = c.String(maxLength: 50),
-                    LastName = c.String(maxLength: 50),
+                    Name = c.String(maxLength: 256),
                     Gender = c.String(maxLength: 10),
                     Nationality = c.String(maxLength: 50),
                     BirthDate = c.DateTime(),
@@ -95,7 +94,7 @@
                 $"(Id, " +
                 $"UserId, " +
                 $"IdNumber, " +
-                $"FirstName, " +
+                $"Name, " +
                 $"Job, " +
                 $"BasicSalary, " +
                 $"HousingAllowance, " +

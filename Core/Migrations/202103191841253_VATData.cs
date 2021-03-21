@@ -23,7 +23,7 @@
                 "FROM Finance._VAT INNER JOIN " +
                 "(SELECT MAX(Date) AS LastDate " +
                 "FROM Finance._VAT AS VAT_1 " +
-                "WHERE(Date <= GETDATE())) AS LastUpdate ON Finance._VAT.Date = LastUpdate.LastDate ");
+                "WHERE (Date <= GETDATE())) AS LastUpdate ON Finance._VAT.Date = LastUpdate.LastDate ");
         }
         
         public override void Down()

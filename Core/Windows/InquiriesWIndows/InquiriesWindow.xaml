@@ -9,6 +9,7 @@
         Title="Inquiries"
         Style="{StaticResource WindowStyle}"
         WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded"
         Height="800"
         Width="1500">
     <Window.Resources>

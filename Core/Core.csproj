@@ -91,6 +91,8 @@
     <Compile Include="Data\QuotationsData\Quotation.cs" />
     <Compile Include="Data\UpdateController.cs" />
     <Compile Include="Data\UserData\Employee.cs" />
+    <Compile Include="Data\UserData\Estimator.cs" />
+    <Compile Include="Data\UserData\Salesman.cs" />
     <Compile Include="Data\UserData\User.cs" />
     <Compile Include="Enums\Actions.cs" />
     <Compile Include="Enums\Statuses.cs" />
@@ -129,6 +131,18 @@
     <Compile Include="Migrations\202103202021409_ProjectsContactsData.cs" />
     <Compile Include="Migrations\202103202021409_ProjectsContactsData.designer.cs">
       <DependentUpon>202103202021409_ProjectsContactsData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103211132293_EstimatorData.cs" />
+    <Compile Include="Migrations\202103211132293_EstimatorData.designer.cs">
+      <DependentUpon>202103211132293_EstimatorData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103211202011_InquiriesView.cs" />
+    <Compile Include="Migrations\202103211202011_InquiriesView.designer.cs">
+      <DependentUpon>202103211202011_InquiriesView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103211333052_InquiriesYears.cs" />
+    <Compile Include="Migrations\202103211333052_InquiriesYears.designer.cs">
+      <DependentUpon>202103211333052_InquiriesYears.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windows\InquiriesWindows\InquiriesWindow.xaml.cs">
@@ -199,6 +213,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103202021409_ProjectsContactsData.resx">
       <DependentUpon>202103202021409_ProjectsContactsData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103211132293_EstimatorData.resx">
+      <DependentUpon>202103211132293_EstimatorData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103211202011_InquiriesView.resx">
+      <DependentUpon>202103211202011_InquiriesView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103211333052_InquiriesYears.resx">
+      <DependentUpon>202103211333052_InquiriesYears.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

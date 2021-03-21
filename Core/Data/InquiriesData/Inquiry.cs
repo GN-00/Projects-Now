@@ -19,16 +19,8 @@ namespace Core.Data.InquiriesData
 		public int Id { get; set; }
 		public int CustomerId { get; set; }
 		public int ConsultantId { get; set; }
-		public int EstimationId { get; set; }
+		public int EstimatorId { get; set; }
 		public int SalesmanId { get; set; }
-
-		private int? _QuotationId;
-		[Write(false)]
-		public int? QuotationId
-		{
-			get { return this._QuotationId; }
-			set { if (value != this._QuotationId) { this._QuotationId = value; NotifyPropertyChanged(); NotifyPropertyChanged("Status"); } }
-		}
 
 		private string _RegisterCode;
 		public string RegisterCode
@@ -79,23 +71,23 @@ namespace Core.Data.InquiriesData
 			set { if (value != this._CustomerName) { this._CustomerName = value; NotifyPropertyChanged(); } }
 		}
 
-		private string _EstimationName;
+		private string _EstimatorName;
 		[Write(false)]
-		public string EstimationName
+		public string EstimatorName
 		{
-			get { return this._EstimationName; }
-			set { if (value != this._EstimationName) { this._EstimationName = value; NotifyPropertyChanged(); } }
+			get { return this._EstimatorName; }
+			set { if (value != this._EstimatorName) { this._EstimatorName = value; NotifyPropertyChanged(); } }
 		}
 
-		private string _EstimationCode;
+		private string _EstimatorCode;
 		[Write(false)]
-		public string EstimationCode
+		public string EstimatorCode
 		{
-			get { return this._EstimationCode; }
-			set { if (value != this._EstimationCode) { this._EstimationCode = value; NotifyPropertyChanged(); } }
+			get { return this._EstimatorCode; }
+			set { if (value != this._EstimatorCode) { this._EstimatorCode = value; NotifyPropertyChanged(); } }
 		}
 
 		[Write(false)]
-		public string Status { get { return (QuotationId == null ? "New" : "Quoting"); } }
+		public string Status { get; set; } 
 	}
 }

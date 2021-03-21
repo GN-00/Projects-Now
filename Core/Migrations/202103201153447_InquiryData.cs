@@ -13,7 +13,7 @@
                     Id = c.Int(nullable: false, identity: true),
                     CustomerId = c.Int(nullable: false),
                     ConsultantId = c.Int(nullable: true),
-                    EstimationId = c.Int(nullable: true),
+                    EstimatorId = c.Int(nullable: true),
                     SalesmanId = c.Int(nullable: true),
                     RegisterCode = c.String(maxLength: 25),
                     ProjectName = c.String(maxLength: 256),
@@ -29,7 +29,7 @@
                   .Index(t => t.Id)
                   .Index(t => t.CustomerId)
                   .Index(t => t.ConsultantId)
-                  .Index(t => t.EstimationId)
+                  .Index(t => t.EstimatorId)
                   .Index(t => t.SalesmanId); 
 
             Sql($"SET IDENTITY_INSERT [Inquiry].[_Inquiries] ON; " +
@@ -37,7 +37,7 @@
                 $"(Id, " +
                 $"CustomerId, " +
                 $"ConsultantId, " +
-                $"EstimationId, " +
+                $"EstimatorId, " +
                 $"SalesmanId, " +
                 $"RegisterCode, " +
                 $"ProjectName, " +

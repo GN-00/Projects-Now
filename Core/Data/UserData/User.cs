@@ -15,11 +15,7 @@ namespace Core.Data.UserData
         [Write(false)]
         public string Title { get; set; }
         [Write(false)]
-        public string FirstName { get; set; }
-        [Write(false)]
-        public string LastName { get; set; }
-        [Write(false)]
-        public string FullName { get { return $"{FirstName} {LastName}"; } }
+        public string Name { get; set; }
 
         public bool? Administrator { get; set; }
 
