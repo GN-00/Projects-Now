@@ -83,7 +83,7 @@
                 $"[EarthSize], " +
                 $"[EarthingSystem], " +
                 $"[Discount], " +
-                $"[VAT] " +
+                $"[VAT] * 100 " +
                 $"FROM [Quotation].[Quotations] "+
                 $"ORDER BY [QuotationID] ASC;" +
                 $"SET IDENTITY_INSERT [Quotation].[_Quotations] OFF;");

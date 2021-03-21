@@ -87,7 +87,6 @@
                     TransportationAllowance = c.Double(nullable: false),
                     OtherAllowance = c.Double(nullable: false),
                 }).PrimaryKey(t => t.Id)
-                  .ForeignKey("User._Users", t => t.UserId)
                   .Index(t => t.Id)
                   .Index(t => t.UserId);
 

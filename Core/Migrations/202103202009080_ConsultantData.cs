@@ -10,7 +10,7 @@
                 "Customer._Consultants",
                 c => new 
                 {
-                    Id = c.Int(nullable: false),
+                    Id = c.Int(nullable: false, identity: true),
                     Name = c.String(nullable: false, maxLength: 256),
                     Address = c.String(nullable: true, maxLength: 256),
                     Mobile = c.String(nullable: true, maxLength: 20),
