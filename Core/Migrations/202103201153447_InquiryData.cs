@@ -10,7 +10,7 @@
                 "Inquiry._Inquiries",
                 c => new
                 {
-                    Id = c.Int(nullable: false),
+                    Id = c.Int(nullable: false, identity: true),
                     CustomerId = c.Int(nullable: false),
                     ConsultantId = c.Int(nullable: true),
                     EstimationId = c.Int(nullable: true),
@@ -24,9 +24,16 @@
                     RegisterMonth = c.Int(nullable: false),
                     RegisterYear = c.Int(nullable: false),
                     DeliveryCondition = c.String(maxLength: 10),
-                });
+                })
+                  .PrimaryKey(t => t.Id)
+                  .Index(t => t.Id)
+                  .Index(t => t.CustomerId)
+                  .Index(t => t.ConsultantId)
+                  .Index(t => t.EstimationId)
+                  .Index(t => t.SalesmanId); 
 
-            Sql($"Insert Into [Inquiry].[_Inquiries] " +
+            Sql($"SET IDENTITY_INSERT [Inquiry].[_Inquiries] ON; " +
+                $"Insert Into [Inquiry].[_Inquiries] " +
                 $"(Id, " +
                 $"CustomerId, " +
                 $"ConsultantId, " +
@@ -57,12 +64,9 @@
                 $"[RegisterMonth], " +
                 $"[RegisterYear], " +
                 $"[DeliveryCondition] " +
-                $"FROM [Inquiry].[Inquiries]");
-
-            AlterColumn("Inquiry._Inquiries", "Id", c => c.Int(nullable: false, identity: true));
-
-            AddPrimaryKey("Inquiry._Inquiries", "Id");
-            CreateIndex("Inquiry._Inquiries", "Id");
+                $"FROM [Inquiry].[Inquiries] " +
+                $"ORDER BY [InquiryID] ASC;" +
+                $"SET IDENTITY_INSERT [Inquiry].[_Inquiries] OFF;");
         }
 
         public override void Down()

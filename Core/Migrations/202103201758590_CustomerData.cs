@@ -10,7 +10,7 @@
                 "Customer._Customers",
                 c => new
                 {
-                    Id = c.Int(nullable: false),
+                    Id = c.Int(nullable: false, identity: true),
                     SalesmanId = c.Int(nullable: true),
                     BankId = c.Int(nullable: true),
                     Name = c.String(nullable: false, maxLength: 256),
@@ -24,9 +24,14 @@
                     VATNumber = c.String(nullable: true, maxLength: 20),
                     Note = c.String(nullable: true, maxLength: 256),
 
-                });
+                })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Id)
+                .Index(t => t.SalesmanId)
+                .Index(t => t.BankId);
 
-            Sql($"INSERT INTO [Customer].[_Customers] " +
+            Sql($"SET IDENTITY_INSERT [Customer].[_Customers] ON; " +
+                $"INSERT INTO [Customer].[_Customers] " +
                 $"([Id], " +
                 $"[SalesmanId], " +
                 $"[BankID], " +
@@ -55,12 +60,9 @@
                 $"[StartRelation], " +
                 $"[VATNumber], " +
                 $"[Note] " +
-                $"FROM [Customer].[Customers]");
-
-            AlterColumn("Customer._Customers", "Id", c => c.Int(nullable: false, identity: true));
-
-            AddPrimaryKey("Customer._Customers", "Id");
-            CreateIndex("Customer._Customers", "Id");
+                $"FROM [Customer].[Customers] " +
+                $"ORDER BY [CustomerID] ASC; " +
+                $"SET IDENTITY_INSERT [Customer].[_Customers] OFF;");
         }
 
         public override void Down()

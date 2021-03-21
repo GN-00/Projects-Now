@@ -10,14 +10,17 @@
                 "Inquiry._ProjectsContacts",
                 c => new
                 {
-                    Id = c.Int(nullable: false),
+                    Id = c.Int(nullable: false, identity: true),
                     InquiryId = c.Int(nullable: false),
                     ContactId = c.Int(nullable: false),
                     Attention = c.Boolean()
-                } );
+                })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.InquiryId)
+                .Index(t => t.ContactId);
 
-
-            Sql($"Insert Into Inquiry._ProjectsContacts " +
+            Sql($"SET IDENTITY_INSERT Inquiry._ProjectsContacts ON; " +
+                $"Insert Into Inquiry._ProjectsContacts " +
                 $"(Id, " +
                 $"InquiryId, " +
                 $"ContactId, " +
@@ -27,12 +30,9 @@
                 $"InquiryId, " +
                 $"ContactId, " +
                 $"Attention " +
-                $"From Inquiry.ProjectsContacts ");
-
-            AlterColumn("Inquiry._ProjectsContacts", "Id", c => c.Int(nullable: false, identity: true));
-
-            AddPrimaryKey("Inquiry._ProjectsContacts", "Id");
-            CreateIndex("Inquiry._ProjectsContacts", "Id");
+                $"From Inquiry.ProjectsContacts " +
+                $"ORDER BY [RecordID] ASC;" +
+                $"SET IDENTITY_INSERT Inquiry._ProjectsContacts OFF;");
         }
 
         public override void Down()

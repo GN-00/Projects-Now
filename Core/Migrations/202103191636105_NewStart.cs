@@ -7,10 +7,64 @@
         public override void Up()
         {
             CreateTable(
+                "User._Users",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    UserName = c.String(maxLength: 50),
+                    Password = c.String(maxLength: 50),
+                    UserCode = c.String(maxLength: 4),
+                    Administrator = c.Boolean(),
+                    InquiryId = c.Int(),
+                    QuotationId = c.Int(),
+                    JobOrderId = c.Int(),
+                    CustomerId = c.Int(),
+                    ContactId = c.Int(),
+                    ConsultantId = c.Int(),
+                    SupplierId = c.Int(),
+                    AccountId = c.Int(),
+                    FinanceOrderId = c.Int(),
+                    IsEstimator = c.Boolean(),
+                    IsSeller = c.Boolean(),
+                    AccessTendaring = c.Boolean(),
+                    AccessProjects = c.Boolean(),
+                    AccessItems = c.Boolean(),
+                    AccessFinance = c.Boolean(),
+                })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Id);
+
+            Sql($"SET IDENTITY_INSERT [User].[_Users] ON; " +
+                $"Insert Into [User].[_Users] " +
+                $"(Id, " +
+                $"UserName, " +
+                $"Password, " +
+                $"UserCode, " +
+                $"Administrator, " +
+                $"AccessTendaring, " +
+                $"AccessProjects," +
+                $"AccessItems," +
+                $"AccessFinance) " +
+
+                $"Select " +
+                $"UserID,  " +
+                $"UserName, " +
+                $"Password," +
+                $"UserCode, " +
+                $"Administrator, " +
+                $"AccessTendaring, " +
+                $"AccessProjects, " +
+                $"AccessItems, " +
+                $"AccessFinance " +
+                $"From [User].[Users] " +
+                $"ORDER BY [UserID] ASC; " +
+                $"SET IDENTITY_INSERT [User].[_Users] OFF;");
+
+            CreateTable(
                 "User._Employees",
                 c => new
                 {
-                    Id = c.Int(nullable: false),
+                    Id = c.Int(nullable: false, identity: true),
                     UserId = c.Int(nullable: false),
                     IdNumber = c.Int(nullable: false),
                     PassportNumber = c.Int(),
@@ -32,9 +86,13 @@
                     HousingAllowance = c.Double(nullable: false),
                     TransportationAllowance = c.Double(nullable: false),
                     OtherAllowance = c.Double(nullable: false),
-                });
+                }).PrimaryKey(t => t.Id)
+                  .ForeignKey("User._Users", t => t.UserId)
+                  .Index(t => t.Id)
+                  .Index(t => t.UserId);
 
-            Sql($"Insert Into [User].[_Employees] " +
+            Sql($"SET IDENTITY_INSERT [User].[_Employees] ON; " +
+                $"Insert Into [User].[_Employees] " +
                 $"(Id, " +
                 $"UserId, " +
                 $"IdNumber, " +
@@ -55,67 +113,9 @@
                 $"0," +
                 $"0," +
                 $"0 " +
-                $"From [User].[Employees]");
-
-            AlterColumn("User._Employees", "Id", c => c.Int(nullable: false, identity: true));
-
-            AddPrimaryKey("User._Employees", "Id");
-            CreateIndex("User._Employees", "Id");
-
-
-            CreateTable(
-                "User._Users",
-                c => new
-                {
-                    Id = c.Int(nullable: false),
-                    UserName = c.String(maxLength: 50),
-                    Password = c.String(maxLength: 50),
-                    UserCode = c.String(maxLength: 4),
-                    Administrator = c.Boolean(),
-                    InquiryId = c.Int(),
-                    QuotationId = c.Int(),
-                    JobOrderId = c.Int(),
-                    CustomerId = c.Int(),
-                    ContactId = c.Int(),
-                    ConsultantId = c.Int(),
-                    SupplierId = c.Int(),
-                    AccountId = c.Int(),
-                    FinanceOrderId = c.Int(),
-                    IsEstimator = c.Boolean(),
-                    IsSeller = c.Boolean(),
-                    AccessTendaring = c.Boolean(),
-                    AccessProjects = c.Boolean(),
-                    AccessItems = c.Boolean(),
-                    AccessFinance = c.Boolean(),
-                });
-
-            Sql($"Insert Into [User].[_Users] " +
-                $"(Id, " +
-                $"UserName, " +
-                $"Password, " +
-                $"UserCode, " +
-                $"Administrator, " +
-                $"AccessTendaring, " +
-                $"AccessProjects," +
-                $"AccessItems," +
-                $"AccessFinance) " +
-
-                $"Select " +
-                $"UserID,  " +
-                $"UserName, " +
-                $"Password," +
-                $"UserCode, " +
-                $"Administrator, " +
-                $"AccessTendaring, " +
-                $"AccessProjects, " +
-                $"AccessItems, " +
-                $"AccessFinance " +
-                $"From [User].[Users]");
-
-            AlterColumn("User._Users", "Id", c => c.Int(nullable: false, identity: true));
-
-            AddPrimaryKey("User._Users", "Id");
-            CreateIndex("User._Users", "Id");
+                $"From [User].[Employees] " +
+                $"ORDER BY [EmployeeID] ASC; " +
+                $"SET IDENTITY_INSERT [User].[_Employees] OFF;");
         }
         
         public override void Down()

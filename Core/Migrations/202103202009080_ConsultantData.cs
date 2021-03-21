@@ -19,9 +19,12 @@
                     Website = c.String(nullable: true, maxLength: 100),
                     Job = c.String(nullable: true, maxLength: 100),
                     Note = c.String(nullable: true, maxLength: 256),
-                });
+                })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Id);
 
-            Sql($"INSERT INTO [Customer].[_Consultants] " +
+            Sql($"SET IDENTITY_INSERT [Customer].[_Consultants] ON; " +
+                $"INSERT INTO [Customer].[_Consultants] " +
                 $"([Id], " +
                 $"[Name], " +
                 $"[Address], " +
@@ -42,12 +45,9 @@
                 $"[Website], " +
                 $"[Job], " +
                 $"[Note] " +
-                $"FROM [Customer].[Consultants]");
-
-            AlterColumn("Customer._Consultants", "Id", c => c.Int(nullable: false, identity: true));
-
-            AddPrimaryKey("Customer._Consultants", "Id");
-            CreateIndex("Customer._Consultants", "Id");
+                $"FROM [Customer].[Consultants] " +
+                $"ORDER BY [ConsultantID] ASC;" +
+                $"SET IDENTITY_INSERT [Customer].[_Customers] OFF;");
         }
 
         public override void Down()

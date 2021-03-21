@@ -10,7 +10,7 @@
                 "Quotation._Quotations",
                 c => new
                 {
-                    Id = c.Int(nullable: false),
+                    Id = c.Int(nullable: false, identity: true),
                     InquiryId = c.Int(nullable: false),
                     Code = c.String(maxLength: 25),
                     Number = c.Int(nullable: false),
@@ -33,10 +33,14 @@
 
                     Discount = c.Double(nullable: false),
                     VAT = c.Double(nullable: false),
-                });
+                })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Id)
+                .Index(t => t.InquiryId);
 
 
-            Sql($"INSERT INTO [Quotation].[_Quotations] " +
+            Sql($"SET IDENTITY_INSERT [Quotation].[_Quotations] ON; " +
+                $"INSERT INTO [Quotation].[_Quotations] " +
                 $"([Id], " +
                 $"[InquiryId], " +
                 $"[Code], " +
@@ -80,12 +84,9 @@
                 $"[EarthingSystem], " +
                 $"[Discount], " +
                 $"[VAT] " +
-                $"FROM [Quotation].[Quotations]");
-
-            AlterColumn("Quotation._Quotations", "Id", c => c.Int(nullable: false, identity: true));
-
-            AddPrimaryKey("Quotation._Quotations", "Id");
-            CreateIndex("Quotation._Quotations", "Id", unique: true);
+                $"FROM [Quotation].[Quotations] "+
+                $"ORDER BY [QuotationID] ASC;" +
+                $"SET IDENTITY_INSERT [Quotation].[_Quotations] OFF;");
         }
 
         public override void Down()

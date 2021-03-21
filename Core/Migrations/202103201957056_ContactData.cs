@@ -13,7 +13,7 @@
                 "Customer._Contacts",
                 c => new 
                 {
-                    Id = c.Int(nullable: false),
+                    Id = c.Int(nullable: false, identity: true),
                     CustomerId = c.Int(nullable: true),
                     Name = c.String(nullable: false, maxLength: 256),
                     Address = c.String(nullable: true, maxLength: 256),
@@ -21,9 +21,13 @@
                     Email = c.String(nullable: true, maxLength: 100),
                     Job = c.String(nullable: true, maxLength: 100),
                     Note = c.String(nullable: true, maxLength: 256),
-                });
+                })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Id)
+                .Index(t => t.CustomerId);
 
-            Sql($"INSERT INTO [Customer].[_Contacts] " +
+            Sql($"SET IDENTITY_INSERT [Customer].[_Contacts] ON; " +
+                $"INSERT INTO [Customer].[_Contacts] " +
                 $"([Id], " +
                 $"[CustomerId], " +
                 $"[Name], " +
@@ -42,12 +46,9 @@
                 $"[Email], " +
                 $"[Job], " +
                 $"[Note] " +
-                $"FROM [Customer].[Contacts]");
-
-            AlterColumn("Customer._Contacts", "Id", c => c.Int(nullable: false, identity: true));
-
-            AddPrimaryKey("Customer._Contacts", "Id");
-            CreateIndex("Customer._Contacts", "Id");
+                $"FROM [Customer].[Contacts] " +
+                $"ORDER BY [ContactID] ASC;" +
+                $"SET IDENTITY_INSERT [Customer].[_Customers] OFF;");
         }
         
         public override void Down()
