@@ -68,12 +68,7 @@
             <Setter Property="Background" Value="Black"/>
         </Style>
 
-        <Style x:Key="FilterInput" BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}">
-            <Setter Property="FontFamily" Value="Times New Roman"/>
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="1,0"/>
+        <Style x:Key="FilterInput" BasedOn="{StaticResource FilterInputStyle}" TargetType="{x:Type TextBox}">
             <EventSetter Event="KeyUp" Handler="ApplyFilter"/>
         </Style>
     
@@ -294,124 +289,27 @@
                     <Border Background="LightGray" CornerRadius="5">
                         <Grid>
                             <DataGrid x:Name="InquiriesList"
-                                  FontSize="14" 
-                                  FontWeight="Bold" 
-                                  FontFamily="Times New Roman"
-                                  BorderThickness="0"
-                                  IsReadOnly="True"
-                                  RowHeaderWidth="0"
-                                  Margin="10,10,10,30"
-                                  SelectionMode="Single"
-                                  SelectionUnit="FullRow"
-                                  CanUserAddRows="False"
-                                  CanUserResizeRows="False"
-                                  CanUserDeleteRows="False"
-                                  CanUserSortColumns="False"
-                                  CanUserResizeColumns="False"
-                                  CanUserReorderColumns="False"
-                                  AutoGenerateColumns="False"
-                                  HorizontalGridLinesBrush="LightGray"
-                                  VerticalGridLinesBrush="Transparent"
-                                  VerticalScrollBarVisibility="Visible"
-                                  HorizontalScrollBarVisibility="Disabled"
-                                  ContextMenu="{StaticResource GridContextMenu}"
-                                  SelectedCellsChanged="InquiriesList_SelectedCellsChanged">
-
+                                      Style="{StaticResource DataGridStyle}"
+                                      ContextMenu="{StaticResource GridContextMenu}"
+                                      SelectedCellsChanged="InquiriesList_SelectedCellsChanged">
                                 <DataGrid.Resources>
-
-                                    <Style TargetType="{x:Type DataGridColumnHeader}">
-                                        <Setter Property="MinWidth" Value="30" />
-                                        <Setter Property="MinHeight" Value="30" />
-                                        <Setter Property="Foreground" Value="Blue"/>
-                                        <Setter Property="FontStyle" Value="Italic"/>
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    </Style>
-
-                                    <Style TargetType="{x:Type DataGridCell}">
-                                        <Setter Property="MaxHeight" Value="30"/>
-                                        <Setter Property="MinHeight" Value="30"/>
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                                    <Grid Background="{TemplateBinding Background}">
-                                                        <ContentPresenter VerticalAlignment="Center" />
-                                                    </Grid>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-
-                                        <Style.Triggers>
-                                            <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                <Setter Property="Foreground" Value="Black" />
-                                                <Setter Property="Background" Value="LightGray" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-
-                                    <Style TargetType="{x:Type DataGridRow}">
+                                    <Style TargetType="DataGridRow" BasedOn="{StaticResource DataGridRowStyle}">
                                         <Setter Property="ContextMenu" Value="{StaticResource RowsContextMenu}"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="Gray"/>
-                                            </Trigger>
-
-                                            <Trigger Property="IsSelected" Value="True">
-                                                <Setter Property="Background" Value="LightGray"/>
-                                            </Trigger>
-                                        </Style.Triggers>
                                     </Style>
-
                                 </DataGrid.Resources>
-
                                 <DataGrid.Columns>
 
-                                    <DataGridTextColumn Width="140" Header="Register Code" Binding="{Binding RegisterCode, Mode=TwoWay}">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Width="140"  Header="Register Code" Binding="{Binding RegisterCode, Mode=TwoWay}" ElementStyle="{StaticResource CenterColumn}"/>
 
-                                    <DataGridTextColumn Width="270" Header="Customer Name" Binding="{Binding CustomerName}">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="HorizontalAlignment" Value="Left"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Width="270" Header="Customer Name" Binding="{Binding CustomerName}" ElementStyle="{StaticResource LeftColumn}"/>
 
-                                    <DataGridTextColumn Width="290" Header="Project Name" Binding="{Binding ProjectName}">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="HorizontalAlignment" Value="Left"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Width="290" Header="Project Name" Binding="{Binding ProjectName}" ElementStyle="{StaticResource LeftColumn}"/>
 
-                                    <DataGridTextColumn Width="100" Header="Estimation Eng" Binding="{Binding EstimatorCode}">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Width="100" Header="Estimation Eng" Binding="{Binding EstimatorCode}" ElementStyle="{StaticResource CenterColumn}"/>
 
-                                    <DataGridTextColumn Width="100" Header="Register Date" Binding="{Binding RegisterDate, StringFormat=dd/MM/yyyy}" >
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Width="100" Header="Register Date" Binding="{Binding RegisterDate, StringFormat=dd/MM/yyyy}" ElementStyle="{StaticResource CenterColumn}"/>
 
-                                    <DataGridTextColumn Width="110" Header="DuoDate" Binding="{Binding DuoDate, StringFormat=dd/MM/yyyy}">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Width="110" Header="DuoDate" Binding="{Binding DuoDate, StringFormat=dd/MM/yyyy}" ElementStyle="{StaticResource CenterColumn}"/>
 
                                     <DataGridTextColumn Width="111" Header="Priority" Binding="{Binding Priority}">
                                         <DataGridTextColumn.ElementStyle>
@@ -453,12 +351,12 @@
                             </DataGrid>
 
                             <TextBlock x:Name="NavigationPanel"
-                               FontSize="14"
-                               FontWeight="Bold"
-                               FontFamily="Times New Roman"
-                               Margin="10,0,0,5"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Bottom">
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       FontFamily="Times New Roman"
+                                       Margin="10,0,0,5"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Bottom">
                             </TextBlock>
                         </Grid>
                     </Border>
