@@ -15,5 +15,6 @@
         All,
         Running,
         Revision,
+        Quoting
     }
 }

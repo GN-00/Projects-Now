@@ -238,7 +238,7 @@ namespace Core.Windows.InquiriesWindows
             typeof(Inquiry).GetProperty("RegisterCode"),
             typeof(Inquiry).GetProperty("CustomerName"),
             typeof(Inquiry).GetProperty("ProjectName"),
-            typeof(Inquiry).GetProperty("EstimationName"),
+            typeof(Inquiry).GetProperty("EstimatorName"),
             typeof(Inquiry).GetProperty("RegisterDate"),
             typeof(Inquiry).GetProperty("DuoDate"),
             typeof(Inquiry).GetProperty("Priority"),
@@ -298,7 +298,7 @@ namespace Core.Windows.InquiriesWindows
             StatusName.Foreground = YearValue.Foreground = Brushes.Black;
             using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             {
-                inquiriesData = GetInquires(connection, status, DateTime.Now.Year);
+                viewData.Source = inquiriesData = GetInquires(connection, status, DateTime.Now.Year);
                 yearsData = GetYears(connection, status);
             }
             InquiriesList.ItemsSource = viewData.View;
@@ -321,7 +321,7 @@ namespace Core.Windows.InquiriesWindows
             StatusName.Foreground = YearValue.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF9211E8"));
             using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             {
-                inquiriesData = GetInquires(connection, status, DateTime.Now.Year);
+                viewData.Source = inquiriesData = GetInquires(connection, status, DateTime.Now.Year);
                 yearsData = GetYears(connection, status);
             }
             InquiriesList.ItemsSource = viewData.View;
@@ -339,12 +339,12 @@ namespace Core.Windows.InquiriesWindows
         {
             DeleteFilter_Click(sender, e);
             isLoading = true;
-            status = Statuses.Running;
+            status = Statuses.Quoting;
             StatusName.Text = $"Under Work Inquiries";
             StatusName.Foreground = YearValue.Foreground = Brushes.Blue;
             using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             {
-                inquiriesData = GetInquires(connection, status, DateTime.Now.Year);
+                viewData.Source = inquiriesData = GetInquires(connection, status, DateTime.Now.Year);
                 yearsData = GetYears(connection, status);
             }
             InquiriesList.ItemsSource = viewData.View;
@@ -380,10 +380,12 @@ namespace Core.Windows.InquiriesWindows
         public static ObservableCollection<Inquiry> GetInquires(SqlConnection connection, Statuses status, int year)
         {
             var query = $"Select * From [Inquiry].[_InquiriesView] ";
-                query += $"Where RegisterYear = {DateTime.Now.Year} ";
+                query += $"Where RegisterYear = {year} ";
 
             if(status != Statuses.All) 
                 query += $"And Status = '{status}'";
+
+            query += "Order By RegisterYear Desc, RegisterMonth Desc, RegisterNumber Desc";
 
             var records = connection.Query<Inquiry>(query);
             return new ObservableCollection<Inquiry>(records);
@@ -395,7 +397,14 @@ namespace Core.Windows.InquiriesWindows
                 query += $"Where Status = '{status}'";
 
             var records = connection.Query<Year>(query);
-            return new ObservableCollection<Year>(records);
+            if (status == Statuses.All)
+            {
+                return new ObservableCollection<Year>(records.GroupBy(g => g.Value).Select(s => new Year() { Value = s.Key }));
+            }
+            else
+            {
+                return new ObservableCollection<Year>(records);
+            }
         }
     }
 }

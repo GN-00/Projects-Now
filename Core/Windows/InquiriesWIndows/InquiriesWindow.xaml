@@ -154,8 +154,8 @@
                                 <ComboBox Name="YearsList" 
                                           Width="80"
                                           Style="{StaticResource YearsStyle}" 
-                                          DisplayMemberPath="Year"
-                                          SelectedValuePath="Year"
+                                          DisplayMemberPath="Value"
+                                          SelectedValuePath="Value"
                                           SelectionChanged="Years_SelectionChanged" 
                                           VerticalAlignment="Center">
                                 </ComboBox>
@@ -187,7 +187,7 @@
                                 </TextBox>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="0,5">
-                                <TextBox x:Name="EstimationName"
+                                <TextBox x:Name="EstimatorName"
                                  Width="98" 
                                  Style="{StaticResource FilterInput}">
                                 </TextBox>
@@ -376,7 +376,7 @@
                                     <DataGridTextColumn Width="270" Header="Customer Name" Binding="{Binding CustomerName}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Left"/>
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
@@ -384,12 +384,12 @@
                                     <DataGridTextColumn Width="290" Header="Project Name" Binding="{Binding ProjectName}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Left"/>
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
 
-                                    <DataGridTextColumn Width="100" Header="Estimation Eng" Binding="{Binding EstimationCode}">
+                                    <DataGridTextColumn Width="100" Header="Estimation Eng" Binding="{Binding EstimatorCode}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
