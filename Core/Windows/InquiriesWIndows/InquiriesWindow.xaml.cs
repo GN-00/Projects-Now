@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Data.SqlClient;
 using System.Windows.Controls;
 using Core.Data.InquiriesData;
+using Core.Data.QuotationsData;
 using System.Collections.Generic;
 using Core.Windows.MessageWindows;
 using System.Collections.ObjectModel;
@@ -103,131 +104,131 @@ namespace Core.Windows.InquiriesWindows
         }
         private void Edit_ClicK(object sender, RoutedEventArgs e)
         {
-            //if (InquiriesList.SelectedItem is Inquiry inquiry)
-            //{
-            //    User usedBy;
-            //    Quotation quotation;
-            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //    {
-            //        usedBy = UserController.CheckUserInquiryID(connection, inquiry.InquiryID);
-            //        quotation = InquiryController.CheckQuotation(connection, inquiry.InquiryID);
+            if (InquiriesList.SelectedItem is Inquiry inquiry)
+            {
+                User usedBy;
+                Quotation quotation;
+                using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+                {
+                    usedBy = connection.Validation(nameof(UserData.InquiryId) , inquiry.Id);
+                    quotation = connection.QueryFirstOrDefault<Quotation>($"Select * Quotation._Quotations Where InquiryId = {inquiry.Id}");
 
-            //        if (usedBy == null)
-            //        {
-            //            UserData.InquiryID = inquiry.InquiryID;
-            //            UserController.UpdateInquiryID(connection, UserData);
-            //        }
-            //    }
+                    if (usedBy == null)
+                    {
+                        UserData.InquiryId = inquiry.Id;
+                        connection.UserAccessUpdate(UserData, nameof(UserData.InquiryId));
+                    }
+                }
 
-            //    if (quotation != null)
-            //    {
-            //        if (quotation.QuotationStatus != Statuses.Running.ToString())
-            //        {
-            //            CMessageBox.Show($"Access", $"Can't edit this Inquiry!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
-            //            return;
-            //        }
-            //    }
+                if (quotation != null)
+                {
+                    if (quotation.Status != Statuses.Running.ToString())
+                    {
+                        MessageWindow.Show($"Access", $"Can't edit this Inquiry!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                        return;
+                    }
+                }
 
-            //    if (usedBy == null || usedBy.UserID == UserData.UserID)
-            //    {
-            //        var inquiryWindow = new InquiryWindow()
-            //        {
-            //            UserData = this.UserData,
-            //            WindowMode = Actions.Edit,
-            //            InquiryData = inquiry,
-            //        };
-            //        inquiryWindow.ShowDialog();
-            //    }
-            //    else
-            //    {
-            //        CMessageBox.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
-            //    }
-            //}
+                if (usedBy == null || usedBy.Id == UserData.Id)
+                {
+                    var inquiryWindow = new InquiryWindow()
+                    {
+                        UserData = this.UserData,
+                        WindowMode = Actions.Edit,
+                        InquiryData = inquiry,
+                    };
+                    inquiryWindow.ShowDialog();
+                }
+                else
+                {
+                    MessageWindow.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                }
+            }
         }
         private void Assign_Click(object sender, RoutedEventArgs e)
         {
-            //if (InquiriesList.SelectedItem is Inquiry inquiry)
-            //{
-            //    User usedBy;
-            //    Quotation quotation;
-            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //    {
-            //        usedBy = UserController.CheckUserInquiryID(connection, inquiry.InquiryID);
-            //        quotation = InquiryController.CheckQuotation(connection, inquiry.InquiryID);
+            if (InquiriesList.SelectedItem is Inquiry inquiry)
+            {
+                User usedBy;
+                Quotation quotation;
+                using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+                {
+                    usedBy = connection.Validation(nameof(UserData.InquiryId), inquiry.Id);
+                    quotation = connection.QueryFirstOrDefault<Quotation>($"Select * Quotation._Quotations Where InquiryId = {inquiry.Id}");
 
-            //        if (usedBy == null || usedBy.UserID == UserData.UserID)
-            //        {
-            //            UserData.InquiryID = inquiry.InquiryID;
-            //            UserController.UpdateInquiryID(connection, UserData);
-            //        }
-            //    }
+                    if (usedBy == null)
+                    {
+                        UserData.InquiryId = inquiry.Id;
+                        connection.UserAccessUpdate(UserData, nameof(UserData.InquiryId));
+                    }
+                }
 
-            //    if (quotation != null)
-            //    {
-            //        if (quotation.QuotationStatus != Statuses.Running.ToString())
-            //        {
-            //            CMessageBox.Show($"Access", $"Can't edit this Inquiry!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
-            //            return;
-            //        }
-            //    }
+                if (quotation != null)
+                {
+                    if (quotation.Status != Statuses.Running.ToString())
+                    {
+                        MessageWindow.Show($"Access", $"Can't edit this Inquiry!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                        return;
+                    }
+                }
 
-            //    if (usedBy == null || usedBy.UserID == UserData.UserID)
-            //    {
-            //        var assignWindow = new AssignWindow()
-            //        {
-            //            UserData = this.UserData,
-            //            InquiryData = inquiry,
-            //        };
-            //        assignWindow.ShowDialog();
-            //    }
-            //    else
-            //    {
-            //        CMessageBox.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
-            //    }
-            //}
+                if (usedBy == null || usedBy.Id == UserData.Id)
+                {
+                    var assignWindow = new AssignWindow()
+                    {
+                        UserData = this.UserData,
+                        InquiryData = inquiry,
+                    };
+                    assignWindow.ShowDialog();
+                }
+                else
+                {
+                    MessageWindow.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                }
+            }
         }
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            //if (InquiriesList.SelectedItem is Inquiry inquiry)
-            //{
-            //    User usedBy;
-            //    Quotation quotation;
-            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //    {
-            //        usedBy = UserController.CheckUserInquiryID(connection, inquiry.InquiryID);
-            //        quotation = InquiryController.CheckQuotation(connection, inquiry.InquiryID);
+            if (InquiriesList.SelectedItem is Inquiry inquiry)
+            {
+                User usedBy;
+                Quotation quotation;
+                using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+                {
+                    usedBy = connection.Validation(nameof(UserData.InquiryId), inquiry.Id);
+                    quotation = connection.QueryFirstOrDefault<Quotation>($"Select * Quotation._Quotations Where InquiryId = {inquiry.Id}");
 
-            //        if (usedBy == null || usedBy.UserID == UserData.UserID)
-            //        {
-            //            UserData.InquiryID = inquiry.InquiryID;
-            //            UserController.UpdateInquiryID(connection, UserData);
-            //        }
-            //    }
+                    if (usedBy == null)
+                    {
+                        UserData.InquiryId = inquiry.Id;
+                        connection.UserAccessUpdate(UserData, nameof(UserData.InquiryId));
+                    }
+                }
 
-            //    if (quotation != null)
-            //    {
-            //        CMessageBox.Show($"Access", $"Can't delete this Inquiry!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
-            //        return;
-            //    }
+                if (quotation != null)
+                {
+                    MessageWindow.Show($"Access", $"Can't delete this Inquiry!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                    return;
+                }
 
-            //    if (usedBy == null || usedBy.UserID == UserData.UserID)
-            //    {
-            //        MessageBoxResult result = CMessageBox.Show("Deleting", $"Do you want to Delete Inquiy: \n{inquiry.RegisterCode}?", CMessageBoxButton.YesNo, CMessageBoxImage.Warning);
-            //        if (result == MessageBoxResult.Yes)
-            //        {
-            //            using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //            {
-            //                connection.Execute($"Delete From [Inquiry].[Inquiries] Where InquiryID = {inquiry.InquiryID}");
-            //                connection.Execute($"Delete From [Inquiry].[ProjectsContacts] Where InquiryID = {inquiry.InquiryID}");
-            //                InquiriesData.Remove(inquiry);
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        CMessageBox.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", CMessageBoxButton.OK, CMessageBoxImage.Warning);
-            //    }
-            //}
+                if (usedBy == null || usedBy.Id == UserData.Id)
+                {
+                    MessageBoxResult result = MessageWindow.Show("Deleting", $"Do you want to Delete Inquiy: \n{inquiry.RegisterCode}?", MessageWindowButton.YesNo, MessageWindowImage.Warning);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+                        {
+                            connection.Execute($"Delete From [Inquiry].[_Inquiries] Where InquiryID = {inquiry.Id}");
+                            connection.Execute($"Delete From [Inquiry].[_ProjectsContacts] Where InquiryID = {inquiry.Id}");
+                            inquiriesData.Remove(inquiry);
+                        }
+                    }
+                }
+                else
+                {
+                    MessageWindow.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                }
+            }
         }
 
         #region Filters
@@ -238,7 +239,7 @@ namespace Core.Windows.InquiriesWindows
             typeof(Inquiry).GetProperty("RegisterCode"),
             typeof(Inquiry).GetProperty("CustomerName"),
             typeof(Inquiry).GetProperty("ProjectName"),
-            typeof(Inquiry).GetProperty("EstimatorName"),
+            typeof(Inquiry).GetProperty("EstimatorCode"),
             typeof(Inquiry).GetProperty("RegisterDate"),
             typeof(Inquiry).GetProperty("DuoDate"),
             typeof(Inquiry).GetProperty("Priority"),

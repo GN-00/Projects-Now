@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Windows.Controls;
 using System.Collections.Generic;
 using Core.Windows.InquiriesWindows;
+using Core.Windows.CustomersWindows;
 //using ProjectsNow.Windows.InquiryWindows;
 //using ProjectsNow.Windows.CustomerWindows;
 //using ProjectsNow.Windows.QuotationWindows;
@@ -115,15 +116,15 @@ namespace Core.Windows.MainWindows
 
         private void Customers_Click(object sender, RoutedEventArgs e)
         {
-            //var customersWindow = new CustomersWindow() { UserData = this.UserData };
-            //customersWindow.ShowDialog();
-            //if (UserData.AccessQuote == true)
-            //{
-            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //        newProjects = InquiryController.CountNewInquiries(connection, UserData.UserID);
+            var customersWindow = new CustomersWindow() { UserData = this.UserData };
+            customersWindow.ShowDialog();
+            if (UserData.AccessQuote == true)
+            {
+                //using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+                //    newProjects = InquiryController.CountNewInquiries(connection, UserData.UserID);
 
-            //    DataContext = new { newProjects };
-            //}
+                //DataContext = new { newProjects };
+            }
         }
 
         private void Consultants_Click(object sender, RoutedEventArgs e)

@@ -1,0 +1,278 @@
+﻿<Window x:Class="Core.Windows.CustomersWindows.CustomersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:CN="clr-namespace:Core.Controls"
+        mc:Ignorable="d"
+        Style="{StaticResource WindowStyle}"
+        Title="Customers"
+        Loaded="Window_Loaded"
+        Closing="Window_Closing"
+        WindowStartupLocation="CenterScreen"
+        Height="700"
+        Width="870">
+    <Window.Resources>
+
+        <ContextMenu x:Key="GridContextMenu" FontFamily="Times New Roman">
+            <MenuItem Click="Add_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="New"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/Add.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+
+        <ContextMenu x:Key="RowsContextMenu" FontFamily="Times New Roman">
+            <MenuItem Click="Add_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="New"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/Add.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator/>
+            <MenuItem Click="Edit_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="Edit"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/Edit.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator/>
+            <MenuItem Click="Delete_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="Delete" Foreground="Red"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/Error.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+
+        </ContextMenu>
+
+        <Style x:Key="LabelStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="Blue"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="InputStyle" BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}">
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="InputStyleDatePicker" BasedOn="{StaticResource DatePickerStyle}" TargetType="{x:Type DatePicker}">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <Style x:Key="InputComboBoxStyle" BasedOn="{StaticResource ComboBoxStyle}" TargetType="{x:Type ComboBox}">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+    </Window.Resources>
+    <Border x:Name="WindowBorder" Style="{StaticResource WindowBorderStyle}">
+        <Grid Background="#FFF1F1F1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            
+            <CN:WindowControls/>
+            <Grid Background="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="450"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="5" Opacity="0.3" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+                </Grid.Effect>
+                
+                <TextBlock Text="Customer Information"
+                           FontSize="32"
+                           Margin="20,20,0,0"
+                           FontStyle="Italic"
+                           Foreground="#FF9211E8"
+                           VerticalAlignment="Top"
+                           HorizontalAlignment="Left"
+                           Panel.ZIndex="1000">
+                </TextBlock>
+
+                <Grid Margin="15,80,15,15">
+                    <Border Background="LightGray" CornerRadius="5">
+                        <Grid>
+                            <Grid Margin="20,13,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="1000">
+                                <TextBox x:Name="FindRecord" Height="25" Width="360" KeyUp="FilterTextBox_KeyUp" Style="{StaticResource TextBoxStyle}"/>
+                                <Button Margin="0,0,5,0"
+                                        Height="20"
+                                        Width="20"
+                                        Click="RemoveFilter"
+                                        HorizontalAlignment="Right"
+                                        Style="{StaticResource TabButton}">
+                                    <Image Margin="2.5" Source="/Images/error.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Button>
+                            </Grid>
+
+                            <DataGrid x:Name="RecordsList"
+                                      Style="{StaticResource DataGridStyle}"
+                                      ContextMenu="{StaticResource GridContextMenu}"
+                                      SelectedCellsChanged="List_SelectedCellsChanged">
+                                <DataGrid.Resources>
+                                    <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}">
+                                        <Setter Property="ContextMenu" Value="{StaticResource RowsContextMenu}"/>
+                                    </Style>
+                                </DataGrid.Resources>
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width="430" Binding="{Binding Name}" ElementStyle="{StaticResource LeftColumn}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <TextBlock x:Name="NavigationPanel"
+                                   FontSize="14"
+                                   Margin="10,0,0,5"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Bottom">
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+
+                    <Grid x:Name="LoadingControl" Margin="10,10,10,30" Background="Black" Opacity="0.75" Visibility="Collapsed" Panel.ZIndex="10000">
+                        <CN:LoadingControl/>
+                    </Grid>
+                </Grid>
+
+                <Grid x:Name="Body" Grid.Column="1" Margin="10,110,10,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="250"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition MinHeight="40" Height="auto"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition MinHeight="40" Height="auto"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <Button Margin="0,-50,0,0" 
+                            IsEnabled="False"
+                            Height="40" 
+                            Width="40" 
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            Style="{StaticResource TabButton}"
+                            Click="History_Click">
+                        <Image Margin="5" Source="/Images/History.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Button>
+
+                    <TextBlock  Grid.Row="0" Grid.Column="0" Text="Name " Style="{StaticResource LabelStyle}"/>
+                    <ComboBox x:Name="CustomerName"
+                              Grid.Row="0" 
+                              Grid.Column="1"
+                              IsEnabled="False"
+                              Width="250"
+                              IsEditable="True"
+                              SelectedValue="{Binding recordData.Id}"
+                              SelectedValuePath="Id"
+                              DisplayMemberPath="Name"
+                              Style="{StaticResource InputComboBoxStyle}">
+                    </ComboBox>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="VAT Number " Style="{StaticResource LabelStyle}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" IsEnabled="False" Text="{Binding recordData.VATNumber}" Style="{StaticResource InputStyle}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Phone " Style="{StaticResource LabelStyle}"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" IsEnabled="False" Text="{Binding recordData.Phone}" Style="{StaticResource InputStyle}"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Email " Style="{StaticResource LabelStyle}"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" IsEnabled="False" Text="{Binding recordData.Email}" Style="{StaticResource InputStyle}"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Website " Style="{StaticResource LabelStyle}" />
+                    <TextBox Grid.Row="4" Grid.Column="1" IsEnabled="False" Text="{Binding recordData.Website}" Style="{StaticResource InputStyle}"/>
+                    
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="City " Style="{StaticResource LabelStyle}"/>
+                    <TextBox Grid.Row="5" Grid.Column="1" IsEnabled="False" Text="{Binding recordData.City}" Style="{StaticResource InputStyle}"/>
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Address " Style="{StaticResource LabelStyle}"/>
+                    <TextBox Grid.Row="6" Grid.Column="1" IsEnabled="False" Text="{Binding recordData.Address}" MaxHeight="60" Style="{StaticResource InputStyle}" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="P.O.Box " Style="{StaticResource LabelStyle}"/>
+                    <TextBox Grid.Row="7" Grid.Column="1" IsEnabled="False" Text="{Binding recordData.POBox}" MaxHeight="60" Style="{StaticResource InputStyle}" PreviewKeyDown="POBox_PreviewKeyDown" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Note " Style="{StaticResource LabelStyle}"/>
+                    <TextBox Grid.Row="8" Grid.Column="1" IsEnabled="False" Text="{Binding recordData.Note}" MaxHeight="60" Style="{StaticResource InputStyle}" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="9" Grid.Column="0" Text="Start Relation " Style="{StaticResource LabelStyle}" />
+                    <DatePicker Grid.Row="9" Grid.Column="10"
+                                IsEnabled="False"
+                                Width="155" 
+                                SelectedDate="{Binding recordData.StartRelation}"
+                                Style="{StaticResource InputStyleDatePicker}">
+                    </DatePicker>
+
+                    <TextBlock Grid.Row="10" Grid.Column="0" Text="Salesman " Style="{StaticResource LabelStyle}" />
+                    <ComboBox x:Name="SalesmanList"
+                              Grid.Row="10" Grid.Column="1"
+                              IsEnabled="False"
+                              Width="155" 
+                              SelectedValuePath="SalesmanId"
+                              DisplayMemberPath="SalesmanName"
+                              SelectedValue="{Binding recordData.SalesmanId}"
+                              Style="{StaticResource InputComboBoxStyle}">
+                    </ComboBox>
+
+                    <Button x:Name="Contacts"
+                            Grid.Row="9" Grid.Column="1"
+                            Grid.RowSpan="2"
+                            Margin="0,0,20,0"
+                            IsEnabled="False"
+                            Height="40" 
+                            Width="40" 
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Click="Contacts_Click">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource TabButton}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding UserData.AccessContacts}" Value="false">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Image Margin="5" Source="/Images/Contacts.png" />
+                    </Button>
+                </Grid>
+            </Grid>
+            
+            <StackPanel Grid.Row="1" Margin="10,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button x:Name="Save" Style="{StaticResource SaveButton}" Click="Save_Click" Visibility="Collapsed"/>
+                <Button x:Name="Cancel" Style="{StaticResource CancelButton}" Click="Cancel_Click" Visibility="Collapsed"/>
+                <Button x:Name="Done" Style="{StaticResource DoneButton}" Click="Done_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

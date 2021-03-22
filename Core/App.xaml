@@ -63,34 +63,6 @@
 
         <!--#endregion-->
 
-        <!--#region TabButton-->
-
-        <Style x:Key="TabButton" TargetType="{x:Type Button}">
-            <Setter Property="Width" Value="60"/>
-            <Setter Property="Height" Value="60"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray">
-                            <ContentPresenter/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding DataContext, RelativeSource={RelativeSource Self}}" Value="false">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                </DataTrigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="DarkGray"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!--#endregion-->
-
         <!--#region TextBox-->
 
         <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}">
@@ -954,8 +926,7 @@
 
             <Style.Resources>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
-                    <Setter Property="MinWidth" Value="30" />
-                    <Setter Property="MinHeight" Value="30" />
+                    <Setter Property="Height" Value="30" />
                     <Setter Property="Foreground" Value="Blue"/>
                     <Setter Property="FontStyle" Value="Italic"/>
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -999,7 +970,7 @@
         </Style>
 
         <Style x:Key="CenterColumn" TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
         <!--#endregion-->
@@ -1014,6 +985,128 @@
             <Setter Property="Margin" Value="1,0"/>
         </Style>
 
+        <!--#endregion-->
+
+        <!--#region TabButton-->
+
+        <Style x:Key="TabButton" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding DataContext, RelativeSource={RelativeSource Self}}" Value="false">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="DarkGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--#endregion-->
+        
+        <!--#region WindowButtons-->
+
+        <Style x:Key="DoneButton" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="10,0"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Content" Value="Done"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Times New Roman"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0,0,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Image x:Name="ButtonImage" Margin="10,5,5,5" Source="/Images/Accept.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="DarkGray"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+
+        <Style x:Key="SaveButton" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="10,0"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Content" Value="Save"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Times New Roman"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0,0,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Image x:Name="ButtonImage" Margin="10,5,5,5" Source="/Images/Save.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="DarkGray"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CancelButton" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="10,0"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Background" Value="DarkRed"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Content" Value="Cancel"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Times New Roman"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0,0,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Image x:Name="ButtonImage" Margin="5" Source="/Images/Error.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Red"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
         <!--#endregion-->
         
     </Application.Resources>
