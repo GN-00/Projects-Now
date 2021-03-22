@@ -18,28 +18,27 @@ using System.Collections.Specialized;
 
 namespace Core.Windows.CustomersWindows
 {
-    public partial class CustomersWindow : Window
+    public partial class ContactsWindow : Window
     {
+        public int InquiryID { get; set; }
         public User UserData { get; set; }
-        public ObservableCollection<Customer> RecordsData { get; set; }
+        public Customer CustomerData { get; set; }
 
-        Actions action;
-        Customer oldData;
-        Customer recordData;
 
-        CollectionViewSource viewRecordsData;
-        public CustomersWindow()
+        public ComboBox ComboBoxToUpdate { get; set; }
+        public DataGrid DataGridToUpadate { get; set; }
+        public ObservableCollection<Contact> RecordsData { get; set; }
+
+        public ContactsWindow()
         {
             InitializeComponent();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (RecordsData != null) Contacts.Visibility = Visibility.Collapsed;
-
             using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             {
-                var query = "Select * From Customer._Customers Order By Name";
+                var query = "Select * From Customer._Contacts Order By Name";
 
                 if (RecordsData == null)
                     RecordsData = new ObservableCollection<Customer>(connection.Query<Customer>(query));
@@ -63,9 +62,9 @@ namespace Core.Windows.CustomersWindows
         {
             LoadingControl.Visibility = Save.Visibility = Cancel.Visibility = Visibility.Visible;
             Done.Visibility = Visibility.Collapsed;
-            foreach(object control in Body.Children)
+            foreach (object control in Body.Children)
             {
-                if (control is TextBlock || control is StackPanel) 
+                if (control is TextBlock || control is StackPanel)
                 { }
                 else
                     ((Control)control).IsEnabled = true;
@@ -181,7 +180,7 @@ namespace Core.Windows.CustomersWindows
             }
 
             LoadingControl.Visibility = Save.Visibility = Cancel.Visibility = Visibility.Collapsed;
-            Done.Visibility  = Visibility.Visible;
+            Done.Visibility = Visibility.Visible;
 
             foreach (object control in Body.Children)
             {
@@ -215,7 +214,7 @@ namespace Core.Windows.CustomersWindows
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             LoadingControl.Visibility = Save.Visibility = Cancel.Visibility = Visibility.Collapsed;
-            Done.Visibility  = Visibility.Visible;
+            Done.Visibility = Visibility.Visible;
 
             foreach (object control in Body.Children)
             {

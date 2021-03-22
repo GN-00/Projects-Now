@@ -112,6 +112,7 @@
     <Compile Include="Data\CustomersData\Customer.cs" />
     <Compile Include="Data\Database.cs" />
     <Compile Include="Data\General\Year.cs" />
+    <Compile Include="Data\Input.cs" />
     <Compile Include="Data\InquiriesData\Inquiry.cs" />
     <Compile Include="Data\QuotationsData\Quotation.cs" />
     <Compile Include="Data\UpdateController.cs" />
@@ -170,6 +171,9 @@
       <DependentUpon>202103211333052_InquiriesYears.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Windows\CustomersWindows\ContactsWindow.xaml.cs">
+      <DependentUpon>ContactsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\CustomersWindows\CustomersWindow.xaml.cs">
       <DependentUpon>CustomersWindow.xaml</DependentUpon>
     </Compile>
@@ -279,6 +283,10 @@
     <Page Include="Controls\WindowIcon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\CustomersWindows\ContactsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\CustomersWindows\CustomersWindow.xaml">
       <SubType>Designer</SubType>

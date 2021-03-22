@@ -110,7 +110,7 @@ namespace Core.Windows.InquiriesWindows
                 Quotation quotation;
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
-                    usedBy = connection.Validation(nameof(UserData.InquiryId) , inquiry.Id);
+                    usedBy = connection.AccessValidation(nameof(UserData.InquiryId) , inquiry.Id);
                     quotation = connection.QueryFirstOrDefault<Quotation>($"Select * Quotation._Quotations Where InquiryId = {inquiry.Id}");
 
                     if (usedBy == null)
@@ -153,7 +153,7 @@ namespace Core.Windows.InquiriesWindows
                 Quotation quotation;
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
-                    usedBy = connection.Validation(nameof(UserData.InquiryId), inquiry.Id);
+                    usedBy = connection.AccessValidation(nameof(UserData.InquiryId), inquiry.Id);
                     quotation = connection.QueryFirstOrDefault<Quotation>($"Select * Quotation._Quotations Where InquiryId = {inquiry.Id}");
 
                     if (usedBy == null)
@@ -195,7 +195,7 @@ namespace Core.Windows.InquiriesWindows
                 Quotation quotation;
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
-                    usedBy = connection.Validation(nameof(UserData.InquiryId), inquiry.Id);
+                    usedBy = connection.AccessValidation(nameof(UserData.InquiryId), inquiry.Id);
                     quotation = connection.QueryFirstOrDefault<Quotation>($"Select * Quotation._Quotations Where InquiryId = {inquiry.Id}");
 
                     if (usedBy == null)

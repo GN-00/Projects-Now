@@ -7,7 +7,7 @@ namespace Core.Data
 {
     public static class  Access
     {
-        public static User Validation(this SqlConnection connection, string property, int id)
+        public static User AccessValidation(this SqlConnection connection, string property, int id)
         {
             User record = connection.QueryFirstOrDefault<User>($"Select * From [User].[_Users] Where {property} = {id}");
             return record;
@@ -17,9 +17,9 @@ namespace Core.Data
         {
             var propertyValue = typeof(User).GetProperty(property).GetValue(user);
             if (propertyValue == null)
-                connection.Execute($"Update [User].[_Users] Set {property} = NULL Where UserID = {user.Id}");
+                connection.Execute($"Update [User].[_Users] Set {property} = NULL Where Id = {user.Id}");
             else
-                connection.Execute($"Update [User].[_Users] Set {property} = {propertyValue} Where UserID = {user.Id}");
+                connection.Execute($"Update [User].[_Users] Set {property} = {propertyValue} Where Id = {user.Id}");
         }
 
         public static void UserAccessReset(this SqlConnection connection, User user)
@@ -29,7 +29,7 @@ namespace Core.Data
             foreach (string property in AccessProperties)
                 query += $"{property} = NULL ,";
 
-            query = query.Substring(0, query.Length - 1) + $" Where UserID = {user.Id}";
+            query = query.Substring(0, query.Length - 1) + $" Where Id = {user.Id}";
 
             connection.Execute(query);
         }
