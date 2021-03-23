@@ -141,7 +141,7 @@ namespace Core.Windows.InquiriesWindows
                 }
                 else
                 {
-                    MessageWindow.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                    MessageWindow.Show($"Access", $"This inquiry underwork by {usedBy.Name}!", MessageWindowButton.OK, MessageWindowImage.Warning);
                 }
             }
         }
@@ -183,7 +183,7 @@ namespace Core.Windows.InquiriesWindows
                 }
                 else
                 {
-                    MessageWindow.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                    MessageWindow.Show($"Access", $"This inquiry underwork by {usedBy.Name}!", MessageWindowButton.OK, MessageWindowImage.Warning);
                 }
             }
         }
@@ -226,7 +226,7 @@ namespace Core.Windows.InquiriesWindows
                 }
                 else
                 {
-                    MessageWindow.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                    MessageWindow.Show($"Access", $"This inquiry underwork by {usedBy.Name}!", MessageWindowButton.OK, MessageWindowImage.Warning);
                 }
             }
         }

@@ -97,7 +97,7 @@ namespace Core.Windows.CustomersWindows
                 }
                 else
                 {
-                    MessageWindow.Show($"Access", $"This consultant data underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                    MessageWindow.Show($"Access", $"This consultant data underwork by {usedBy.Name}!", MessageWindowButton.OK, MessageWindowImage.Warning);
                 }
             }
         }
@@ -155,7 +155,7 @@ namespace Core.Windows.CustomersWindows
                 }
                 else
                 {
-                    MessageWindow.Show($"Access", $"This consultant data underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                    MessageWindow.Show($"Access", $"This consultant data underwork by {usedBy.Name}!", MessageWindowButton.OK, MessageWindowImage.Warning);
                 }
             }
         }

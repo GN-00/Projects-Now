@@ -276,7 +276,7 @@ namespace Core.Windows.InquiriesWindows
             else
                 NavigationPanel.Text = $"Contact: {selectedIndex + 1} / {viewProjectContacts.View.Cast<object>().Count()}";
         }
-        private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             var selectedIndex = ProjectContactsList.SelectedIndex;
             if (selectedIndex == -1)

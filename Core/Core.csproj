@@ -115,6 +115,7 @@
     <Compile Include="Data\Input.cs" />
     <Compile Include="Data\InquiriesData\Inquiry.cs" />
     <Compile Include="Data\QuotationsData\Quotation.cs" />
+    <Compile Include="Data\QuotationsData\Term.cs" />
     <Compile Include="Data\UpdateController.cs" />
     <Compile Include="Data\UserData\Employee.cs" />
     <Compile Include="Data\UserData\Estimator.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Data\UserData\User.cs" />
     <Compile Include="Enums\Actions.cs" />
     <Compile Include="Enums\Statuses.cs" />
+    <Compile Include="Enums\TermsTypes.cs" />
     <Compile Include="Migrations\202103191636105_NewStart.cs" />
     <Compile Include="Migrations\202103191636105_NewStart.designer.cs">
       <DependentUpon>202103191636105_NewStart.cs</DependentUpon>
@@ -178,6 +180,10 @@
     <Compile Include="Migrations\202103230833472_ProjectsContactsView.designer.cs">
       <DependentUpon>202103230833472_ProjectsContactsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103231807232_TermsData.cs" />
+    <Compile Include="Migrations\202103231807232_TermsData.designer.cs">
+      <DependentUpon>202103231807232_TermsData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windows\CustomersWindows\ConsultantsWindow.xaml.cs">
       <DependentUpon>ConsultantsWindow.xaml</DependentUpon>
@@ -214,6 +220,12 @@
     </Compile>
     <Compile Include="Windows\MessageWindows\MessageWindow.xaml.cs">
       <DependentUpon>MessageWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\QuotationsWindows\QuotationsWindow.xaml.cs">
+      <DependentUpon>QuotationsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\QuotationsWindows\QuotationWindow.xaml.cs">
+      <DependentUpon>QuotationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\QuotationsWindows\QuoteWindow.xaml.cs">
       <DependentUpon>QuoteWindow.xaml</DependentUpon>
@@ -277,6 +289,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103230833472_ProjectsContactsView.resx">
       <DependentUpon>202103230833472_ProjectsContactsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103231807232_TermsData.resx">
+      <DependentUpon>202103231807232_TermsData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -349,6 +364,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\MessageWindows\MessageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QuotationsWindows\QuotationsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QuotationsWindows\QuotationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

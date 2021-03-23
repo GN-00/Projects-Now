@@ -1,22 +1,22 @@
 ﻿using System;
 using Dapper;
+using Core.Data;
+using Core.Enums;
 using System.Linq;
 using System.Windows;
 using System.Reflection;
+using Core.Data.UserData;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Data.SqlClient;
 using System.Windows.Controls;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using Core.Windows.MessageWindows;
-using Core.Data.UserData;
 using Core.Data.InquiriesData;
-using Core.Data;
-using Core.Enums;
 using Core.Data.QuotationsData;
 using Dapper.Contrib.Extensions;
+using System.Collections.Generic;
+using Core.Windows.MessageWindows;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace Core.Windows.QuotationsWindows
 {
@@ -71,13 +71,13 @@ namespace Core.Windows.QuotationsWindows
                         quotationData.ReviseDate = DateTime.Now;
 
                         quotationData.Id = Convert.ToInt32(connection.Insert<Quotation>(quotationData));
-                        TermController.DefaultTerms(connection, quotationData.Id);
+                        Term.GetDefaultTerms(connection, quotationData.Id);
 
-                        UserData.InquiryID = inquiryData.InquiryID;
-                        UserController.UpdateInquiryID(connection, UserData);
+                        UserData.InquiryId = inquiryData.Id;
+                        connection.UserAccessUpdate(UserData, nameof(UserData.InquiryId));
 
-                        UserData.Id = quotationData.Id;
-                        UserController.UpdateId(connection, UserData);
+                        UserData.QuotationId = quotationData.Id;
+                        connection.UserAccessUpdate(UserData, nameof(UserData.QuotationId));
                     }
                 }
 
@@ -94,7 +94,7 @@ namespace Core.Windows.QuotationsWindows
                 }
                 else
                 {
-                    MessageWindow.Show($"Access", $"This inquiry underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                    MessageWindow.Show($"Access", $"This inquiry underwork by {usedBy.Name}!", MessageWindowButton.OK, MessageWindowImage.Warning);
                 }
             }
         }
