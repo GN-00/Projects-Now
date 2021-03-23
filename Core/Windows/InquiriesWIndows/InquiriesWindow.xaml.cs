@@ -154,7 +154,7 @@ namespace Core.Windows.InquiriesWindows
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
                     usedBy = connection.AccessValidation(nameof(UserData.InquiryId), inquiry.Id);
-                    quotation = connection.QueryFirstOrDefault<Quotation>($"Select * Quotation._Quotations Where InquiryId = {inquiry.Id}");
+                    quotation = connection.QueryFirstOrDefault<Quotation>($"Select * From Quotation._Quotations Where InquiryId = {inquiry.Id}");
 
                     if (usedBy == null)
                     {

@@ -3,10 +3,85 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Core.Windows.InquiriesWindows"
+        xmlns:CN="clr-namespace:Core.Controls"
         mc:Ignorable="d"
-        Title="AssignWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Assign"
+        Style="{StaticResource WindowStyle}"
+        Loaded="Window_Loaded"
+        Closing="Window_Closing"
+        WindowStartupLocation="CenterScreen"
+        Height="280"
+        Width="400">
+    <Window.Resources>
+
+        <Style x:Key="LabelStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="Blue"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+        </Style>
+
+        <Style x:Key="InputComboBoxStyle" BasedOn="{StaticResource ComboBoxStyle}" TargetType="{x:Type ComboBox}">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+    </Window.Resources>
+    <Border x:Name="WindowBorder" Style="{StaticResource WindowBorderStyle}">
+        <Grid Background="#FFF1F1F1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid Background="White">
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="5" Opacity="0.3" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+                </Grid.Effect>
+                <CN:WindowControls/>
+                <TextBlock Text="Assign"
+                       FontSize="32"
+                       FontStyle="Italic"
+                       Foreground="#FF9211E8"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       Margin="20,20"
+                       Panel.ZIndex="1000">
+                </TextBlock>
+                <StackPanel Orientation="Vertical" Margin="10,80,10,10">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Register Code: " Style="{StaticResource LabelStyle}"/>
+                        <TextBlock Text="{Binding RegisterCode}" Style="{StaticResource LabelStyle}"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,15,0,0" Orientation="Horizontal">
+                        <TextBlock Text="Estimator " Width="120" Style="{StaticResource LabelStyle}"/>
+                        <ComboBox x:Name="EstimationList"
+                              Width="200" 
+                              SelectedValuePath="Id"
+                              DisplayMemberPath="EstimatorName"
+                              SelectedValue="{Binding EstimatorId}"
+                              SelectionChanged="EstimationList_SelectionChanged"
+                              Style="{StaticResource InputComboBoxStyle}">
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Margin="0,15,0,0" Orientation="Horizontal">
+                        <TextBlock Text="Salesman " Width="120" Style="{StaticResource LabelStyle}"/>
+                        <ComboBox x:Name="SalesmanList"
+                              Width="200" 
+                              SelectedValuePath="Id"
+                              DisplayMemberPath="Name"
+                              SelectedValue="{Binding SalesmanId}"
+                              Style="{StaticResource InputComboBoxStyle}">
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
+                <Button Style="{StaticResource SaveButton}" Click="Save_Click"/>
+                <Button Style="{StaticResource CancelButton}" Click="Cancel_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

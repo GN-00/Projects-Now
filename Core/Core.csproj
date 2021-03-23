@@ -215,6 +215,9 @@
     <Compile Include="Windows\MessageWindows\MessageWindow.xaml.cs">
       <DependentUpon>MessageWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\QuotationsWindows\QuoteWindow.xaml.cs">
+      <DependentUpon>QuoteWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\UserWIndows\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
@@ -346,6 +349,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\MessageWindows\MessageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QuotationsWindows\QuoteWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
