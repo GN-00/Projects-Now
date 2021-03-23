@@ -18,60 +18,51 @@ using System.Collections.Specialized;
 
 namespace Core.Windows.CustomersWindows
 {
-    public partial class CustomersWindow : Window
+    public partial class ConsultantsWindow : Window
     {
         public User UserData { get; set; }
-        public ObservableCollection<Customer> RecordsData { get; set; }
+        public ObservableCollection<Consultant> RecordsData { get; set; }
 
         Actions action;
-        Customer oldData;
-        Customer recordData;
-
+        Consultant oldData;
+        Consultant recordData;
         CollectionViewSource viewRecordsData;
-        public CustomersWindow()
+        public ConsultantsWindow()
         {
             InitializeComponent();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (RecordsData != null) Contacts.Visibility = Visibility.Collapsed;
-
             using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             {
-                var query = "Select * From Customer._Customers Order By Name";
+                var query = $"Select * From Customer._Consultants Order By Name";
 
                 if (RecordsData == null)
-                    RecordsData = new ObservableCollection<Customer>(connection.Query<Customer>(query));
-
-                query = "Select * From [User].[_Salesmen] Order By Name";
-                SalesmanList.ItemsSource = connection.Query<Salesman>(query);
+                    RecordsData = new ObservableCollection<Consultant>(connection.Query<Consultant>(query));
             }
-
-            CustomerName.ItemsSource = RecordsData;
 
             viewRecordsData = new CollectionViewSource() { Source = RecordsData };
             RecordsList.ItemsSource = viewRecordsData.View;
             viewRecordsData.View.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChanged);
             viewRecordsData.Filter += DataFiltrer;
 
-            recordData = RecordsList.SelectedItem as Customer;
+            recordData = RecordsList.SelectedItem as Consultant;
             DataContext = new { recordData, UserData };
         }
-
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             LoadingControl.Visibility = Save.Visibility = Cancel.Visibility = Visibility.Visible;
             Done.Visibility = Visibility.Collapsed;
-            foreach(object control in Body.Children)
+            foreach (object control in Body.Children)
             {
-                if (control is TextBlock || control is StackPanel) 
+                if (control is TextBlock || control is StackPanel)
                 { }
                 else
                     ((Control)control).IsEnabled = true;
             }
             action = Actions.New;
-            recordData = new Customer();
+            recordData = new Consultant();
             DataContext = new { recordData, UserData };
         }
         private void Edit_Click(object sender, RoutedEventArgs e)
@@ -81,11 +72,11 @@ namespace Core.Windows.CustomersWindows
             {
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
-                    usedBy = connection.AccessValidation(nameof(UserData.CustomerId), recordData.Id);
+                    usedBy = connection.AccessValidation(nameof(UserData.ConsultantId), recordData.Id);
                     if (usedBy == null || usedBy.Id == UserData.Id)
                     {
-                        UserData.CustomerId = recordData.Id;
-                        connection.UserAccessUpdate(UserData, nameof(UserData.CustomerId));
+                        UserData.ConsultantId = recordData.Id;
+                        connection.UserAccessUpdate(UserData, nameof(UserData.ConsultantId));
                     }
                 }
 
@@ -101,12 +92,12 @@ namespace Core.Windows.CustomersWindows
                             ((Control)control).IsEnabled = true;
                     }
                     action = Actions.Edit;
-                    oldData = new Customer();
+                    oldData = new Consultant();
                     oldData.Update(recordData);
                 }
                 else
                 {
-                    MessageWindow.Show($"Access", $"This customer data underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                    MessageWindow.Show($"Access", $"This consultant data underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
                 }
             }
         }
@@ -117,11 +108,11 @@ namespace Core.Windows.CustomersWindows
             {
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
-                    usedBy = connection.AccessValidation(nameof(UserData.CustomerId), recordData.Id);
+                    usedBy = connection.AccessValidation(nameof(UserData.ConsultantId), recordData.Id);
                     if (usedBy == null || usedBy.Id == UserData.Id)
                     {
-                        UserData.CustomerId = recordData.Id;
-                        connection.UserAccessUpdate(UserData, nameof(UserData.CustomerId));
+                        UserData.ConsultantId = recordData.Id;
+                        connection.UserAccessUpdate(UserData, nameof(UserData.ConsultantId));
                     }
                 }
 
@@ -134,17 +125,16 @@ namespace Core.Windows.CustomersWindows
                     {
                         using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                         {
-                            var query = $"Select * From Inquiry._Inquiries Where CustomerId = {recordData.Id}";
-                            Customer CheckCustomer = connection.QueryFirstOrDefault<Customer>(query);
-                            if (CheckCustomer == null)
+                            var query = $"Select * From Inquiry._Inquiries Where ConsultantId = {recordData.Id}";
+                            Consultant CheckConsultant = connection.QueryFirstOrDefault<Consultant>(query);
+                            if (CheckConsultant == null)
                             {
-                                connection.Execute($"Delete From [Customer].[_Customers] Where Id = {recordData.Id} ");
-                                connection.Execute($"Delete From [Customer].[_Contacts] Where CustomerId = {recordData.Id} ");
+                                connection.Execute($"Delete From [Customer].[_Consultants] Where Id = {recordData.Id} ");
 
                                 RecordsData.Remove(recordData);
 
-                                UserData.CustomerId = null;
-                                connection.UserAccessUpdate(UserData, nameof(UserData.CustomerId));
+                                UserData.ConsultantId = null;
+                                connection.UserAccessUpdate(UserData, nameof(UserData.ConsultantId));
                             }
                             else
                             {
@@ -156,8 +146,8 @@ namespace Core.Windows.CustomersWindows
                     {
                         using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                         {
-                            UserData.CustomerId = null;
-                            connection.UserAccessUpdate(UserData, nameof(UserData.CustomerId));
+                            UserData.ConsultantId = null;
+                            connection.UserAccessUpdate(UserData, nameof(UserData.ConsultantId));
                         }
                     }
 
@@ -165,23 +155,22 @@ namespace Core.Windows.CustomersWindows
                 }
                 else
                 {
-                    MessageWindow.Show($"Access", $"This customer data underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                    MessageWindow.Show($"Access", $"This consultant data underwork by {usedBy.UserName}!", MessageWindowButton.OK, MessageWindowImage.Warning);
                 }
             }
         }
-
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            var checkCustomer = RecordsData.Where(r => r.Name == CustomerName.Text);
-            if ((checkCustomer.Count() > 1 && action == Actions.Edit) ||
-                (checkCustomer.Count() >= 1 && action == Actions.New))
+            var checkConsultant = RecordsData.Where(r => r.Name == recordData.Name);
+            if ((checkConsultant.Count() > 1 && action == Actions.Edit) ||
+                (checkConsultant.Count() >= 1 && action == Actions.New))
             {
-                MessageWindow.Show("Name Error", "This customer name is already taken!", MessageWindowButton.OK, MessageWindowImage.Warning);
+                MessageWindow.Show("Name Error", "This contact name is already taken!", MessageWindowButton.OK, MessageWindowImage.Warning);
                 return;
             }
 
             LoadingControl.Visibility = Save.Visibility = Cancel.Visibility = Visibility.Collapsed;
-            Done.Visibility  = Visibility.Visible;
+            Done.Visibility = Visibility.Visible;
 
             foreach (object control in Body.Children)
             {
@@ -196,17 +185,17 @@ namespace Core.Windows.CustomersWindows
                 RecordsData.Add(recordData);
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
-                    recordData.Id = Convert.ToInt32(connection.Insert<Customer>(recordData));
+                    recordData.Id = Convert.ToInt32(connection.Insert<Consultant>(recordData));
                 }
             }
             else if (action == Actions.Edit)
             {
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
-                    connection.Update<Customer>(recordData);
+                    connection.Update<Consultant>(recordData);
 
-                    UserData.CustomerId = null;
-                    connection.UserAccessUpdate(UserData, nameof(UserData.CustomerId));
+                    UserData.ConsultantId = null;
+                    connection.UserAccessUpdate(UserData, nameof(UserData.ConsultantId));
                 }
 
                 viewRecordsData.View.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
@@ -215,7 +204,7 @@ namespace Core.Windows.CustomersWindows
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             LoadingControl.Visibility = Save.Visibility = Cancel.Visibility = Visibility.Collapsed;
-            Done.Visibility  = Visibility.Visible;
+            Done.Visibility = Visibility.Visible;
 
             foreach (object control in Body.Children)
             {
@@ -227,7 +216,7 @@ namespace Core.Windows.CustomersWindows
 
             if (action == Actions.New)
             {
-                recordData = RecordsList.SelectedItem as Customer;
+                recordData = RecordsList.SelectedItem as Consultant;
                 DataContext = new { recordData, UserData };
             }
 
@@ -237,21 +226,20 @@ namespace Core.Windows.CustomersWindows
 
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
-                    UserData.CustomerId = null;
-                    connection.UserAccessUpdate(UserData, nameof(UserData.CustomerId));
+                    UserData.ConsultantId = null;
+                    connection.UserAccessUpdate(UserData, nameof(UserData.ConsultantId));
                 }
             }
         }
-
         private void List_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-            recordData = RecordsList.SelectedItem as Customer;
+            recordData = RecordsList.SelectedItem as Consultant;
 
             var selectedIndex = RecordsList.SelectedIndex;
             if (selectedIndex == -1)
-                NavigationPanel.Text = $"Customers: {viewRecordsData.View.Cast<object>().Count()}";
+                NavigationPanel.Text = $"Consultants: {viewRecordsData.View.Cast<object>().Count()}";
             else
-                NavigationPanel.Text = $"Customer: {selectedIndex + 1} / {viewRecordsData.View.Cast<object>().Count()}";
+                NavigationPanel.Text = $"Consultant: {selectedIndex + 1} / {viewRecordsData.View.Cast<object>().Count()}";
 
             DataContext = new { recordData, UserData };
         }
@@ -259,31 +247,13 @@ namespace Core.Windows.CustomersWindows
         {
             var selectedIndex = RecordsList.SelectedIndex;
             if (selectedIndex == -1)
-                NavigationPanel.Text = $"Customers: {viewRecordsData.View.Cast<object>().Count()}";
+                NavigationPanel.Text = $"Consultants: {viewRecordsData.View.Cast<object>().Count()}";
             else
-                NavigationPanel.Text = $"Customer: {selectedIndex + 1} / {viewRecordsData.View.Cast<object>().Count()}";
+                NavigationPanel.Text = $"Consultant: {selectedIndex + 1} / {viewRecordsData.View.Cast<object>().Count()}";
 
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 viewRecordsData.View.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
-            }
-        }
-
-
-        private void History_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void Contacts_Click(object sender, RoutedEventArgs e)
-        {
-            if(RecordsList.SelectedItem is Customer customer)
-            {
-                ContactsWindow contactsWindow = new ContactsWindow()
-                {
-                    UserData = this.UserData,
-                    CustomerData = customer,
-                };
-                contactsWindow.ShowDialog();
             }
         }
 
@@ -294,9 +264,9 @@ namespace Core.Windows.CustomersWindows
                 try
                 {
                     e.Accepted = true;
-                    if (e.Item is Customer customer)
+                    if (e.Item is Consultant consultant)
                     {
-                        string value = customer.Name.ToUpper();
+                        string value = consultant.Name.ToUpper();
                         if (!value.Contains(FindRecord.Text.ToUpper()))
                         {
                             e.Accepted = false;
@@ -319,21 +289,14 @@ namespace Core.Windows.CustomersWindows
             FindRecord.Text = null;
             viewRecordsData.View.Refresh();
         }
-
-        private void POBox_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            Data.Input.IntOnly(e, 4);
-        }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             {
-                UserData.CustomerId = null;
-                connection.UserAccessUpdate(UserData, nameof(UserData.CustomerId));
+                UserData.ConsultantId = null;
+                connection.UserAccessUpdate(UserData, nameof(UserData.ConsultantId));
             }
         }
-
         private void Done_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

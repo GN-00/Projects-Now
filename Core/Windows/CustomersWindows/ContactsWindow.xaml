@@ -10,7 +10,7 @@
         Loaded="Window_Loaded"
         Closing="Window_Closing"
         WindowStartupLocation="CenterScreen"
-        Height="700"
+        Height="600"
         Width="970">
     <Window.Resources>
 
@@ -177,7 +177,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock  Grid.Row="0" Grid.Column="0" Text="Company " Style="{StaticResource LabelStyle}"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="Company" IsEnabled="False" Text="{Binding CustomerName}" Style="{StaticResource InputStyle}"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="Company" IsEnabled="False" Text="{Binding CustomerData.Name}" Style="{StaticResource InputStyle}"/>
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Name " Style="{StaticResource LabelStyle}"/>
                     <TextBox Grid.Row="1" Grid.Column="1" IsEnabled="False" Text="{Binding recordData.Name}" Style="{StaticResource InputStyle}"/>

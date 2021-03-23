@@ -3,23 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:CN="clr-namespace:Core.Controls"  
         mc:Ignorable="d"
-        SnapsToDevicePixels="True"
-        BorderBrush="DimGray"
-        BorderThickness="1"
         Title="Inquiry"
-        WindowStyle="None"
-        WindowState="Normal"
-        ResizeMode="CanMinimize"
+        Style="{StaticResource WindowStyle}"
         Loaded="Window_Loaded"
         Closing="Window_Closing"
-        FontFamily="Times New Roman"
         WindowStartupLocation="CenterScreen"
         Height="580"
         Width="920">
     <Window.Resources>
 
         <Style x:Key="InputStyle" BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}">
+            <Setter Property="Height" Value="30"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -27,6 +23,8 @@
         </Style>
 
         <Style x:Key="InputStyleDatePicker" BasedOn="{StaticResource DatePickerStyle}" TargetType="{x:Type DatePicker}">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="160"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -35,11 +33,19 @@
         </Style>
 
         <Style x:Key="LabelStyle" TargetType="{x:Type Label}">
+            <Setter Property="Width" Value="170"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="Foreground" Value="Blue"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Right"/>
+        </Style>
+
+        <Style x:Key="ComboStyle" BasedOn="{StaticResource ComboBoxStyle}" TargetType="{x:Type ComboBox}">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="160"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
 
         <ContextMenu x:Key="RowsContextMenu" FontFamily="Times New Roman">
@@ -48,7 +54,7 @@
                     <TextBlock Text="Mark As Attention"/>
                 </MenuItem.Header>
                 <MenuItem.Icon>
-                    <Image Source="/Images/Attention.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <Image Source="/Images/Attention.png"/>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Click="Delete_Contact">
@@ -56,688 +62,374 @@
                     <TextBlock Text="Remove"/>
                 </MenuItem.Header>
                 <MenuItem.Icon>
-                    <Image Source="/Images/Error.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <Image Source="/Images/Error.png"/>
                 </MenuItem.Icon>
             </MenuItem>
         </ContextMenu>
 
     </Window.Resources>
-    <Grid Background="#FFF1F1F1">
+    <Border x:Name="WindowBorder" Style="{StaticResource WindowBorderStyle}">
+        <Grid Background="#FFF1F1F1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="#FFF1F1F1">
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="5" Opacity="0.3" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+                </Grid.Effect>
+            </Grid>
+            <CN:WindowControls/>
+            <CN:WindowIcon/>
+            
+            <TabControl Height="500"
+                        Background="White"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        VerticalAlignment="Top" Margin="0,20,0,0">
 
-        <Grid Height="520" Background="#FFF1F1F1" MouseDown="Grid_MouseDown" VerticalAlignment="Top" Margin="0,0,0.4,0">
-            <Grid.Effect>
-                <DropShadowEffect BlurRadius="5" Opacity="0.3" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
-            </Grid.Effect>
-        </Grid>
+                <TabItem Header="TabItem" Width="80" Visibility="Hidden"/>
 
-        <Image Width="85"
-               Height="95"
-               VerticalAlignment="Top"
-               HorizontalAlignment="Left"
-               Panel.ZIndex="1000"
-               Source="/Images/PN.png"
-               RenderOptions.BitmapScalingMode="HighQuality" Margin="10,0,0,0">
-        </Image>
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
-
-            <Button x:Name="Minimize"
-                    Height="20"
-                    Width="30"
-                    Click="Minimize_Click">
-
-                <Button.Resources>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="#FFF1F1F1"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="0" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0,0,0,0">
-                                        <Image Margin="4" Source="pack://application:,,,/Images/Minimize.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="DarkGray"/>
-                            </Trigger>
-                        </Style.Triggers>
-
-                    </Style>
-
-                </Button.Resources>
-            </Button>
-
-            <Button x:Name="CloseWindow"
-                    Click="CloseWindow_Click"
-                    Height="20"
-                    Width="30">
-
-                <Button.Resources>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="DarkRed"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="0" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0">
-                                        <Image Margin="5" Source="pack://application:,,,/Images/close.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="Red"/>
-                            </Trigger>
-                        </Style.Triggers>
-
-                    </Style>
-
-                </Button.Resources>
-            </Button>
-
-        </StackPanel>
-
-        <TabControl Height="500"
-                    Background="White"
-                    BorderBrush="Transparent"
-                    BorderThickness="0"
-                    VerticalAlignment="Top" Margin="0,20,0,0">
-
-            <TabItem Header="TabItem" Width="100" Visibility="Hidden"/>
-
-            <TabItem Selector.IsSelected="True" ToolTip="General Information">
-                <TabItem.Resources>
-                    <Style TargetType="TabItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="TabItem">
-                                    <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="2.5,2.5,0,0" Margin="0,0">
-                                        <Image Name="Image" Source="/Images/info.png" Width="30" Height="30" Margin="5" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="Border" Property="Background" Value="White" />
-                                            <Setter TargetName="Image" Property="Height" Value="45"/>
-                                            <Setter TargetName="Image" Property="Width" Value="45"/>
-                                        </Trigger>
-                                        <Trigger Property="IsSelected" Value="False">
-                                            <Setter TargetName="Border" Property="Background" Value="Transparent" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TabItem.Resources>
-
-                <Grid>
-
-                    <StackPanel Orientation="Vertical" Margin="20,0,0,0">
-
-                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                            <Label Content="Register Code " Width="170" Style="{StaticResource LabelStyle}"/>
-                            <TextBox Text="{Binding newInquiryData.RegisterCode}" Width="270" Style="{StaticResource InputStyle}" Focusable="False" IsReadOnly="True"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                            <Label Content="Customer Name " Style="{StaticResource LabelStyle}" Width="170"/>
-                            <ComboBox x:Name="CustomerList"
-                                      Width="600"
-                                      IsEnabled="True"
-                                      FontSize="18"
-                                      FontWeight="Light"
-                                      SelectedValuePath="CustomerID"
-                                      DisplayMemberPath="CustomerName"
-                                      SelectedValue="{Binding newInquiryData.CustomerID}"
-                                      Style="{StaticResource ComboBoxStyle}"
-                                      SelectionChanged="CustomerName_SelectionChanged">
-                            </ComboBox>
-                            <Button Height="30" Width="30" Click="AddCustomers_Click" Margin="10,0,0,0">
-                                <Button.Resources>
-                                    <Style TargetType="{x:Type Button}">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="Button">
-                                                    <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0,0,0,0">
-                                                        <Image x:Name="ButtonImage" Margin="5" Source="/Images/Add.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="DarkGray"/>
+                <TabItem Selector.IsSelected="True" ToolTip="General Information">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="2.5,2.5,0,0" Margin="0,0">
+                                            <Image Name="Image" Source="/Images/info.png" Width="30" Height="30" Margin="5"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White" />
+                                                <Setter TargetName="Image" Property="Height" Value="45"/>
+                                                <Setter TargetName="Image" Property="Width" Value="45"/>
                                             </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Resources>
+                                            <Trigger Property="IsSelected" Value="False">
+                                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+                    <Grid Margin="0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="170"/>
+                            <ColumnDefinition Width="170"/>
+                            <ColumnDefinition Width="170"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        
+                        <Label Grid.Row="0" Grid.Column="0" Content="Register Code " Style="{StaticResource LabelStyle}"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding newInquiryData.RegisterCode}" Width="270" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+
+                        <Label Grid.Row="1" Grid.Column="0" Content="Customer Name " Style="{StaticResource LabelStyle}"/>
+                        <ComboBox x:Name="CustomerList"
+                                  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
+                                  Width="570"
+                                  IsEnabled="True"
+                                  SelectedValuePath="Id"
+                                  DisplayMemberPath="Name"
+                                  SelectedValue="{Binding newInquiryData.CustomerId}"
+                                  Style="{StaticResource ComboStyle}"
+                                  SelectionChanged="CustomerName_SelectionChanged">
+                        </ComboBox>
+                        <Button Height="30" 
+                                Width="30" 
+                                Margin="140,0,0,0"
+                                Grid.Row="1" Grid.Column="3"
+                                Click="AddCustomers_Click" 
+                                Style="{StaticResource TabButton}">
+                            <Image Margin="5" Source="/Images/Add.png"/>
+                        </Button>
+
+                        <Label Grid.Row="2" Grid.Column="0" Content="Project " Style="{StaticResource LabelStyle}"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding newInquiryData.ProjectName}" Width="570" Style="{StaticResource InputStyle}"/>
+
+                        <Label Grid.Row="3" Grid.Column="0" Content="Register Date "  Style="{StaticResource LabelStyle}"/>
+                        <DatePicker Grid.Row="3" Grid.Column="1" Text="{Binding newInquiryData.RegisterDate, StringFormat= dd/MM/yyyy}" Style="{StaticResource InputStyleDatePicker}" IsEnabled="False"/>
+                        <Label Grid.Row="3" Grid.Column="2" Content="City " Style="{StaticResource LabelStyle}"/>
+                        <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding customerData.City}" Width="230" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+
+                        <Label Grid.Row="4" Grid.Column="0" Content="Duo Date " Style="{StaticResource LabelStyle}"/>
+                        <DatePicker x:Name="DuoDatePicker"
+                                    Grid.Row="4" Grid.Column="1"
+                                    SelectedDate="{Binding newInquiryData.DuoDate}"
+                                    DisplayDate="{Binding newInquiryData.DuoDate}"
+                                    Style="{StaticResource InputStyleDatePicker}"
+                                    SelectedDateChanged="DuoDate_SelectedDateChanged">
+                        </DatePicker>
+                        <Label Grid.Row="4" Grid.Column="2" Content="Address " Style="{StaticResource LabelStyle}"/>
+                        <TextBox Grid.Row="4" Grid.Column="3" Text="{Binding customerData.Address}" Width="230" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+
+                        <Label Grid.Row="5" Grid.Column="0" Content="Priority " Style="{StaticResource LabelStyle}" />
+                        <ComboBox Grid.Row="5" Grid.Column="1"
+                                  SelectedValuePath="Content"
+                                  SelectedValue="{Binding newInquiryData.Priority}"
+                                  Style="{StaticResource ComboStyle}">
+                            <ComboBoxItem Content="High"/>
+                            <ComboBoxItem Content="Normal"/>
+                        </ComboBox>
+                        <Label Grid.Row="5" Grid.Column="2" Content="P.O.Box " Style="{StaticResource LabelStyle}"/>
+                        <TextBox Grid.Row="5" Grid.Column="3" Text="{Binding customerData.POBox}" Width="230" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+
+                        <Label Grid.Row="6" Grid.Column="0" Content="Sales Eng " Style="{StaticResource LabelStyle}"/>
+                        <ComboBox x:Name="SalesList"
+                                  Grid.Row="6" Grid.Column="1"
+                                  SelectedValuePath="Id"
+                                  DisplayMemberPath="Name"
+                                  SelectedValue="{Binding newInquiryData.SalesmanId}"
+                                  Style="{StaticResource ComboStyle}">
+                        </ComboBox>
+                        <Label Grid.Row="6" Grid.Column="2" Content="Phone " Style="{StaticResource LabelStyle}"/>
+                        <TextBox Grid.Row="6" Grid.Column="3" Text="{Binding customerData.Phone}" Width="230" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+
+                        <Label Grid.Row="7" Grid.Column="0" Content="Estimation Eng " Style="{StaticResource LabelStyle}"/>
+                        <ComboBox x:Name="EstimationList"
+                                  Grid.Row="7" Grid.Column="1"
+                                  SelectedValuePath="Id"
+                                  DisplayMemberPath="EstimatorName"
+                                  SelectedValue="{Binding newInquiryData.EstimatorId}"
+                                  Style="{StaticResource ComboStyle}"
+                                  SelectionChanged="EstimationList_SelectionChanged">
+                        </ComboBox>
+                        <Label Grid.Row="7" Grid.Column="2" Content="Email " Style="{StaticResource LabelStyle}"/>
+                        <TextBox Grid.Row="7" Grid.Column="3" Text="{Binding customerData.Email}" Width="230" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+
+                        <Label Grid.Row="8" Grid.Column="0" Content="Delivery Condition " Style="{StaticResource LabelStyle}" Margin="0,0,0,0"/>
+                        <ComboBox Grid.Row="8" Grid.Column="1"
+                                  SelectedValuePath="Content"
+                                  SelectedValue="{Binding newInquiryData.DeliveryCondition}"
+                                  Style="{StaticResource ComboStyle}">
+                            <ComboBoxItem>Ex-Factory</ComboBoxItem>
+                            <ComboBoxItem>Site</ComboBoxItem>
+                        </ComboBox>
+                        <Label Grid.Row="8" Grid.Column="2" Content="Website " Style="{StaticResource LabelStyle}"/>
+                        <TextBox Grid.Row="8" Grid.Column="3" Text="{Binding customerData.Website}" Width="230" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+                    </Grid>
+                </TabItem>
+
+                <TabItem x:Name="TechnicalInformation" ToolTip="Technical Information" Visibility="Collapsed">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="2.5,2.5,0,0" Margin="0,0">
+                                            <Image Name="Image" Source="pack://application:,,,/Images/Technical.png" Width="30" Height="30" Margin="5"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White" />
+                                                <Setter TargetName="Image" Property="Height" Value="45"/>
+                                                <Setter TargetName="Image" Property="Width" Value="45"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="False">
+                                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+                </TabItem>
+
+                <TabItem ToolTip="Contacts Information">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="2.5,2.5,0,0" Margin="0,0">
+                                            <Image Name="Image" Source="/Images/Contacts.png" Width="27.5" Height="27.5" Margin="5"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White" />
+                                                <Setter TargetName="Image" Property="Height" Value="45"/>
+                                                <Setter TargetName="Image" Property="Width" Value="45"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="False">
+                                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+                    <Grid>
+                        <StackPanel Margin="25,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal">
+                            <Label Width="130" Content="Find Contact " Style="{StaticResource LabelStyle}"/>
+                            <ComboBox x:Name="ContactsList"
+                                      Width="590"
+                                      DisplayMemberPath="Name"
+                                      Style="{StaticResource ComboStyle}">
+                            </ComboBox>
+                            <Button Margin="10,0"
+                                    Height="30"
+                                    Width="30"
+                                    Style="{StaticResource TabButton}"
+                                    Click="AddContactToPrject_Click">
+                                <Image Margin="2.5" Source="/Images/Accept.png"/>
+                            </Button>
+                            <Button Height="30"
+                                    Width="30"
+                                    Style="{StaticResource TabButton}"
+                                    Click="AddContact_Click">
+                                <Image Margin="5" Source="/Images/Add.png"/>
+                            </Button>
+                        </StackPanel>
+                        <Grid Margin="15,80,15,25">
+                            <Grid.Effect>
+                                <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+                            </Grid.Effect>
+                            <Border Background="LightGray" CornerRadius="5">
+                                <Grid>
+                                    <DataGrid x:Name="ProjectContactsList"
+                                              Style="{StaticResource DataGridStyle}"
+                                              SelectedCellsChanged="ProjectContactsList_SelectedCellsChanged"
+                                              PreviewKeyDown="ProjectContactsList_PreviewKeyDown">
+                                        <DataGrid.Resources>
+                                            <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}">
+                                                <Setter Property="ContextMenu" Value="{StaticResource RowsContextMenu}"/>
+                                            </Style>
+                                        </DataGrid.Resources>
+
+                                        <DataGrid.Columns>
+
+                                            <DataGridTemplateColumn Width="70" Header="Attention" IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox Style="{StaticResource CheckBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Attention}" IsEnabled="False">
+                                                            <CheckBox.LayoutTransform>
+                                                                <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
+                                                            </CheckBox.LayoutTransform>
+                                                        </CheckBox>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+
+                                            <DataGridTextColumn Width="210" Header="Contact Name" Binding="{Binding Name}" ElementStyle="{StaticResource LeftColumn}"/>
+
+                                            <DataGridTextColumn Width="200" Header="Position" Binding="{Binding Job}" ElementStyle="{StaticResource LeftColumn}"/>
+
+                                            <DataGridTextColumn Width="130" Header="Mobile" Binding="{Binding Mobile}" ElementStyle="{StaticResource CenterColumn}"/>
+
+                                            <DataGridTextColumn Width="214" Header="Email" Binding="{Binding Email}" ElementStyle="{StaticResource LeftColumn}"/>
+
+                                        </DataGrid.Columns>
+
+                                    </DataGrid>
+                                    <TextBlock x:Name="NavigationPanel"
+                                               FontSize="14"
+                                               FontWeight="Bold"
+                                               FontFamily="Times New Roman"
+                                               Margin="10,0,0,5"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Bottom">
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+
+                <TabItem ToolTip="Consultant Information">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="2.5,2.5,0,0" Margin="0,0">
+                                            <Image Name="Image" Source="/Images/Consultants.png" Width="27.5" Height="27.5" Margin="5"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White" />
+                                                <Setter TargetName="Image" Property="Height" Value="45"/>
+                                                <Setter TargetName="Image" Property="Width" Value="45"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="False">
+                                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+                    <StackPanel Orientation="Vertical">
+
+                        <StackPanel Orientation="Horizontal" Margin="25,50,0,0">
+                            <Label Grid.Row="0" Grid.Column="0" Content="Consultant Name " Style="{StaticResource LabelStyle}"/>
+                            <ComboBox x:Name="ConsultantList"
+                                      Width="500"
+                                      SelectedValue="{Binding newInquiryData.ConsultantId}"
+                                      SelectedValuePath="Id"
+                                      DisplayMemberPath="Name"
+                                      SelectionChanged="Consultant_SelectionChanged"
+                                      Style="{StaticResource ComboStyle}">
+                            </ComboBox>
+                            <Button Height="30"
+                                    Width="30"
+                                    Click="AddConsultant_Click"
+                                    Margin="10,0"
+                                    Style="{StaticResource TabButton}">
+                                <Image Margin="5" Source="/Images/Add.png"/>
                             </Button>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                            <Label Content="Project " Width="170" Style="{StaticResource LabelStyle}"/>
-                            <TextBox Text="{Binding newInquiryData.ProjectName}" Width="600" Style="{StaticResource InputStyle}" />
+                        <StackPanel Orientation="Horizontal" Margin="25,15,0,0">
+                            <Label Grid.Row="0" Grid.Column="0" Content="Company " Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding consultantData.Company}" Width="500" Style="{StaticResource InputStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"  Margin="25,15,0,0">
+                            <Label Grid.Row="0" Grid.Column="0" Content="Job "  Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding consultantData.Job}" Width="240" Style="{StaticResource InputStyle}"/>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                            <Label Content="Register Date "  Width="170" Style="{StaticResource LabelStyle}"/>
-                            <DatePicker Text="{Binding newInquiryData.RegisterDate, StringFormat= dd/MM/yyyy}" Width="155" Style="{StaticResource InputStyleDatePicker}" Focusable="False" />
-                            <Label Content="City" Style="{StaticResource LabelStyle}" Margin="80,0,0,0" Width="135"/>
-                            <TextBox Text="{Binding customerData.City}" Width="230" Style="{StaticResource InputStyle}" Focusable="False" IsReadOnly="True"/>
+                        <StackPanel Orientation="Horizontal"  Margin="25,15,0,0">
+                            <Label Grid.Row="0" Grid.Column="0" Content="Address "  Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding consultantData.Address}" Width="240" Style="{StaticResource InputStyle}"/>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                            <Label Content="Duo Date " Width="170" Style="{StaticResource LabelStyle}"/>
-                            <DatePicker x:Name="DuoDatePicker"
-                                        SelectedDate="{Binding newInquiryData.DuoDate}"
-                                        DisplayDate="{Binding newInquiryData.DuoDate}"
-                                        Width="155" 
-                                        Style="{StaticResource InputStyleDatePicker}"
-                                        SelectedDateChanged="DuoDate_SelectedDateChanged">
-                            </DatePicker>
-                            <Label Content="Address" Style="{StaticResource LabelStyle}" Margin="80,0,0,0" Width="135"/>
-                            <TextBox Text="{Binding customerData.Address}" Width="230" Style="{StaticResource InputStyle}" Focusable="False" IsReadOnly="True"/>
+                        <StackPanel Orientation="Horizontal"  Margin="25,15,0,0">
+                            <Label Grid.Row="0" Grid.Column="0" Content="Mobile "  Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding consultantData.Mobile}" Width="240" Style="{StaticResource InputStyle}"/>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                            <Label Content="Priority " Style="{StaticResource LabelStyle}"  Width="170"/>
-                            <ComboBox Width="155"
-                                      FontSize="18"
-                                      FontWeight="Light"
-                                      SelectedValuePath="Content"
-                                      SelectedValue="{Binding newInquiryData.Priority}"
-                                      Style="{StaticResource ComboBoxStyle}">
-                                <ComboBoxItem Content="High"/>
-                                <ComboBoxItem Content="Normal"/>
-                            </ComboBox>
-                            <Label Content="P.O.Box" Style="{StaticResource LabelStyle}" Margin="80,0,0,0" Width="135"/>
-                            <TextBox Text="{Binding customerData.POBox}" Width="230" Style="{StaticResource InputStyle}" Focusable="False" IsReadOnly="True"/>
+                        <StackPanel Orientation="Horizontal"  Margin="25,15,0,0">
+                            <Label Grid.Row="0" Grid.Column="0" Content="Email "  Style="{StaticResource LabelStyle}" />
+                            <TextBox Text="{Binding consultantData.Email}" Width="240" Style="{StaticResource InputStyle}"/>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                            <Label Content="Sales Eng " Style="{StaticResource LabelStyle}" Width="170"/>
-                            <ComboBox x:Name="SalesList"
-                                      Width="155"
-                                      FontSize="18"
-                                      FontWeight="Light"
-                                      SelectedValuePath="SalesmanID"
-                                      DisplayMemberPath="SalesmanName"
-                                      SelectedValue="{Binding newInquiryData.SalesmanID}"
-                                      Style="{StaticResource ComboBoxStyle}">
-                            </ComboBox>
-                            <Label Content="Phone" Style="{StaticResource LabelStyle}" Margin="80,0,0,0" Width="135"/>
-                            <TextBox Text="{Binding customerData.Phone}" Width="230" Style="{StaticResource InputStyle}" Focusable="False" IsReadOnly="True"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                            <Label Content="Estimation Eng " Style="{StaticResource LabelStyle}" Width="170"/>
-                            <ComboBox x:Name="EstimationList"
-                                      Width="155"
-                                      FontSize="18"
-                                      FontWeight="Light"
-                                      SelectedValuePath="EstimationID"
-                                      DisplayMemberPath="EstimationName"
-                                      SelectedValue="{Binding newInquiryData.EstimationID}"
-                                      Style="{StaticResource ComboBoxStyle}"
-                                      SelectionChanged="EstimationList_SelectionChanged">
-                            </ComboBox>
-                            <Label Content="Email" Style="{StaticResource LabelStyle}" Margin="80,0,0,0" Width="135"/>
-                            <TextBox Text="{Binding customerData.Email}" Width="230" Style="{StaticResource InputStyle}" Focusable="False" IsReadOnly="True"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                            <Label Content="Delivery Condition " Style="{StaticResource LabelStyle}" Margin="0,0,0,0" Width="170"/>
-                            <ComboBox Width="155"
-                                      FontSize="18"
-                                      FontWeight="Light"
-                                      SelectedValuePath="Content"
-                                      SelectedValue="{Binding newInquiryData.DeliveryCondition}"
-                                      Style="{StaticResource ComboBoxStyle}">
-                                <ComboBoxItem>Ex-Factory</ComboBoxItem>
-                                <ComboBoxItem>Site</ComboBoxItem>
-                            </ComboBox>
-                            <Label Content="Website" Style="{StaticResource LabelStyle}" Margin="80,0,0,0" Width="135"/>
-                            <TextBox Text="{Binding customerData.Website}" Width="230" Style="{StaticResource InputStyle}" Focusable="False" IsReadOnly="True"/>
+                        <StackPanel Orientation="Horizontal"  Margin="25,15,0,0">
+                            <Label Grid.Row="0" Grid.Column="0" Content="Website "  Style="{StaticResource LabelStyle}" />
+                            <TextBox Text="{Binding consultantData.Website}" Width="240" Style="{StaticResource InputStyle}"/>
                         </StackPanel>
                     </StackPanel>
+                </TabItem>
+            </TabControl>
 
-                </Grid>
-
-            </TabItem>
-
-            <TabItem x:Name="TechnicalInformation" ToolTip="Technical Information" Visibility="Collapsed">
-                <TabItem.Resources>
-                    <Style TargetType="TabItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="TabItem">
-                                    <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="2.5,2.5,0,0" Margin="0,0">
-                                        <Image Name="Image" Source="pack://application:,,,/Images/Technical.png" Width="30" Height="30" Margin="5" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="Border" Property="Background" Value="White" />
-                                            <Setter TargetName="Image" Property="Height" Value="45"/>
-                                            <Setter TargetName="Image" Property="Width" Value="45"/>
-                                        </Trigger>
-                                        <Trigger Property="IsSelected" Value="False">
-                                            <Setter TargetName="Border" Property="Background" Value="Transparent" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TabItem.Resources>
-            </TabItem>
-
-            <TabItem ToolTip="Contacts Information">
-                <TabItem.Resources>
-                    <Style TargetType="TabItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="TabItem">
-                                    <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="2.5,2.5,0,0" Margin="0,0">
-                                        <Image Name="Image" Source="/Images/Contacts.png" Width="27.5" Height="27.5" Margin="5" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="Border" Property="Background" Value="White" />
-                                            <Setter TargetName="Image" Property="Height" Value="45"/>
-                                            <Setter TargetName="Image" Property="Width" Value="45"/>
-                                        </Trigger>
-                                        <Trigger Property="IsSelected" Value="False">
-                                            <Setter TargetName="Border" Property="Background" Value="Transparent" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TabItem.Resources>
-
-                <Grid>
-
-                    <StackPanel Margin="25,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal">
-                        <Label Content="Find Contact " Style="{StaticResource LabelStyle}"/>
-                        <ComboBox x:Name="ContactList"
-                                  Width="590"
-                                  FontSize="18"
-                                  FontWeight="Light"
-                                  DisplayMemberPath="ContactName"
-                                  Style="{StaticResource ComboBoxStyle}">
-                        </ComboBox>
-                        <Button Margin="10,0" Height="30" Width="30" Click="AddContactToPrject_Click">
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Button}">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0,0,0,0">
-                                                    <Image x:Name="ButtonImage" Margin="2.5" Source="/Images/Accept.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="DarkGray"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-                        <Button Height="30" Width="30" Click="AddContact_Click">
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Button}">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0,0,0,0">
-                                                    <Image x:Name="ButtonImage" Margin="5" Source="/Images/Add.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="DarkGray"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-                    </StackPanel>
-
-                    <Grid Margin="15,80,15,15">
-                        <Grid.Effect>
-                            <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
-                        </Grid.Effect>
-                        <Border Background="LightGray" CornerRadius="5">
-                            <Grid>
-                                <DataGrid x:Name="ProjectContactsList"
-                                          FontSize="14" 
-                                          FontWeight="Bold" 
-                                          FontFamily="Times New Roman"
-                                          BorderThickness="0"
-                                          RowHeaderWidth="0"
-                                          IsReadOnly="True"
-                                          Margin="10,10,10,30"
-                                          SelectionMode="Single"
-                                          SelectionUnit="FullRow"           
-                                          CanUserAddRows="False"
-                                          CanUserResizeRows="False"
-                                          CanUserDeleteRows="False"
-                                          CanUserSortColumns="False"
-                                          CanUserResizeColumns="False"
-                                          CanUserReorderColumns="False"
-                                          HorizontalGridLinesBrush="LightGray"
-                                          VerticalGridLinesBrush="Transparent"
-                                          VerticalScrollBarVisibility="Visible"
-                                          SelectedCellsChanged="ProjectContactsList_SelectedCellsChanged"
-                                          PreviewKeyDown="ProjectContactsList_PreviewKeyDown"
-                                          HorizontalScrollBarVisibility="Disabled">
-
-                                    <DataGrid.Resources>
-
-                                        <Style TargetType="{x:Type DataGridColumnHeader}">
-                                            <Setter Property="Height" Value="30" />
-                                            <Setter Property="Foreground" Value="Blue"/>
-                                            <Setter Property="FontStyle" Value="Italic"/>
-                                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        </Style>
-
-                                        <Style TargetType="{x:Type DataGridCell}">
-                                            <Setter Property="Height" Value="30"/>
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                                        <Grid Background="{TemplateBinding Background}">
-                                                            <ContentPresenter VerticalAlignment="Center" />
-                                                        </Grid>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Style.Triggers>
-                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Foreground" Value="Black" />
-                                                    <Setter Property="Background" Value="LightGray" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-
-                                        <Style TargetType="{x:Type DataGridRow}">
-                                            <Setter Property="ContextMenu" Value="{StaticResource RowsContextMenu}"/>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="Gray"/>
-                                                </Trigger>
-
-                                                <Trigger Property="IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="LightGray"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-
-                                    </DataGrid.Resources>
-
-                                    <DataGrid.Columns>
-
-                                        <DataGridTemplateColumn Width="80" IsReadOnly="True">
-                                            <DataGridTemplateColumn.Header>
-                                                Attention
-                                            </DataGridTemplateColumn.Header>
-                                            <!--<DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    --><!--<CheckBox Style="{StaticResource CheckBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Attention}" IsEnabled="False">
-                                                        <CheckBox.LayoutTransform>
-                                                            <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
-                                                        </CheckBox.LayoutTransform>
-                                                    </CheckBox>--><!--
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>-->
-                                        </DataGridTemplateColumn>
-
-                                        <DataGridTextColumn Width="220" Header="Contact Name" Binding="{Binding ContactName}">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Setter Property="HorizontalAlignment" Value="Left"/>
-                                                    <Setter Property="Margin" Value="5,0"/>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
-
-                                        <DataGridTextColumn Width="180" Header="Position" Binding="{Binding Job}">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
-
-                                        <DataGridTextColumn Width="180" Header="Mobile" Binding="{Binding Mobile}">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
-
-                                        <DataGridTextColumn Width="204" Header="Email" Binding="{Binding Email}">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
-
-                                    </DataGrid.Columns>
-
-                                </DataGrid>
-                                <TextBlock x:Name="NavigationPanel"
-                                           FontSize="14"
-                                           FontWeight="Bold"
-                                           FontFamily="Times New Roman"
-                                           Margin="10,0,0,5"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom">
-                                </TextBlock>
-                            </Grid>
-                        </Border>
-                    </Grid>
-
-                </Grid>
-
-            </TabItem>
-
-            <TabItem ToolTip="Consultant Information">
-                <TabItem.Resources>
-                    <Style TargetType="TabItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="TabItem">
-                                    <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="2.5,2.5,0,0" Margin="0,0">
-                                        <Image Name="Image" Source="/Images/Consultants.png" Width="27.5" Height="27.5" Margin="5" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="Border" Property="Background" Value="White" />
-                                            <Setter TargetName="Image" Property="Height" Value="45"/>
-                                            <Setter TargetName="Image" Property="Width" Value="45"/>
-                                        </Trigger>
-                                        <Trigger Property="IsSelected" Value="False">
-                                            <Setter TargetName="Border" Property="Background" Value="Transparent" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TabItem.Resources>
-                <StackPanel Orientation="Vertical">
-
-                    <StackPanel Orientation="Horizontal" Margin="25,50,0,0">
-                        <Label Content="Consultant Name " Width="170" Style="{StaticResource LabelStyle}"/>
-                        <ComboBox x:Name="ConsultantList"
-                                  Width="500"
-                                  FontSize="18"
-                                  FontWeight="Light"
-                                  SelectedValue="{Binding newInquiryData.ConsultantID}"
-                                  SelectedValuePath="ConsultantID"
-                                  DisplayMemberPath="ConsultantName"
-                                  SelectionChanged="Consultant_SelectionChanged"
-                                  Style="{StaticResource ComboBoxStyle}">
-                        </ComboBox>
-                        <Button Height="30" Width="30" Click="AddConsultant_Click" Margin="10,0">
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Button}">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0,0,0,0">
-                                                    <Image x:Name="ButtonImage" Margin="5" Source="/Images/Add.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="DarkGray"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Margin="25,15,0,0">
-                        <Label Content="Company " Width="170" Style="{StaticResource LabelStyle}"/>
-                        <TextBox Text="{Binding consultantData.Company}" Width="500" Style="{StaticResource InputStyle}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal"  Margin="25,15,0,0">
-                        <Label Content="Job "  Width="170" Style="{StaticResource LabelStyle}"/>
-                        <TextBox Text="{Binding consultantData.Job}" Width="240" Style="{StaticResource InputStyle}"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal"  Margin="25,15,0,0">
-                        <Label Content="Address "  Width="170" Style="{StaticResource LabelStyle}"/>
-                        <TextBox Text="{Binding consultantData.Address}" Width="240" Style="{StaticResource InputStyle}"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal"  Margin="25,15,0,0">
-                        <Label Content="Mobile "  Width="170" Style="{StaticResource LabelStyle}"/>
-                        <TextBox Text="{Binding consultantData.Mobile}" Width="240" Style="{StaticResource InputStyle}"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal"  Margin="25,15,0,0">
-                        <Label Content="Email "  Width="170" Style="{StaticResource LabelStyle}" />
-                        <TextBox Text="{Binding consultantData.Email}" Width="240" Style="{StaticResource InputStyle}"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal"  Margin="25,15,0,0">
-                        <Label Content="Website "  Width="170" Style="{StaticResource LabelStyle}" />
-                        <TextBox Text="{Binding consultantData.Website}" Width="240" Style="{StaticResource InputStyle}"/>
-                    </StackPanel>
-
-                </StackPanel>
-
-            </TabItem>
-
-        </TabControl>
-
-        <Button x:Name="Save"
-                VerticalAlignment="Bottom"
-                HorizontalAlignment="Right"
-                Margin="0,0,140,10"
-                Click="Save_Click" Height="35" Width="100">
-
-            <Button.Resources>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Background" Value="Gray"/>
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="Content" Value="Save"/>
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="FontFamily" Value="Times New Roman"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image x:Name="ButtonImage" Margin="10,5,5,5" Source="/Images/Save.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-                                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0">
-
-                                        </ContentPresenter>
-                                    </StackPanel>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="DarkGray"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
-                    </Style.Triggers>
-
-                </Style>
-
-            </Button.Resources>
-        </Button>
-
-        <Button x:Name="Cancel"
-                VerticalAlignment="Bottom"
-                HorizontalAlignment="Right"
-                Margin="0,0,20,10"
-                Click="Cancel_Click" Height="35" Width="100">
-
-            <Button.Resources>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Background" Value="DarkRed"/>
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="Content" Value="Cancel"/>
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="FontFamily" Value="Times New Roman"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="Gray" Margin="0,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image x:Name="ButtonImage" Margin="5" Source="/Images/Error.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
-
-                                        </ContentPresenter>
-                                    </StackPanel>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="Red"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
-                    </Style.Triggers>
-
-                </Style>
-
-            </Button.Resources>
-        </Button>
-
-        <Grid x:Name="LoadingControl" Background="Black" Opacity="0.75" Visibility="Collapsed" Panel.ZIndex="10000"/>
-
-    </Grid>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
+                <Button Style="{StaticResource SaveButton}" Click="Save_Click"/>
+                <Button Style="{StaticResource CancelButton}" Click="Cancel_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

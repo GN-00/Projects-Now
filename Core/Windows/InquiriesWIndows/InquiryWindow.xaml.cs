@@ -1,21 +1,21 @@
 ﻿using System;
 using Dapper;
+using Core.Data;
+using Core.Enums;
 using System.Linq;
 using System.Windows;
+using Core.Data.UserData;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Data.SqlClient;
+using Core.Data.CustomersData;
 using System.Windows.Controls;
-using System.Collections.Generic;
+using Core.Data.InquiriesData;
+using Dapper.Contrib.Extensions;
+using Core.Windows.MessageWindows;
+using Core.Windows.CustomersWindows;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using Core.Enums;
-using Core.Data.InquiriesData;
-using Core.Data.UserData;
-using Core.Data.QuotationsData;
-using Core.Data;
-using Dapper.Contrib.Extensions;
-using Core.Data.CustomersData;
 
 namespace Core.Windows.InquiriesWindows
 {
@@ -24,17 +24,19 @@ namespace Core.Windows.InquiriesWindows
         public User UserData { get; set; }
         public Actions WindowMode { get; set; }
         public Inquiry InquiryData { get; set; }
-        public Quotation QuotationData { get; set; }
         public ObservableCollection<Inquiry> InquiriesDataToUpdate { get; set; }
 
         bool isSaving = false;
         Customer customerData;
         Consultant consultantData;
         Inquiry newInquiryData = new Inquiry();
-        List<int> contactsIDs = new List<int>();
+
         ObservableCollection<Customer> customers;
-        CollectionViewSource viewProjectContacts;
+        ObservableCollection<Contact> contacts;
         ObservableCollection<Contact> projectContacts;
+        ObservableCollection<Consultant> consultants;
+
+        CollectionViewSource viewProjectContacts;
 
         public InquiryWindow()
         {
@@ -43,13 +45,15 @@ namespace Core.Windows.InquiriesWindows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            string query;
             newInquiryData.Update(InquiryData);
 
             using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             {
                 if (WindowMode == Actions.New)
                 {
-                    newInquiryData.RegisterNumber = connection.QueryFirstOrDefault<Inquiry>($"Select MAX(RegisterNumber) as RegisterNumber From [Inquiry].[_Inquiries] Where RegisterYear = {DateTime.Now.Year}").RegisterNumber + 1;
+                    query = $"Select MAX(RegisterNumber) as RegisterNumber From [Inquiry].[_Inquiries] Where RegisterYear = {DateTime.Now.Year}";
+                    newInquiryData.RegisterNumber = connection.QueryFirstOrDefault<Inquiry>(query).RegisterNumber + 1;
                     newInquiryData.RegisterMonth = DateTime.Now.Month;
                     newInquiryData.RegisterYear = DateTime.Now.Year;
                     newInquiryData.RegisterCode =
@@ -58,206 +62,182 @@ namespace Core.Windows.InquiriesWindows
                     newInquiryData.Id = Convert.ToInt32(connection.Insert<Inquiry>(newInquiryData));
                 }
 
-                //projectContacts = ContactController.GetProjectContacts(connection, newInquiryData.InquiryID);
-                //viewProjectContacts = new CollectionViewSource { Source = projectContacts };
-                //ProjectContactsList.ItemsSource = viewProjectContacts.View;
+                query = $"Select * From Inquiry._ProjectsContactsView Where InquiryId = {newInquiryData.Id} Order By Name";
+                projectContacts = new ObservableCollection<Contact>(connection.Query<Contact>(query));
+                viewProjectContacts = new CollectionViewSource { Source = projectContacts };
+                ProjectContactsList.ItemsSource = viewProjectContacts.View;
 
-                //foreach (Contact contact in ProjectContactsList.ItemsSource)
-                //{
-                //    contactsIDs.Add(contact.ContactID);
-                //}
+                query = "Select * From Customer._Customers Order By Name";
+                customers = new ObservableCollection<Customer>(connection.Query<Customer>(query));
+                CustomerList.ItemsSource = customers;
 
-                //customers = CustomerController.GetCustomers(connection);
-                //CustomerList.ItemsSource = customers;
+                query = "Select * From [Customer].[_Consultants] Order By Name";
+                consultants = new ObservableCollection<Consultant>(connection.Query<Consultant>(query));
+                ConsultantList.ItemsSource = consultants;
 
-                //SalesList.ItemsSource = SalesmanController.GetSalesmen(connection);
+                query = "Select * From [User].[_Salesmen] Order By Name";
+                SalesList.ItemsSource = connection.Query<Salesman>(query);
 
-                //EstimationList.ItemsSource = EstimationController.GetEstimation(connection);
-
-                //ConsultantList.ItemsSource = ConsultantController.GetConsultants(connection);
+                query = "Select * From [User].[_Estimators] Order By EstimatorName";
+                EstimationList.ItemsSource = connection.Query<Estimator>(query);
             }
 
-            //DataContext = new { newInquiryData, customerData, consultantData };
+            DataContext = new { newInquiryData, customerData, consultantData };
 
-            //viewProjectContacts.View.CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+            viewProjectContacts.View.CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
 
         }
-        private void Minimize_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
-        }
-        private void CloseWindow_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
         private void CustomerName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //customerData = (((ComboBox)sender).SelectedItem as Customer);
+            if(CustomerList.SelectedItem is Customer customer)
+            {
+                customerData = customer;
+                using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+                {
+                    contacts = GetContacts(connection, newInquiryData.Id);
+                    ContactsList.ItemsSource = contacts;
 
-            //if (customerData != null)
-            //{
-            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //    {
-            //        ContactList.ItemsSource = ContactController.GetCustomerRemainingContacts(connection, newInquiryData.CustomerID, contactsIDs.ToArray());
-
-            //        if (ProjectContactsList.Items.Count != 0)
-            //        {
-            //            var contactsCustomerID = (projectContacts.First()).CustomerID;
-            //            if (contactsCustomerID != customerData.CustomerID)
-            //            {
-            //                connection.Execute($"Delete From [Inquiry].[ProjectsContacts] Where InquiryID = {newInquiryData.InquiryID}");
-            //                projectContacts.Clear();
-            //                contactsIDs.Clear();
-            //            }
-            //        }
-            //    }
-
-            //    newInquiryData.CustomerName = customerData.CustomerName;
-
-            //}
-
-            //DataContext = new { newInquiryData, customerData, consultantData };
+                    if (projectContacts.Count != 0)
+                    {
+                        var contactsCustomerId = (projectContacts.First()).CustomerId;
+                        if (contactsCustomerId != customerData.Id)
+                        {
+                            connection.Execute($"Delete From [Inquiry].[_ProjectsContacts] Where InquiryId = {newInquiryData.Id}");
+                            projectContacts.Clear();
+                        }
+                    }
+                }
+                newInquiryData.CustomerName = customerData.Name;
+                DataContext = new { newInquiryData, customerData, consultantData };
+            }
         }
         private void EstimationList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (EstimationList.SelectedItem is Estimation estimationData)
-            //{
-            //    newInquiryData.EstimationName = estimationData.EstimationName;
-            //}
+            if (EstimationList.SelectedItem is Estimator estimatorData)
+            {
+                newInquiryData.EstimatorCode = estimatorData.EstimatorCode;
+            }
         }
         private void Consultant_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //consultantData = (((ComboBox)sender).SelectedItem as Consultant);
-            //DataContext = new { newInquiryData, customerData, consultantData };
+            if(ConsultantList.SelectedItem is Consultant consultant)
+            {
+                consultantData = consultant;
+                DataContext = new { newInquiryData, customerData, consultantData };
+            }
         }
 
         private void AddCustomers_Click(object sender, RoutedEventArgs e)
         {
-            //CustomersWindow customersWindow = new CustomersWindow()
-            //{
-            //    UserData = this.UserData,
-            //    RecordsData = customers,
-            //};
-            //customersWindow.ShowDialog();
+            CustomersWindow customersWindow = new CustomersWindow()
+            {
+                UserData = this.UserData,
+                RecordsData = customers,
+            };
+            customersWindow.ShowDialog();
+        }
+        private ObservableCollection<Contact> GetContacts(SqlConnection connection, int inquiryId)
+        {
+            string query = $"Select * From [Customer].[_Contacts] Where CustomerId = {customerData.Id} And Id Not In " +
+                           $"(Select ContactId From [Inquiry].[_ProjectsContacts] Where InquiryId = {inquiryId})";
+            
+            var records = new ObservableCollection<Contact>(connection.Query<Contact>(query));
+            return records;
         }
         private void AddContact_Click(object sender, RoutedEventArgs e)
         {
-            //if (customerData != null)
-            //{
-            //    ContactsWindow customersWindow = new ContactsWindow()
-            //    {
-            //        UserData = this.UserData,
-            //        CustomerID = customerData.CustomerID,
-            //        CustomerName = customerData.CustomerName,
-            //        InquiryID = newInquiryData.InquiryID,
-            //        ComboBoxToUpdate = ContactList,
-            //        DataGridToUpadate = ProjectContactsList
-            //    };
-            //    customersWindow.ShowDialog();
-            //}
+            if (customerData != null)
+            {
+                ContactsWindow contactsWindow = new ContactsWindow()
+                {
+                    UserData = this.UserData,
+                    CustomerData = customerData,
+                };
+                contactsWindow.ShowDialog();
+
+                using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+                {
+                    contacts = GetContacts(connection, newInquiryData.Id);
+                    ContactsList.ItemsSource = contacts;
+                }
+            }
         }
         private void AddConsultant_Click(object sender, RoutedEventArgs e)
         {
-            //ConsultantsWindow consultantsWindow = new ConsultantsWindow()
-            //{
-            //    UserData = this.UserData,
-            //    RecordsData = ConsultantList.ItemsSource as ObservableCollection<Consultant>,
-            //};
-            //consultantsWindow.ShowDialog();
+            ConsultantsWindow consultantsWindow = new ConsultantsWindow()
+            {
+                UserData = this.UserData,
+                RecordsData = consultants,
+            };
+            consultantsWindow.ShowDialog();
         }
 
         private void AddContactToPrject_Click(object sender, RoutedEventArgs e)
         {
-            //var contact = ContactList.SelectedItem as Contact;
-            //if (contact != null)
-            //{
-            //    if (projectContacts.Count == 0)
-            //        contact.Attention = true;
+            if(ContactsList.SelectedItem is Contact contact)
+            {
+                if (projectContacts.Count == 0)
+                    contact.Attention = true;
 
-            //    projectContacts.Add(contact);
-            //    ProjectContactsList.ItemsSource = viewProjectContacts.View;
-            //    contactsIDs.Add(contact.ContactID);
-            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //    {
-            //        var query = $"Insert Into [Inquiry].[ProjectsContacts] " +
-            //                    $"(InquiryID, ContactID, Attention) " +
-            //                    $"Values " +
-            //                    $"({newInquiryData.InquiryID}, {contact.ContactID}, '{contact.Attention}')";
-            //        connection.Execute(query);
-            //    }
-            //    ContactList.SelectedItem = null;
-            //    var comboxlist = ContactList.ItemsSource as ObservableCollection<Contact>;
-            //    comboxlist.Remove(contact);
-            //}
+                projectContacts.Add(contact);
+                ProjectContactsList.ItemsSource = viewProjectContacts.View;
+                using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+                {
+                    var query = $"Insert Into [Inquiry].[_ProjectsContacts] " +
+                                $"(InquiryId, ContactId, Attention) " +
+                                $"Values " +
+                                $"({newInquiryData.Id}, {contact.Id}, '{contact.Attention}')";
+                    connection.Execute(query);
+                }
+                ContactsList.SelectedItem = null;
+                contacts.Remove(contact);
+            }
         }
         private void DuoDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            //var picker = sender as DatePicker;
-            //DateTime? date = picker.SelectedDate;
+            var picker = sender as DatePicker;
+            DateTime? date = picker.SelectedDate;
 
-            //if (date == null)
-            //{
-            //    picker.SelectedDate = DateTime.Now;
-            //}
-            //else
-            //{
-            //    picker.SelectedDate = date.Value;
-            //}
+            if (date == null)
+            {
+                picker.SelectedDate = DateTime.Now;
+            }
+            else
+            {
+                picker.SelectedDate = date.Value;
+            }
         }
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            //bool isNull = false;
-            //var message = "Please Enter:";
-            //if (newInquiryData.CustomerID == 0) { message += $"\n  Customer Name."; isNull = true; }
-            //if (newInquiryData.ProjectName == null || newInquiryData.ProjectName == "") { message += $"\n  Project Name."; isNull = true; }
+            bool isReady = false;
+            var message = "Please Enter:";
+            if (newInquiryData.CustomerId == 0) { message += $"\n  Customer Name."; isReady = true; }
+            if (newInquiryData.ProjectName == null || newInquiryData.ProjectName == "") { message += $"\n  Project Name."; isReady = true; }
 
-            //if (!isNull)
-            //{
-            //    if (WindowMode == Actions.New)
-            //    {
-            //        using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //        {
-            //            var query = DatabaseAI.UpdateRecord<Inquiry>();
-            //            connection.Execute(query, newInquiryData);
+            if (!isReady)
+            {
+                using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+                {
+                    connection.Update<Inquiry>(newInquiryData);
+                }
 
-            //            UserData.InquiryID = null;
-            //            UserController.UpdateInquiryID(connection, UserData);
-            //        }
+                if (WindowMode == Actions.New)
+                {
+                    if (InquiriesDataToUpdate != null)
+                        InquiriesDataToUpdate.Insert(0, newInquiryData);
+                }
+                else if (WindowMode == Actions.Edit)
+                {
+                    InquiryData.Update(newInquiryData);
+                }
 
-            //        if (InquiriesDataToUpdate != null)
-            //        {
-            //            InquiriesDataToUpdate.Insert(0, newInquiryData);
-            //        }
-            //    }
-            //    else if (WindowMode == Actions.Edit)
-            //    {
-            //        using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //        {
-            //            var query = DatabaseAI.UpdateRecord<Inquiry>();
-            //            connection.Execute(query, newInquiryData);
-
-            //            UserData.InquiryID = null;
-            //            UserController.UpdateInquiryID(connection, UserData);
-            //        }
-
-            //        InquiryData.Update(newInquiryData);
-
-            //        if (QuotationData != null)
-            //            QuotationData.Update(newInquiryData);
-            //    }
-
-            //    isSaving = true;
-            //    this.Close();
-            //}
-            //else
-            //{
-            //    CMessageBox.Show("Error", message, CMessageBoxButton.OK, CMessageBoxImage.Information);
-            //}
+                isSaving = true;
+                this.Close();
+            }
+            else
+            {
+                MessageWindow.Show("Error", message, MessageWindowButton.OK, MessageWindowImage.Information);
+            }
         }
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
@@ -266,112 +246,84 @@ namespace Core.Windows.InquiriesWindows
 
         private void ProjectContactsList_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            //if (e.Key == Key.Delete)
-            //{
-            //    if (ProjectContactsList.SelectedItem != null)
-            //    {
-            //        using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //        {
-            //            connection.Execute($"Delete From [ProjectsContacts] Where " +
-            //                                $"InquiryID = {newInquiryData.InquiryID} And " +
-            //                                $"ContactID = {(ProjectContactsList.SelectedItem as Contact).ContactID}");
-
-            //            contactsIDs.Remove((ProjectContactsList.SelectedItem as Contact).ContactID);
-            //            ContactList.SelectedItem = null;
-            //            ContactList.ItemsSource = ContactController.GetCustomerRemainingContacts(connection, newInquiryData.CustomerID, contactsIDs.ToArray());
-            //        }
-            //        projectContacts.Remove(ProjectContactsList.SelectedItem as Contact);
-            //    }
-            //}
+            if (e.Key == Key.Delete)
+            {
+                Delete_Contact(sender, e);
+            }
         }
         private void Delete_Contact(object sender, RoutedEventArgs e)
         {
-            //if (ProjectContactsList.SelectedItem is Contact contactData)
-            //{
+            if (ProjectContactsList.SelectedItem is Contact contact)
+            {
+                using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+                {
+                    connection.Execute($"Delete From [Inquiry].[_ProjectsContacts] Where " +
+                                        $"InquiryId = {newInquiryData.Id} And " +
+                                        $"ContactId = {contact.Id}");
 
-            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //    {
-            //        connection.Execute($"Delete From [Inquiry].[ProjectsContacts] Where " +
-            //                            $"InquiryID = {newInquiryData.InquiryID} And " +
-            //                            $"ContactID = {contactData.ContactID}");
-
-            //        if (contactData.Attention == true && projectContacts.Count > 1)
-            //        {
-            //            var newAttention = projectContacts.Where(contact => contact.ContactID != contactData.ContactID).First();
-            //            newAttention.Attention = true;
-
-            //            var query = $"Update [Inquiry].[ProjectsContacts] Set " +
-            //                        $"Attention = @Attention " +
-            //                        $"Where ContactID = @ContactID And InquiryID = {newInquiryData.InquiryID} ";
-            //            connection.Execute(query, newAttention);
-            //        }
-
-
-            //        contactsIDs.Remove(contactData.ContactID);
-            //        ContactList.SelectedItem = null;
-            //        ContactList.ItemsSource = ContactController.GetCustomerRemainingContacts(connection, newInquiryData.CustomerID, contactsIDs.ToArray());
-            //    }
-            //    projectContacts.Remove(contactData);
-            //}
+                    ContactsList.SelectedItem = null;
+                    contacts = GetContacts(connection, newInquiryData.Id);
+                    ContactsList.ItemsSource = contacts;
+                }
+                projectContacts.Remove(ProjectContactsList.SelectedItem as Contact);
+            }
         }
         private void ProjectContactsList_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-            //var selectedIndex = ProjectContactsList.SelectedIndex;
-            //NavigationPanel.Text = $"Contact: {selectedIndex + 1} / {viewProjectContacts.View.Cast<object>().Count()}";
+            var selectedIndex = ProjectContactsList.SelectedIndex;
+            if (selectedIndex == -1)
+                NavigationPanel.Text = $"Contacts: {viewProjectContacts.View.Cast<object>().Count()}";
+            else
+                NavigationPanel.Text = $"Contact: {selectedIndex + 1} / {viewProjectContacts.View.Cast<object>().Count()}";
         }
         private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //if (projectContacts.Count != 0)
-            //{
-            //    var selectedIndex = ProjectContactsList.SelectedIndex;
-            //    NavigationPanel.Text = $"Contact: {selectedIndex + 1} / {viewProjectContacts.View.Cast<object>().Count()}";
-            //}
-            //else
-            //{
-            //    NavigationPanel.Text = $"Contact: 0";
-            //}
+            var selectedIndex = ProjectContactsList.SelectedIndex;
+            if (selectedIndex == -1)
+                NavigationPanel.Text = $"Contacts: {viewProjectContacts.View.Cast<object>().Count()}";
+            else
+                NavigationPanel.Text = $"Contact: {selectedIndex + 1} / {viewProjectContacts.View.Cast<object>().Count()}";
         }
 
         private void Attention_Click(object sender, RoutedEventArgs e)
         {
-            //if (ProjectContactsList.SelectedItem is Contact contact)
-            //{
-            //    contact.Attention = true;
-            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //    {
+            if (ProjectContactsList.SelectedItem is Contact contact)
+            {
+                contact.Attention = true;
+                using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+                {
 
-            //        foreach (Contact contactData in projectContacts)
-            //        {
-            //            if (contactData.ContactID != contact.ContactID)
-            //                contactData.Attention = false;
-            //        }
+                    foreach (Contact contactData in projectContacts)
+                    {
+                        if (contactData.Id != contact.Id)
+                            contactData.Attention = false;
+                    }
 
-            //        var query = $"Update [Inquiry].[ProjectsContacts] Set " +
-            //                    $"Attention = @Attention " +
-            //                    $"Where ContactID = @ContactID And InquiryID = {newInquiryData.InquiryID} ";
-            //        connection.Execute(query, projectContacts);
-            //    }
-            //}
+                    var query = $"Update [Inquiry].[_ProjectsContacts] Set " +
+                                $"Attention = @Attention " +
+                                $"Where ContactId = @Id And InquiryId = {newInquiryData.Id};";
+                    connection.Execute(query, projectContacts);
+                }
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //{
-            //    if (WindowMode == Actions.New && isSaving == false)
-            //    {
-            //        var query = DatabaseAI.DeleteRecord<Inquiry>(newInquiryData.InquiryID);
-            //        connection.Execute(query);
+            using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+            {
+                if (WindowMode == Actions.New && isSaving == false)
+                {
+                    connection.Delete<Inquiry>(newInquiryData);
 
-            //        query = $"Delete From [Inquiry].[ProjectsContacts] Where InquiryID = {newInquiryData.InquiryID}";
-            //        connection.Execute(query);
-            //    }
-            //    else
-            //    {
-            //        UserData.InquiryID = null;
-            //        UserController.UpdateInquiryID(connection, UserData);
-            //    }
-            //}
+                    string query = $"Delete From [Inquiry].[_ProjectsContacts] Where InquiryId = {newInquiryData.Id}";
+                    connection.Execute(query);
+                }
+                else
+                {
+                    UserData.InquiryId = null;
+                    connection.UserAccessUpdate(UserData, nameof(UserData.InquiryId));
+                }
+            }
         }
     }
 }

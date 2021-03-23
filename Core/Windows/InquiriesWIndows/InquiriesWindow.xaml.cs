@@ -95,7 +95,7 @@ namespace Core.Windows.InquiriesWindows
         {
             InquiryWindow inquiryWindow = new InquiryWindow()
             {
-                InquiryData = new Inquiry(),
+                InquiryData = new Inquiry() { Status = Statuses.New.ToString()},
                 UserData = this.UserData,
                 WindowMode = Actions.New,
                 InquiriesDataToUpdate = inquiriesData,
@@ -111,7 +111,7 @@ namespace Core.Windows.InquiriesWindows
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
                     usedBy = connection.AccessValidation(nameof(UserData.InquiryId) , inquiry.Id);
-                    quotation = connection.QueryFirstOrDefault<Quotation>($"Select * Quotation._Quotations Where InquiryId = {inquiry.Id}");
+                    quotation = connection.QueryFirstOrDefault<Quotation>($"Select * From [Quotation].[_Quotations] Where InquiryId = {inquiry.Id}");
 
                     if (usedBy == null)
                     {
@@ -196,7 +196,7 @@ namespace Core.Windows.InquiriesWindows
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
                     usedBy = connection.AccessValidation(nameof(UserData.InquiryId), inquiry.Id);
-                    quotation = connection.QueryFirstOrDefault<Quotation>($"Select * Quotation._Quotations Where InquiryId = {inquiry.Id}");
+                    quotation = connection.QueryFirstOrDefault<Quotation>($"Select * From Quotation._Quotations Where InquiryId = {inquiry.Id}");
 
                     if (usedBy == null)
                     {
@@ -218,8 +218,8 @@ namespace Core.Windows.InquiriesWindows
                     {
                         using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                         {
-                            connection.Execute($"Delete From [Inquiry].[_Inquiries] Where InquiryID = {inquiry.Id}");
-                            connection.Execute($"Delete From [Inquiry].[_ProjectsContacts] Where InquiryID = {inquiry.Id}");
+                            connection.Execute($"Delete From [Inquiry].[_Inquiries] Where Id = {inquiry.Id}");
+                            connection.Execute($"Delete From [Inquiry].[_ProjectsContacts] Where InquiryId = {inquiry.Id}");
                             inquiriesData.Remove(inquiry);
                         }
                     }

@@ -3,7 +3,7 @@
     public class Estimator
     {
         public int Id { get; set; } //UserId
-        public string Name { get; set; }
-        public string Code { get; set; }
+        public string EstimatorName { get; set; }
+        public string EstimatorCode { get; set; }
     }
 }

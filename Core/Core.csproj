@@ -170,7 +170,18 @@
     <Compile Include="Migrations\202103211333052_InquiriesYears.designer.cs">
       <DependentUpon>202103211333052_InquiriesYears.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103230642263_SalesmenView.cs" />
+    <Compile Include="Migrations\202103230642263_SalesmenView.designer.cs">
+      <DependentUpon>202103230642263_SalesmenView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103230833472_ProjectsContactsView.cs" />
+    <Compile Include="Migrations\202103230833472_ProjectsContactsView.designer.cs">
+      <DependentUpon>202103230833472_ProjectsContactsView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Windows\CustomersWindows\ConsultantsWindow.xaml.cs">
+      <DependentUpon>ConsultantsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\CustomersWindows\ContactsWindow.xaml.cs">
       <DependentUpon>ContactsWindow.xaml</DependentUpon>
     </Compile>
@@ -258,6 +269,12 @@
     <EmbeddedResource Include="Migrations\202103211333052_InquiriesYears.resx">
       <DependentUpon>202103211333052_InquiriesYears.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103230642263_SalesmenView.resx">
+      <DependentUpon>202103230642263_SalesmenView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103230833472_ProjectsContactsView.resx">
+      <DependentUpon>202103230833472_ProjectsContactsView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -283,6 +300,10 @@
     <Page Include="Controls\WindowIcon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\CustomersWindows\ConsultantsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\CustomersWindows\ContactsWindow.xaml">
       <SubType>Designer</SubType>
