@@ -84,7 +84,7 @@ namespace Core.Windows.InquiriesWindows
 
             DataContext = new { newInquiryData, customerData, consultantData };
 
-            viewProjectContacts.View.CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+            viewProjectContacts.View.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChanged);
 
         }
         private void CustomerName_SelectionChanged(object sender, SelectionChangedEventArgs e)

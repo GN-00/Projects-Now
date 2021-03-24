@@ -87,7 +87,7 @@
                         <Style TargetType="TabItem" BasedOn="{StaticResource TabItemStyle}"/>
                     </TabControl.Resources>
 
-                    <TabItem Header="TabItem" Width="100" Visibility="Hidden"/>
+                    <TabItem Header="TabItem" Width="80" Visibility="Hidden"/>
 
                     <TabItem Header="Tool" IsSelected="True">
                         <StackPanel Orientation="Horizontal"
@@ -162,54 +162,15 @@
                         <StackPanel Orientation="Horizontal"
                                     VerticalAlignment="Center"
                                     Height="65" Margin="20,0,0,0">
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="0,5">
-                                <TextBox x:Name="RegisterCode"
-                                         Width="138" 
-                                         Style="{StaticResource FilterInput}">
-                                </TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="0,5">
-                                <TextBox x:Name="CustomerName" 
-                                         Width="268" 
-                                         Style="{StaticResource FilterInput}">
-                                </TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="0,5">
-                                <TextBox x:Name="ProjectName" 
-                                         Width="288" 
-                                         Style="{StaticResource FilterInput}">
-                                </TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="0,5">
-                                <TextBox x:Name="EstimatorCode"
-                                         Width="108" 
-                                         Style="{StaticResource FilterInput}">
-                                </TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="0,5">
-                                <TextBox x:Name="RegisterDate" 
-                                         Width="98" 
-                                         Style="{StaticResource FilterInput}">
-                                </TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="0,5">
-                                <TextBox x:Name="DuoDate" 
-                                         Width="108" 
-                                         Style="{StaticResource FilterInput}">
-                                </TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="0,5">
-                                <TextBox x:Name="Priority" 
-                                         Width="109" 
-                                         Style="{StaticResource FilterInput}">
-                                </TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="0,5">
-                                <TextBox x:Name="Status" 
-                                         Width="88" 
-                                         Style="{StaticResource FilterInput}">
-                                </TextBox>
-                            </StackPanel>
+
+                            <TextBox x:Name="RegisterCode" Width="138" Style="{StaticResource FilterInput}"/>
+                            <TextBox x:Name="CustomerName" Width="268" Style="{StaticResource FilterInput}"/>
+                            <TextBox x:Name="ProjectName" Width="288" Style="{StaticResource FilterInput}"/>
+                            <TextBox x:Name="EstimatorCode" Width="108" Style="{StaticResource FilterInput}"/>
+                            <TextBox x:Name="RegisterDate" Width="98" Style="{StaticResource FilterInput}"/>
+                            <TextBox x:Name="DuoDate" Width="108" Style="{StaticResource FilterInput}"/>
+                            <TextBox x:Name="Priority" Width="109" Style="{StaticResource FilterInput}"/>
+                            <TextBox x:Name="Status" Width="88" Style="{StaticResource FilterInput}"/>
 
                             <Button Style="{StaticResource TabButton}" Width="30" Height="30" VerticalAlignment="Bottom" Margin="5,0,0,5">
                                 <Image Source="/Images/DeleteFilter.png" Margin="5"/>
@@ -269,15 +230,10 @@
                                 <DataGrid.Columns>
 
                                     <DataGridTextColumn Width="140"  Header="Register Code" Binding="{Binding RegisterCode, Mode=TwoWay}" ElementStyle="{StaticResource CenterColumn}"/>
-
                                     <DataGridTextColumn Width="270" Header="Customer Name" Binding="{Binding CustomerName}" ElementStyle="{StaticResource LeftColumn}"/>
-
                                     <DataGridTextColumn Width="290" Header="Project Name" Binding="{Binding ProjectName}" ElementStyle="{StaticResource LeftColumn}"/>
-
                                     <DataGridTextColumn Width="110" Header="Estimation Eng" Binding="{Binding EstimatorCode}" ElementStyle="{StaticResource CenterColumn}"/>
-
                                     <DataGridTextColumn Width="100" Header="Register Date" Binding="{Binding RegisterDate, StringFormat=dd/MM/yyyy}" ElementStyle="{StaticResource CenterColumn}"/>
-
                                     <DataGridTextColumn Width="110" Header="DuoDate" Binding="{Binding DuoDate, StringFormat=dd/MM/yyyy}" ElementStyle="{StaticResource CenterColumn}"/>
 
                                     <DataGridTextColumn Width="111" Header="Priority" Binding="{Binding Priority}">

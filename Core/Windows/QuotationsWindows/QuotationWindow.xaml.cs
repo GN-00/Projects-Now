@@ -1,21 +1,17 @@
-﻿using System;
-using Dapper;
+﻿using Dapper;
+using Core.Data;
 using System.Linq;
 using System.Windows;
-using Core.Enums;
+using Core.Data.UserData;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Data.SqlClient;
 using System.Windows.Controls;
-using System.Collections.Generic;
+using Core.Data.CustomersData;
+using Core.Data.QuotationsData;
+using Dapper.Contrib.Extensions;
+using Core.Windows.MessageWindows;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using Core.Windows.MessageWindows;
-using Core.Data.UserData;
-using Core.Data.QuotationsData;
-using Core.Data.CustomersData;
-using Core.Data;
-using Core.Data.InquiriesData;
 
 namespace Core.Windows.QuotationsWindows
 {
@@ -25,13 +21,12 @@ namespace Core.Windows.QuotationsWindows
         public bool OpenPanelsWindow { get; set; }
         public Quotation QuotationData { get; set; }
 
-        ObservableCollection<Customer> customers;
-        ObservableCollection<Consultant> consultants;
-        ObservableCollection<Contact> contacts;
         ObservableCollection<Contact> projectContacts;
         CollectionViewSource viewProjectContacts;
 
         Customer customerData;
+        Salesman salesmanData;
+        Estimator estimatorData;
         Consultant consultantData;
         Quotation newQuotationData = new Quotation();
         public QuotationWindow()
@@ -49,45 +44,30 @@ namespace Core.Windows.QuotationsWindows
                 viewProjectContacts = new CollectionViewSource { Source = projectContacts };
                 ProjectContactsList.ItemsSource = viewProjectContacts.View;
 
-                query = "Select * From Customer._Customers Order By Name";
-                customers = new ObservableCollection<Customer>(connection.Query<Customer>(query));
-                CustomerList.ItemsSource = customers;
+                query = $"Select * From Customer._Customers Where Id = {newQuotationData.Inquiry.CustomerId}";
+                customerData = connection.QueryFirstOrDefault<Customer>(query);
 
-                query = "Select * From [User].[_Salesmen] Order By Name";
-                SalesList.ItemsSource = connection.Query<Salesman>(query);
+                query = $"Select * From [User].[_Salesmen] Where Id = {newQuotationData.Inquiry.SalesmanId}";
+                salesmanData = connection.QueryFirstOrDefault<Salesman>(query);
 
-                query = "Select * From [User].[_Estimators] Order By EstimatorName";
-                EstimationList.ItemsSource = connection.Query<Estimator>(query);
+                query = $"Select * From [User].[_Estimators] Where Id = {newQuotationData.Inquiry.EstimatorId}";
+                estimatorData = connection.QueryFirstOrDefault<Estimator>(query);
 
-                query = "Select * From [Customer].[_Consultants] Order By Name";
-                consultants = new ObservableCollection<Consultant>(connection.Query<Consultant>(query));
-                ConsultantList.ItemsSource = consultants;
+                query = $"Select * From [Customer].[_Consultants] Where Id = {newQuotationData.Inquiry.ConsultantId}";
+                consultantData = connection.QueryFirstOrDefault<Consultant>(query);
             }
 
             if (OpenPanelsWindow) Cancel.Visibility = Visibility.Collapsed;
 
             viewProjectContacts.View.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChanged);
-            DataContext = new { newQuotationData, customerData, consultantData };
+            DataContext = new { newQuotationData, customerData, consultantData, salesmanData, estimatorData };
         }
-        private void CustomerName_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (CustomerList.SelectedItem is Customer customer)
-                DataContext = new { newQuotationData, customerData, consultantData };
-        }
-        private void Consultant_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (EstimationList.SelectedItem is Estimator estimatorData)
-            {
-                newQuotationData.Inquiry.EstimatorCode = estimatorData.EstimatorCode;
-            }
-        }
+
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             bool isNull = false;
             var message = "Please Enter:";
-            if (newQuotationData.CustomerID == 0) { message += $"\n  Customer Name."; isNull = true; }
-            if (newQuotationData.ProjectName == null || newQuotationData.ProjectName == "") { message += $"\n  Project Name."; isNull = true; }
             if (newQuotationData.PowerVoltage == null || newQuotationData.PowerVoltage == "") { message += $"\n  Power Voltage."; isNull = true; }
             if (newQuotationData.Phase == null || newQuotationData.Phase == "") { message += $"\n  Phase."; isNull = true; }
             if (newQuotationData.Frequency == null || newQuotationData.Frequency == "") { message += $"\n  Frequency."; isNull = true; }
@@ -102,34 +82,29 @@ namespace Core.Windows.QuotationsWindows
             {
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
-                    string query;
-                    query = Database.UpdateRecord<Inquiry>();
-                    connection.Execute(query, newQuotationData);
-
-                    query = Database.UpdateRecord<Quotation>();
-                    connection.Execute(query, newQuotationData);
+                    connection.Update<Quotation>(newQuotationData);
                 }
 
                 QuotationData.Update(newQuotationData);
                 if (OpenPanelsWindow)
                 {
-                    var quotationPanelsWindow = new QuotationPanelsWindow()
+                    var panelsWindow = new PanelsWindow()
                     {
                         UserData = this.UserData,
                         QuotationData = this.QuotationData
                     };
                     this.Close();
-                    quotationPanelsWindow.ShowDialog();
+                    panelsWindow.ShowDialog();
                 }
                 else
                 {
-                    this.CloseWindow_Click(sender, e);
+                    this.Cancel_Click(sender, e);
                 }
 
             }
             else
             {
-                CMessageBox.Show("Error", message, CMessageBoxButton.OK, CMessageBoxImage.Information);
+                MessageWindow.Show("Error", message, MessageWindowButton.OK, MessageWindowImage.Information);
             }
         }
 

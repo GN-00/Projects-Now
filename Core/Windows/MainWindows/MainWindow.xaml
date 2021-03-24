@@ -28,7 +28,7 @@
                         <Style TargetType="TabItem" BasedOn="{StaticResource TabItemStyle}"/>
                     </TabControl.Resources>
 
-                    <TabItem Header="TabItem" Width="100" Visibility="Hidden"/>
+                    <TabItem Header="TabItem" Width="80" Visibility="Hidden"/>
 
                     <TabItem Header="Home" IsSelected="True">
                         <StackPanel Height="95" 

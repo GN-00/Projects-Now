@@ -15,6 +15,7 @@
     <Window.Resources>
 
         <Style x:Key="InputStyle" BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}">
+            <Setter Property="IsEnabled" Value="False"/>
             <Setter Property="Height" Value="30"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -56,26 +57,6 @@
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
-
-        <ContextMenu x:Key="RowsContextMenu" FontFamily="Times New Roman">
-            <MenuItem Click="Attention_Click">
-                <MenuItem.Header>
-                    <TextBlock Text="Mark As Attention"/>
-                </MenuItem.Header>
-                <MenuItem.Icon>
-                    <Image Source="/Images/Attention.png"/>
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem Click="Delete_Contact">
-                <MenuItem.Header>
-                    <TextBlock Text="Remove"/>
-                </MenuItem.Header>
-                <MenuItem.Icon>
-                    <Image Source="/Images/Error.png"/>
-                </MenuItem.Icon>
-            </MenuItem>
-        </ContextMenu>
-
     </Window.Resources>
     <Border x:Name="WindowBorder" Style="{StaticResource WindowBorderStyle}">
         <Grid Background="#FFF1F1F1">
@@ -143,89 +124,47 @@
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" Content="Register Code " Style="{StaticResource LabelStyle}"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding newInquiryData.RegisterCode}" Width="270" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding newQuotationData.Inquiry.RegisterCode}" Width="270" Style="{StaticResource InputStyle}" IsEnabled="False"/>
 
                         <Label Grid.Row="1" Grid.Column="0" Content="Customer Name " Style="{StaticResource LabelStyle}"/>
-                        <ComboBox x:Name="CustomerList"
-                                  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
-                                  Width="570"
-                                  IsEnabled="True"
-                                  SelectedValuePath="Id"
-                                  DisplayMemberPath="Name"
-                                  SelectedValue="{Binding newInquiryData.CustomerId}"
-                                  Style="{StaticResource ComboStyle}"
-                                  SelectionChanged="CustomerName_SelectionChanged">
-                        </ComboBox>
-                        <Button Height="30" 
-                                Width="30" 
-                                Margin="140,0,0,0"
-                                Grid.Row="1" Grid.Column="3"
-                                Click="AddCustomers_Click" 
-                                Style="{StaticResource TabButton}">
-                            <Image Margin="5" Source="/Images/Add.png"/>
-                        </Button>
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding customerData.Name}" Width="570" Style="{StaticResource InputStyle}"/>
 
                         <Label Grid.Row="2" Grid.Column="0" Content="Project " Style="{StaticResource LabelStyle}"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding newInquiryData.ProjectName}" Width="570" Style="{StaticResource InputStyle}"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding newQuotationData.Inquiry.ProjectName}" Width="570" Style="{StaticResource InputStyle}"/>
 
                         <Label Grid.Row="3" Grid.Column="0" Content="Register Date "  Style="{StaticResource LabelStyle}"/>
-                        <DatePicker Grid.Row="3" Grid.Column="1" Text="{Binding newInquiryData.RegisterDate, StringFormat= dd/MM/yyyy}" Style="{StaticResource InputStyleDatePicker}" IsEnabled="False"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding newQuotationData.Inquiry.RegisterDate, StringFormat= dd/MM/yyyy}" Width="160" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+
                         <Label Grid.Row="3" Grid.Column="2" Content="City " Style="{StaticResource LabelStyle}"/>
                         <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding customerData.City}" Width="230" Style="{StaticResource InputStyle}" IsEnabled="False"/>
 
                         <Label Grid.Row="4" Grid.Column="0" Content="Duo Date " Style="{StaticResource LabelStyle}"/>
-                        <DatePicker x:Name="DuoDatePicker"
-                                    Grid.Row="4" Grid.Column="1"
-                                    SelectedDate="{Binding newInquiryData.DuoDate}"
-                                    DisplayDate="{Binding newInquiryData.DuoDate}"
-                                    Style="{StaticResource InputStyleDatePicker}"
-                                    SelectedDateChanged="DuoDate_SelectedDateChanged">
-                        </DatePicker>
+                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding newQuotationData.Inquiry.RegisterDate, StringFormat= dd/MM/yyyy}" Width="160" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+
                         <Label Grid.Row="4" Grid.Column="2" Content="Address " Style="{StaticResource LabelStyle}"/>
                         <TextBox Grid.Row="4" Grid.Column="3" Text="{Binding customerData.Address}" Width="230" Style="{StaticResource InputStyle}" IsEnabled="False"/>
 
                         <Label Grid.Row="5" Grid.Column="0" Content="Priority " Style="{StaticResource LabelStyle}" />
-                        <ComboBox Grid.Row="5" Grid.Column="1"
-                                  SelectedValuePath="Content"
-                                  SelectedValue="{Binding newInquiryData.Priority}"
-                                  Style="{StaticResource ComboStyle}">
-                            <ComboBoxItem Content="High"/>
-                            <ComboBoxItem Content="Normal"/>
-                        </ComboBox>
+                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding newQuotationData.Inquiry.Priority}" Width="160" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+
                         <Label Grid.Row="5" Grid.Column="2" Content="P.O.Box " Style="{StaticResource LabelStyle}"/>
                         <TextBox Grid.Row="5" Grid.Column="3" Text="{Binding customerData.POBox}" Width="230" Style="{StaticResource InputStyle}" IsEnabled="False"/>
 
                         <Label Grid.Row="6" Grid.Column="0" Content="Sales Eng " Style="{StaticResource LabelStyle}"/>
-                        <ComboBox x:Name="SalesList"
-                                  Grid.Row="6" Grid.Column="1"
-                                  SelectedValuePath="Id"
-                                  DisplayMemberPath="Name"
-                                  SelectedValue="{Binding newInquiryData.SalesmanId}"
-                                  Style="{StaticResource ComboStyle}">
-                        </ComboBox>
+                        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Salesman.Name}" Width="160" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+
                         <Label Grid.Row="6" Grid.Column="2" Content="Phone " Style="{StaticResource LabelStyle}"/>
                         <TextBox Grid.Row="6" Grid.Column="3" Text="{Binding customerData.Phone}" Width="230" Style="{StaticResource InputStyle}" IsEnabled="False"/>
 
                         <Label Grid.Row="7" Grid.Column="0" Content="Estimation Eng " Style="{StaticResource LabelStyle}"/>
-                        <ComboBox x:Name="EstimationList"
-                                  Grid.Row="7" Grid.Column="1"
-                                  SelectedValuePath="Id"
-                                  DisplayMemberPath="EstimatorName"
-                                  SelectedValue="{Binding newInquiryData.EstimatorId}"
-                                  Style="{StaticResource ComboStyle}"
-                                  SelectionChanged="EstimationList_SelectionChanged">
-                        </ComboBox>
+                        <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Estimator.EstimatorName}" Width="160" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+
                         <Label Grid.Row="7" Grid.Column="2" Content="Email " Style="{StaticResource LabelStyle}"/>
                         <TextBox Grid.Row="7" Grid.Column="3" Text="{Binding customerData.Email}" Width="230" Style="{StaticResource InputStyle}" IsEnabled="False"/>
 
                         <Label Grid.Row="8" Grid.Column="0" Content="Delivery Condition " Style="{StaticResource LabelStyle}" Margin="0,0,0,0"/>
-                        <ComboBox Grid.Row="8" Grid.Column="1"
-                                  SelectedValuePath="Content"
-                                  SelectedValue="{Binding newInquiryData.DeliveryCondition}"
-                                  Style="{StaticResource ComboStyle}">
-                            <ComboBoxItem>Ex-Factory</ComboBoxItem>
-                            <ComboBoxItem>Site</ComboBoxItem>
-                        </ComboBox>
+                        <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding newQuotationData.Inquiry.DeliveryCondition}" Width="160" Style="{StaticResource InputStyle}" IsEnabled="False"/>
+
                         <Label Grid.Row="8" Grid.Column="2" Content="Website " Style="{StaticResource LabelStyle}"/>
                         <TextBox Grid.Row="8" Grid.Column="3" Text="{Binding customerData.Website}" Width="230" Style="{StaticResource InputStyle}" IsEnabled="False"/>
                     </Grid>
@@ -473,28 +412,7 @@
                         </Style>
                     </TabItem.Resources>
                     <Grid>
-                        <StackPanel Margin="25,25,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal">
-                            <Label Width="130" Content="Find Contact " Style="{StaticResource LabelStyle}"/>
-                            <ComboBox x:Name="ContactsList"
-                                      Width="590"
-                                      DisplayMemberPath="Name"
-                                      Style="{StaticResource ComboStyle}">
-                            </ComboBox>
-                            <Button Margin="10,0"
-                                    Height="30"
-                                    Width="30"
-                                    Style="{StaticResource TabButton}"
-                                    Click="AddContactToPrject_Click">
-                                <Image Margin="2.5" Source="/Images/Accept.png"/>
-                            </Button>
-                            <Button Height="30"
-                                    Width="30"
-                                    Style="{StaticResource TabButton}"
-                                    Click="AddContact_Click">
-                                <Image Margin="5" Source="/Images/Add.png"/>
-                            </Button>
-                        </StackPanel>
-                        <Grid Margin="15,80,15,25">
+                        <Grid Margin="15,20,15,25">
                             <Grid.Effect>
                                 <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
                             </Grid.Effect>
@@ -502,14 +420,7 @@
                                 <Grid>
                                     <DataGrid x:Name="ProjectContactsList"
                                               Style="{StaticResource DataGridStyle}"
-                                              SelectedCellsChanged="ProjectContactsList_SelectedCellsChanged"
-                                              PreviewKeyDown="ProjectContactsList_PreviewKeyDown">
-                                        <DataGrid.Resources>
-                                            <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}">
-                                                <Setter Property="ContextMenu" Value="{StaticResource RowsContextMenu}"/>
-                                            </Style>
-                                        </DataGrid.Resources>
-
+                                              SelectedCellsChanged="ProjectContactsList_SelectedCellsChanged">
                                         <DataGrid.Columns>
 
                                             <DataGridTemplateColumn Width="70" Header="Attention" IsReadOnly="True">
@@ -577,21 +488,7 @@
 
                         <StackPanel Orientation="Horizontal" Margin="25,50,0,0">
                             <Label Grid.Row="0" Grid.Column="0" Content="Consultant Name " Style="{StaticResource LabelStyle}"/>
-                            <ComboBox x:Name="ConsultantList"
-                                      Width="500"
-                                      SelectedValue="{Binding newInquiryData.ConsultantId}"
-                                      SelectedValuePath="Id"
-                                      DisplayMemberPath="Name"
-                                      SelectionChanged="Consultant_SelectionChanged"
-                                      Style="{StaticResource ComboStyle}">
-                            </ComboBox>
-                            <Button Height="30"
-                                    Width="30"
-                                    Click="AddConsultant_Click"
-                                    Margin="10,0"
-                                    Style="{StaticResource TabButton}">
-                                <Image Margin="5" Source="/Images/Add.png"/>
-                            </Button>
+                            <TextBox Text="{Binding consultantData.Name}" Width="500" Style="{StaticResource InputStyle}"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="25,15,0,0">
