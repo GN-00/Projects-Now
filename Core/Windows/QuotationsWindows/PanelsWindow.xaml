@@ -176,7 +176,6 @@
                             <Image Source="/Images/TC.png" Margin="10"/>
                         </Button>
 
-
                         <Button Style="{StaticResource TabButton}"
                                 ToolTip="Quotation Items"
                                 Click="QuotationItems_ClicK">
@@ -191,19 +190,19 @@
 
                         <Button Style="{StaticResource TabButton}"
                                 ToolTip="Prices Information"
-                                Click="Prices_ClicK">
+                                Click="Prices_Click">
                             <Image Source="/Images/Price.png" Margin="10"/>
                         </Button>
 
                         <Button Style="{StaticResource TabButton}"
                                 ToolTip="Target Price"
-                                Click="TargetPrice_ClicK">
+                                Click="TargetPrice_Click">
                             <Image Source="/Images/TargetPrice.png" Margin="5"/>
                         </Button>
 
                         <Button Style="{StaticResource TabButton}"
                                 ToolTip="Print"
-                                Click="Printer_ClicK">
+                                Click="Printer_Click">
                             <Image Source="/Images/Printer.png" Margin="10"/>
                         </Button>
 
@@ -328,7 +327,7 @@
                 <TabItem Header="Filters" HorizontalAlignment="Right">
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Center"
-                                Height="65" Margin="16,0,0,0">
+                                Height="65" Margin="20,0,0,0">
 
                         <TextBox x:Name="SN" Width="38" Style="{StaticResource FilterInputStyle}"/>
                         <TextBox x:Name="Name" Width="198" Style="{StaticResource FilterInputStyle}"/>
@@ -338,11 +337,11 @@
                         <TextBox x:Name="EnclosureWidth" Width="58" Style="{StaticResource FilterInputStyle}"/>
                         <TextBox x:Name="EnclosureDepth" Width="58" Style="{StaticResource FilterInputStyle}"/>
                         <TextBox x:Name="EnclosureIP" Width="58" Style="{StaticResource FilterInputStyle}"/>
-                        <TextBox x:Name="PanelProfit" Width="78" Style="{StaticResource FilterInputStyle}"/>
-                        <TextBox x:Name="PanelCost" Width="103" Style="{StaticResource FilterInputStyle}"/>
-                        <TextBox x:Name="PanelPrice" Width="103" Style="{StaticResource FilterInputStyle}"/>
-                        <TextBox x:Name="PanelsCost" Width="103" Style="{StaticResource FilterInputStyle}"/>
-                        <TextBox x:Name="PanelsPrice" Width="103" Style="{StaticResource FilterInputStyle}"/>
+                        <TextBox x:Name="Profit" Width="78" Style="{StaticResource FilterInputStyle}"/>
+                        <TextBox x:Name="UintCost" Width="105" Style="{StaticResource FilterInputStyle}"/>
+                        <TextBox x:Name="UintPrice" Width="105" Style="{StaticResource FilterInputStyle}"/>
+                        <TextBox x:Name="TotalCost" Width="106" Style="{StaticResource FilterInputStyle}"/>
+                        <TextBox x:Name="TotalPrice" Width="100" Style="{StaticResource FilterInputStyle}"/>
 
                         <Button Height="30"
                                 Width="30"
@@ -399,10 +398,10 @@
                                     <DataGridTextColumn Width="60" Header="D" Binding="{Binding EnclosureDepth}" ElementStyle="{StaticResource CenterColumn}"/>
                                     <DataGridTextColumn Width="60" Header="IP" Binding="{Binding EnclosureIP}" ElementStyle="{StaticResource CenterColumn}"/>
                                     <DataGridTextColumn Width="80" Header="Profit" Binding="{Binding Profit, StringFormat=0.00}" ElementStyle="{StaticResource CenterColumn}"/>
-                                    <DataGridTextColumn Width="105" Header="Unit Cost" Binding="{Binding Cost, StringFormat=N2}" ElementStyle="{StaticResource CenterColumn}"/>
-                                    <DataGridTextColumn Width="105" Header="Unit Price" Binding="{Binding Price, StringFormat=N2}" ElementStyle="{StaticResource CenterColumn}"/>
-                                    <DataGridTextColumn Width="105" Header="Total Cost" Binding="{Binding PanelsCost, StringFormat=N2}" ElementStyle="{StaticResource CenterColumn}"/>
-                                    <DataGridTextColumn Width="105" Header="Total Price" Binding="{Binding PanelsPrice, StringFormat=N2}" ElementStyle="{StaticResource CenterColumn}"/>
+                                    <DataGridTextColumn Width="107" Header="Unit Cost" Binding="{Binding UnitCost, StringFormat=N2}" ElementStyle="{StaticResource CenterColumn}"/>
+                                    <DataGridTextColumn Width="107" Header="Unit Price" Binding="{Binding UnitPrice, StringFormat=N2}" ElementStyle="{StaticResource CenterColumn}"/>
+                                    <DataGridTextColumn Width="108" Header="Total Cost" Binding="{Binding TotalCost, StringFormat=N2}" ElementStyle="{StaticResource CenterColumn}"/>
+                                    <DataGridTextColumn Width="108" Header="Total Price" Binding="{Binding TotalPrice, StringFormat=N2}" ElementStyle="{StaticResource CenterColumn}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             

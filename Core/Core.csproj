@@ -114,6 +114,7 @@
     <Compile Include="Data\General\Year.cs" />
     <Compile Include="Data\Input.cs" />
     <Compile Include="Data\InquiriesData\Inquiry.cs" />
+    <Compile Include="Data\QuotationsData\Panel.cs" />
     <Compile Include="Data\QuotationsData\Quotation.cs" />
     <Compile Include="Data\QuotationsData\Term.cs" />
     <Compile Include="Data\UpdateController.cs" />
@@ -183,6 +184,10 @@
     <Compile Include="Migrations\202103231807232_TermsData.cs" />
     <Compile Include="Migrations\202103231807232_TermsData.designer.cs">
       <DependentUpon>202103231807232_TermsData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103251416010_QuotationPanels.cs" />
+    <Compile Include="Migrations\202103251416010_QuotationPanels.designer.cs">
+      <DependentUpon>202103251416010_QuotationPanels.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windows\CustomersWindows\ConsultantsWindow.xaml.cs">
@@ -295,6 +300,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103231807232_TermsData.resx">
       <DependentUpon>202103231807232_TermsData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103251416010_QuotationPanels.resx">
+      <DependentUpon>202103251416010_QuotationPanels.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
