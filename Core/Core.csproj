@@ -114,6 +114,9 @@
     <Compile Include="Data\General\Year.cs" />
     <Compile Include="Data\Input.cs" />
     <Compile Include="Data\InquiriesData\Inquiry.cs" />
+    <Compile Include="Data\QuotationsData\Item.cs" />
+    <Compile Include="Data\QuotationsData\Option.cs" />
+    <Compile Include="Data\QuotationsData\OptionPanel.cs" />
     <Compile Include="Data\QuotationsData\Panel.cs" />
     <Compile Include="Data\QuotationsData\Quotation.cs" />
     <Compile Include="Data\QuotationsData\Term.cs" />
@@ -188,6 +191,34 @@
     <Compile Include="Migrations\202103251416010_QuotationPanels.cs" />
     <Compile Include="Migrations\202103251416010_QuotationPanels.designer.cs">
       <DependentUpon>202103251416010_QuotationPanels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103271123281_QuotationItemsData.cs" />
+    <Compile Include="Migrations\202103271123281_QuotationItemsData.designer.cs">
+      <DependentUpon>202103271123281_QuotationItemsData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103271240198_QuotationArticleData.cs" />
+    <Compile Include="Migrations\202103271240198_QuotationArticleData.designer.cs">
+      <DependentUpon>202103271240198_QuotationArticleData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103271325024_QuotationOptionsData.cs" />
+    <Compile Include="Migrations\202103271325024_QuotationOptionsData.designer.cs">
+      <DependentUpon>202103271325024_QuotationOptionsData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103271351206_QuotationOptionsPanelsViewData.cs" />
+    <Compile Include="Migrations\202103271351206_QuotationOptionsPanelsViewData.designer.cs">
+      <DependentUpon>202103271351206_QuotationOptionsPanelsViewData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103271357294_CostData.cs" />
+    <Compile Include="Migrations\202103271357294_CostData.designer.cs">
+      <DependentUpon>202103271357294_CostData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103271407018_QuotationsCostView.cs" />
+    <Compile Include="Migrations\202103271407018_QuotationsCostView.designer.cs">
+      <DependentUpon>202103271407018_QuotationsCostView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103280725423_QuotationsViewData.cs" />
+    <Compile Include="Migrations\202103280725423_QuotationsViewData.designer.cs">
+      <DependentUpon>202103280725423_QuotationsViewData.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windows\CustomersWindows\ConsultantsWindow.xaml.cs">
@@ -303,6 +334,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103251416010_QuotationPanels.resx">
       <DependentUpon>202103251416010_QuotationPanels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103271123281_QuotationItemsData.resx">
+      <DependentUpon>202103271123281_QuotationItemsData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103271240198_QuotationArticleData.resx">
+      <DependentUpon>202103271240198_QuotationArticleData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103271325024_QuotationOptionsData.resx">
+      <DependentUpon>202103271325024_QuotationOptionsData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103271351206_QuotationOptionsPanelsViewData.resx">
+      <DependentUpon>202103271351206_QuotationOptionsPanelsViewData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103271357294_CostData.resx">
+      <DependentUpon>202103271357294_CostData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103271407018_QuotationsCostView.resx">
+      <DependentUpon>202103271407018_QuotationsCostView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103280725423_QuotationsViewData.resx">
+      <DependentUpon>202103280725423_QuotationsViewData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
