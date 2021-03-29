@@ -71,9 +71,11 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -114,6 +116,7 @@
     <Compile Include="Data\General\Year.cs" />
     <Compile Include="Data\Input.cs" />
     <Compile Include="Data\InquiriesData\Inquiry.cs" />
+    <Compile Include="Data\QuotationsData\Content.cs" />
     <Compile Include="Data\QuotationsData\Item.cs" />
     <Compile Include="Data\QuotationsData\Option.cs" />
     <Compile Include="Data\QuotationsData\OptionPanel.cs" />
@@ -127,7 +130,9 @@
     <Compile Include="Data\UserData\User.cs" />
     <Compile Include="Enums\Actions.cs" />
     <Compile Include="Enums\Statuses.cs" />
+    <Compile Include="Enums\Tables.cs" />
     <Compile Include="Enums\TermsTypes.cs" />
+    <Compile Include="Enums\TermTypes.cs" />
     <Compile Include="Migrations\202103191636105_NewStart.cs" />
     <Compile Include="Migrations\202103191636105_NewStart.designer.cs">
       <DependentUpon>202103191636105_NewStart.cs</DependentUpon>
@@ -220,7 +225,24 @@
     <Compile Include="Migrations\202103280725423_QuotationsViewData.designer.cs">
       <DependentUpon>202103280725423_QuotationsViewData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103281139350_QuotationPanelsView.cs" />
+    <Compile Include="Migrations\202103281139350_QuotationPanelsView.designer.cs">
+      <DependentUpon>202103281139350_QuotationPanelsView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Print\Preview.cs" />
+    <Compile Include="Print\PrintWindow.xaml.cs">
+      <DependentUpon>PrintWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Print\QuotationPages\Cover.xaml.cs">
+      <DependentUpon>Cover.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Print\QuotationPages\PanelsInformation.xaml.cs">
+      <DependentUpon>PanelsInformation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Print\QuotationPages\QuotationPage.xaml.cs">
+      <DependentUpon>QuotationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\CustomersWindows\ConsultantsWindow.xaml.cs">
       <DependentUpon>ConsultantsWindow.xaml</DependentUpon>
     </Compile>
@@ -260,6 +282,12 @@
     <Compile Include="Windows\QuotationsWindows\PanelsWindow.xaml.cs">
       <DependentUpon>PanelsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\QuotationsWindows\PriceWindow.xaml.cs">
+      <DependentUpon>PriceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\QuotationsWindows\PrintWindow.xaml.cs">
+      <DependentUpon>PrintWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\QuotationsWindows\QuotationsWindow.xaml.cs">
       <DependentUpon>QuotationsWindow.xaml</DependentUpon>
     </Compile>
@@ -268,6 +296,12 @@
     </Compile>
     <Compile Include="Windows\QuotationsWindows\QuoteWindow.xaml.cs">
       <DependentUpon>QuoteWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\QuotationsWindows\TermsWindows\TermsWindow.xaml.cs">
+      <DependentUpon>TermsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\QuotationsWindows\TermsWindows\TermWindow.xaml.cs">
+      <DependentUpon>TermWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\UserWIndows\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
@@ -356,6 +390,9 @@
     <EmbeddedResource Include="Migrations\202103280725423_QuotationsViewData.resx">
       <DependentUpon>202103280725423_QuotationsViewData.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103281139350_QuotationPanelsView.resx">
+      <DependentUpon>202103281139350_QuotationPanelsView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -381,6 +418,22 @@
     <Page Include="Controls\WindowIcon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Print\PrintWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Print\QuotationPages\Cover.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Print\QuotationPages\PanelsInformation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Print\QuotationPages\QuotationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\CustomersWindows\ConsultantsWindow.xaml">
       <SubType>Designer</SubType>
@@ -434,6 +487,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\QuotationsWindows\PriceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QuotationsWindows\PrintWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\QuotationsWindows\QuotationsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -443,6 +504,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\QuotationsWindows\QuoteWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QuotationsWindows\TermsWindows\TermsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QuotationsWindows\TermsWindows\TermWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

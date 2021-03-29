@@ -1,0 +1,766 @@
+﻿<Window x:Class="Core.Windows.QuotationsWindows.TermsWindows.TermsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Core.Windows.QuotationsWindows.TermsWindows"
+        xmlns:CN="clr-namespace:Core.Controls"
+        mc:Ignorable="d"
+        Title="Terms &amp; Conditions"
+        Style="{StaticResource WindowStyle}"
+        Loaded="Window_Loaded"
+        Closing="Window_Closing"
+        WindowStartupLocation="CenterScreen"
+        Height="550"
+        Width="1040">
+    <Window.Resources>
+
+        <ContextMenu x:Key="NoItemContextMenu" FontFamily="Times New Roman">
+            <MenuItem Click="Add_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="New"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/Add.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+
+        <ContextMenu x:Key="DefaultItemContextMenu" FontFamily="Times New Roman">
+            <MenuItem Click="Copy_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="Copy"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/Copy.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator/>
+            <MenuItem Click="Add_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="New"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/Add.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator/>
+            <MenuItem Click="MoveUp_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="Move Up"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/MoveUp.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Click="MoveDown_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="Move Down"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/MoveDown.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+
+        <ContextMenu x:Key="ItemContextMenu" FontFamily="Times New Roman">
+            <MenuItem Click="Copy_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="Copy"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/Copy.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator/>
+            <MenuItem Click="Add_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="New"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/Add.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Click="Edit_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="Edit"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/Edit.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator/>
+            <MenuItem Click="MoveUp_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="Move Up"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/MoveUp.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Click="MoveDown_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="Move Down"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/MoveDown.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator/>
+            <MenuItem Click="Delete_Click">
+                <MenuItem.Header>
+                    <TextBlock Text="Delete" Foreground="Red"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="/Images/Error.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+
+        <Style x:Key="TabStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Width" Value="130"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="InputStyle" BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="InputComboBoxStyle" BasedOn="{StaticResource ComboBoxStyle}" TargetType="{x:Type ComboBox}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="InputStyleDatePicker" BasedOn="{StaticResource DatePickerStyle}" TargetType="{x:Type DatePicker}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="LabelStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="Blue"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="DefaultStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="CheckBoxStyle" BasedOn="{StaticResource CheckBoxStyle}" TargetType="{x:Type CheckBox}">
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+    </Window.Resources>
+    <Border x:Name="WindowBorder" Style="{StaticResource WindowBorderStyle}">
+        
+        <Grid Background="#FFF1F1F1">
+            <Image Width="80"
+                   Height="80"
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Left"
+                   Panel.ZIndex="1000"
+                   Source="/Images/PN.png"
+                   RenderOptions.BitmapScalingMode="HighQuality" 
+                   Margin="40,5,0,0">
+            </Image>
+            <CN:WindowControls/>
+
+            <Grid Height="420" Background="#FFF1F1F1" VerticalAlignment="Top" Margin="136,50,0,0">
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="5" Opacity="0.3" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+                </Grid.Effect>
+            </Grid>
+
+            <TabControl x:Name="Tabs"
+                        Height="420"
+                        Background="White"
+                        BorderThickness="0"
+                        BorderBrush="Transparent"
+                        TabStripPlacement="Left"
+                        VerticalAlignment="Top"
+                        Margin="5,50,0,0">
+
+                <TabItem Header="TabItem" Height="40" Visibility="Hidden"/>
+
+                <TabItem x:Name="ScopeOfSupplyTab" Height="50" Selector.IsSelected="True">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Scope Of   Supply" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <Grid>
+                        <StackPanel Orientation="Vertical">
+
+                            <TextBlock Text="Scope Of Supply" FontSize="32" FontStyle="Italic" Foreground="#FF9211E8" Margin="20" VerticalAlignment="Center" />
+
+                            <Border Margin="20,0" BorderBrush="Gray" BorderThickness="2" CornerRadius="5" Height="320">
+                                <ListBox Name="ScopeOfSupply"
+                                         Margin="5"
+                                         BorderBrush="Transparent"
+                                         FontSize="20" 
+                                         ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                         PreviewMouseRightButtonUp="ListBox_PreviewMouseRightButtonUp"
+                                         FontFamily="Times New Roman">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="20"/>
+                                                    <ColumnDefinition Width="700"/>
+                                                    <ColumnDefinition Width="50"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="» " VerticalAlignment="Top" HorizontalAlignment="Right" Foreground="Blue" FontWeight="Bold"/>
+                                                <TextBlock Grid.Column="1" x:Name="Condition" Width="650" Text="{Binding Condition}" Focusable="True" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                                                <CheckBox Grid.Column="2" IsChecked="{Binding IsUsed}" Style="{StaticResource CheckBoxStyle}" HorizontalAlignment="Center"/>
+                                            </Grid>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding IsDefault}" Value="true">
+                                                    <Setter Property="Foreground" TargetName="Condition" Value="Red"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Border>
+
+                        </StackPanel>
+                    </Grid>
+
+                </TabItem>
+
+                <TabItem x:Name="TotalPriceTab" Height="50">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Total Price" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical">
+
+                        <TextBlock Text="Total Price" FontSize="32" FontStyle="Italic" Foreground="#FF9211E8" Margin="20,20,20,10" VerticalAlignment="Center" />
+
+                        <TextBlock Margin="30,5" Text="Our prices are meant:" FontSize="20" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                        <Border Margin="20,0" BorderBrush="Gray" BorderThickness="2" CornerRadius="5" Height="300">
+                            <ListBox Name="TotalPrice"
+                                     Margin="5"
+                                     BorderBrush="Transparent"
+                                     FontSize="20" 
+                                     ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                     PreviewMouseRightButtonUp="ListBox_PreviewMouseRightButtonUp"
+                                     FontFamily="Times New Roman">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="700"/>
+                                                <ColumnDefinition Width="50"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="» " VerticalAlignment="Top" HorizontalAlignment="Right" Foreground="Blue" FontWeight="Bold"/>
+                                            <TextBlock Grid.Column="1" x:Name="Condition" Width="650" Text="{Binding Condition}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                                            <CheckBox Grid.Column="2" IsChecked="{Binding IsUsed}" Style="{StaticResource CheckBoxStyle}" HorizontalAlignment="Center"/>
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsDefault}" Value="true">
+                                                <Setter Property="Foreground" TargetName="Condition" Value="Red"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+
+                    </StackPanel>
+
+                </TabItem>
+
+                <TabItem x:Name="PaymentConditionsTab" Height="50">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Payment Conditions" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical">
+
+                        <TextBlock Text="Payment Conditions" FontSize="32" FontStyle="Italic" Foreground="#FF9211E8" Margin="20" VerticalAlignment="Center" />
+
+                        <Border Margin="20,0" BorderBrush="Gray" BorderThickness="2" CornerRadius="5" Height="320">
+                            <ListBox Name="PaymentConditions"
+                                     Margin="5"
+                                     BorderBrush="Transparent"
+                                     FontSize="20" 
+                                     ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                     PreviewMouseRightButtonUp="ListBox_PreviewMouseRightButtonUp"
+                                     FontFamily="Times New Roman">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="700"/>
+                                                <ColumnDefinition Width="50"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="» " VerticalAlignment="Top" HorizontalAlignment="Right" Foreground="Blue" FontWeight="Bold"/>
+                                            <TextBlock Grid.Column="1" x:Name="Condition" Width="650" Text="{Binding Condition}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                                            <CheckBox Grid.Column="2" IsChecked="{Binding IsUsed}" Style="{StaticResource CheckBoxStyle}" HorizontalAlignment="Center"/>
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsDefault}" Value="true">
+                                                <Setter Property="Foreground" TargetName="Condition" Value="Red"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+
+                    </StackPanel>
+
+                </TabItem>
+
+                <TabItem x:Name="ValidityPeriodTab" Height="50">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Validity Period" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical">
+
+                        <TextBlock Text="Validity Period" FontSize="32" FontStyle="Italic" Foreground="#FF9211E8" Margin="20" VerticalAlignment="Center" />
+
+                        <Border Margin="20,0" BorderBrush="Gray" BorderThickness="2" CornerRadius="5" Height="320">
+                            <ListBox Name="ValidityPeriod"
+                                     Margin="5"
+                                     BorderBrush="Transparent"
+                                     FontSize="20" 
+                                     ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                     PreviewMouseRightButtonUp="ListBox_PreviewMouseRightButtonUp"
+                                     FontFamily="Times New Roman">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="700"/>
+                                                <ColumnDefinition Width="50"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="» " VerticalAlignment="Top" HorizontalAlignment="Right" Foreground="Blue" FontWeight="Bold"/>
+                                            <TextBlock Grid.Column="1" x:Name="Condition" Width="650" Text="{Binding Condition}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                                            <CheckBox Grid.Column="2" IsChecked="{Binding IsUsed}" Style="{StaticResource CheckBoxStyle}" HorizontalAlignment="Center"/>
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsDefault}" Value="true">
+                                                <Setter Property="Foreground" TargetName="Condition" Value="Red"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+
+                    </StackPanel>
+
+                </TabItem>
+
+                <TabItem x:Name="ShopDrawingSubmittalsTab" Height="50">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Shop Drawing Submittals" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical">
+
+                        <TextBlock Text="Shop Drawing Submittals" FontSize="32" FontStyle="Italic" Foreground="#FF9211E8" Margin="20" VerticalAlignment="Center" />
+
+                        <Border Margin="20,0" BorderBrush="Gray" BorderThickness="2" CornerRadius="5" Height="320">
+                            <ListBox Name="ShopDrawingSubmittals"
+                                     Margin="5"
+                                     BorderBrush="Transparent"
+                                     FontSize="20" 
+                                     ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                     PreviewMouseRightButtonUp="ListBox_PreviewMouseRightButtonUp"
+                                     FontFamily="Times New Roman">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="700"/>
+                                                <ColumnDefinition Width="50"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="» " VerticalAlignment="Top" HorizontalAlignment="Right" Foreground="Blue" FontWeight="Bold"/>
+                                            <TextBlock Grid.Column="1" x:Name="Condition" Width="650" Text="{Binding Condition}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                                            <CheckBox Grid.Column="2" IsChecked="{Binding IsUsed}" Style="{StaticResource CheckBoxStyle}" HorizontalAlignment="Center"/>
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsDefault}" Value="true">
+                                                <Setter Property="Foreground" TargetName="Condition" Value="Red"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+
+                    </StackPanel>
+
+                </TabItem>
+
+                <TabItem x:Name="DeliveryTab" Height="50">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Delivery" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical">
+
+                        <TextBlock Text="Delivery" FontSize="32" FontStyle="Italic" Foreground="#FF9211E8" Margin="20" VerticalAlignment="Center" />
+
+                        <Border Margin="20,0" BorderBrush="Gray" BorderThickness="2" CornerRadius="5" Height="320">
+                            <ListBox Name="Delivery"
+                                     Margin="5"
+                                     BorderBrush="Transparent"
+                                     FontSize="20" 
+                                     ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                     PreviewMouseRightButtonUp="ListBox_PreviewMouseRightButtonUp"
+                                     FontFamily="Times New Roman">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="700"/>
+                                                <ColumnDefinition Width="50"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="» " VerticalAlignment="Top" HorizontalAlignment="Right" Foreground="Blue" FontWeight="Bold"/>
+                                            <TextBlock Grid.Column="1" x:Name="Condition" Width="650" Text="{Binding Condition}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                                            <CheckBox Grid.Column="2" IsChecked="{Binding IsUsed}" Style="{StaticResource CheckBoxStyle}" HorizontalAlignment="Center"/>
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsDefault}" Value="true">
+                                                <Setter Property="Foreground" TargetName="Condition" Value="Red"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+
+                    </StackPanel>
+
+                </TabItem>
+
+                <TabItem x:Name="GuaranteeTab" Height="50">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Guarantee" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical">
+
+                        <TextBlock Text="Guarantee" FontSize="32" FontStyle="Italic" Foreground="#FF9211E8" Margin="20" VerticalAlignment="Center" />
+
+                        <Border Margin="20,0" BorderBrush="Gray" BorderThickness="2" CornerRadius="5" Height="320">
+                            <ListBox Name="Guarantee"
+                                     Margin="5"
+                                     BorderBrush="Transparent"
+                                     FontSize="20" 
+                                     ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                     PreviewMouseRightButtonUp="ListBox_PreviewMouseRightButtonUp"
+                                     FontFamily="Times New Roman">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="700"/>
+                                                <ColumnDefinition Width="50"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="» " VerticalAlignment="Top" HorizontalAlignment="Right" Foreground="Blue" FontWeight="Bold"/>
+                                            <TextBlock Grid.Column="1" x:Name="Condition" Width="650" Text="{Binding Condition}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                                            <CheckBox Grid.Column="2" IsChecked="{Binding IsUsed}" Style="{StaticResource CheckBoxStyle}" HorizontalAlignment="Center"/>
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsDefault}" Value="true">
+                                                <Setter Property="Foreground" TargetName="Condition" Value="Red"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+
+                    </StackPanel>
+
+                </TabItem>
+
+            </TabControl>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Margin="0,0,20,10">
+                <Button Click="Save_Click" Style="{StaticResource SaveButton}"/>
+                <Button Click="Cancel_Click" Style="{StaticResource CancelButton}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

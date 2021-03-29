@@ -1,32 +1,24 @@
 ﻿using Core.Data.UserData;
 using Core.Data.QuotationsData;
-
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Reflection;
+using System.Data.SqlClient;
+using Core.Data;
+using Dapper;
 
 namespace Core.Windows.QuotationsWindows
 {
     public partial class PanelsWindow : Window
     {
-        //public ObservableCollection<Panel> panelsData;
-
         public User UserData { get; set; }
         public Quotation QuotationData { get; set; }
-
+        public ObservableCollection<Panel> PanelsData { get; set; }
         public ObservableCollection<Quotation> QuotationsData { get; set; }
 
         public PanelsWindow()
@@ -36,39 +28,40 @@ namespace Core.Windows.QuotationsWindows
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //if (UserData.QuotationItemsDiscount)
-            //    DiscountButton.Visibility = Visibility.Visible;
+            if (UserData.QuotationsDiscount)
+                DiscountButton.Visibility = Visibility.Visible;
 
-            //using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
-            //{
-            //    panelsData = QPanelController.QuotationPanels(connection, QuotationData.QuotationID);
-            //}
+            using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+            {
+                string query = $"Select * From Quotation._PanelsView Where QuotationId = {QuotationData.Id} Order By SN";
+                PanelsData = new ObservableCollection<Panel>(connection.Query<Panel>(query));
+            }
 
-            //viewData = new CollectionViewSource() { Source = panelsData };
-            //viewData.Filter += DataFilter;
+            viewData = new CollectionViewSource() { Source = PanelsData };
+            viewData.Filter += DataFilter;
 
-            //PanelsList.ItemsSource = viewData.View;
-            //viewData.View.CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+            PanelsList.ItemsSource = viewData.View;
+            viewData.View.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChanged);
 
-            //DataContext = new { UserData, QuotationData };
+            DataContext = new { UserData, QuotationData };
         }
 
 
-        private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //var selectedIndex = PanelsList.SelectedIndex;
-            //if (selectedIndex == -1)
-            //    NavigationPanel.Text = $"Panels: {viewData.View.Cast<object>().Count()}";
-            //else
-            //    NavigationPanel.Text = $"Panel: {selectedIndex + 1} / {viewData.View.Cast<object>().Count()}";
+            var selectedIndex = PanelsList.SelectedIndex;
+            if (selectedIndex == -1)
+                NavigationPanel.Text = $"Panels: {viewData.View.Cast<object>().Count()}";
+            else
+                NavigationPanel.Text = $"Panel: {selectedIndex + 1} / {viewData.View.Cast<object>().Count()}";
         }
-        private void PanelsList_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        private void PanelsList_SelectedCellsChanged(object sender, System.Windows.Controls.SelectedCellsChangedEventArgs e)
         {
-            //var selectedIndex = PanelsList.SelectedIndex;
-            //if (selectedIndex == -1)
-            //    NavigationPanel.Text = $"Panels: {viewData.View.Cast<object>().Count()}";
-            //else
-            //    NavigationPanel.Text = $"Panel: {selectedIndex + 1} / {viewData.View.Cast<object>().Count()}";
+            var selectedIndex = PanelsList.SelectedIndex;
+            if (selectedIndex == -1)
+                NavigationPanel.Text = $"Panels: {viewData.View.Cast<object>().Count()}";
+            else
+                NavigationPanel.Text = $"Panel: {selectedIndex + 1} / {viewData.View.Cast<object>().Count()}";
         }
 
         private void Information_Click(object sender, RoutedEventArgs e)
@@ -82,42 +75,43 @@ namespace Core.Windows.QuotationsWindows
         }
         private void TC_Click(object sender, RoutedEventArgs e)
         {
-            //var termsAndConditionsWindow = new TermsAndConditionsWindow()
-            //{
-            //    UserData = this.UserData,
-            //    QuotationData = QuotationData,
-            //};
-            //termsAndConditionsWindow.ShowDialog();
+            var termsWindow = new TermsWindows.TermsWindow()
+            {
+                UserData = this.UserData,
+                QuotationData = QuotationData,
+                PanelsWindow = this,
+            };
+            termsWindow.ShowDialog();
         }
         private void Prices_Click(object sender, RoutedEventArgs e)
         {
-            //var quotationPriceWindow = new QuotationPriceWindow()
-            //{
-            //    UserData = this.UserData,
-            //    QuotationData = QuotationData,
-            //    ResetUserQuotationID = false,
-            //};
-            //quotationPriceWindow.ShowDialog();
+            var PriceWindow = new PriceWindow()
+            {
+                UserData = this.UserData,
+                QuotationData = QuotationData,
+                PanelsWindow = this,
+            };
+            PriceWindow.ShowDialog();
         }
         private void Printer_Click(object sender, RoutedEventArgs e)
         {
-            //PrintQuotationWindow printQuotationWindow = new PrintQuotationWindow()
-            //{
-            //    QuotationData = QuotationData,
-            //    UserData = this.UserData,
-            //};
-            //printQuotationWindow.ShowDialog();
+            PrintWindow printWindow = new PrintWindow()
+            {
+                QuotationData = QuotationData,
+                UserData = this.UserData,
+            };
+            printWindow.ShowDialog();
         }
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             //MessageBoxResult result = CMessageBox.Show("Submit", $"Are you sure to submit \nQ.Code: {QuotationData.QuotationCode}", CMessageBoxButton.YesNo, CMessageBoxImage.Information);
             //if (result == MessageBoxResult.Yes)
             //{
-            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //    using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             //    {
             //        QuotationData.QuotationStatus = Statuses.Submitted.ToString();
             //        QuotationData.SubmitDate = DateTime.Now;
-            //        var query = DatabaseAI.UpdateRecord<Quotation>();
+            //        var query = Database.UpdateRecord<Quotation>();
             //        connection.Execute(query, QuotationData);
             //    }
 
@@ -133,8 +127,8 @@ namespace Core.Windows.QuotationsWindows
             //var qPanelWindow = new QPanelWindow()
             //{
             //    ActionData = Actions.New,
-            //    QPanelsData = this.panelsData,
-            //    SelectedIndex = this.panelsData.Count,
+            //    QPanelsData = this.PanelsData,
+            //    SelectedIndex = this.PanelsData.Count,
             //    QuotationData = this.QuotationData,
             //};
             //qPanelWindow.ShowDialog();
@@ -146,8 +140,8 @@ namespace Core.Windows.QuotationsWindows
             //    var qPanelWindow = new QPanelWindow()
             //    {
             //        ActionData = Actions.InsertUp,
-            //        QPanelsData = this.panelsData,
-            //        SelectedIndex = this.panelsData.IndexOf(panel),
+            //        QPanelsData = this.PanelsData,
+            //        SelectedIndex = this.PanelsData.IndexOf(panel),
             //        QuotationData = this.QuotationData,
             //    };
             //    qPanelWindow.ShowDialog();
@@ -160,8 +154,8 @@ namespace Core.Windows.QuotationsWindows
             //    var qPanelWindow = new QPanelWindow()
             //    {
             //        ActionData = Actions.InsertDown,
-            //        QPanelsData = this.panelsData,
-            //        SelectedIndex = this.panelsData.IndexOf(panel) + 1,
+            //        QPanelsData = this.PanelsData,
+            //        SelectedIndex = this.PanelsData.IndexOf(panel) + 1,
             //        QuotationData = this.QuotationData,
             //    };
             //    qPanelWindow.ShowDialog();
@@ -175,7 +169,7 @@ namespace Core.Windows.QuotationsWindows
             //    {
             //        ActionData = Actions.Edit,
             //        QPanelData = panel,
-            //        QPanelsData = this.panelsData,
+            //        QPanelsData = this.PanelsData,
             //        QuotationData = this.QuotationData,
             //    };
             //    qPanelWindow.ShowDialog();
@@ -188,14 +182,14 @@ namespace Core.Windows.QuotationsWindows
             //    if (panelData.PanelSN > 1)
             //    {
             //        panelData.PanelSN -= 1;
-            //        panelsData.Move(panelsData.IndexOf(panelData), panelsData.IndexOf(panelData) - 1);
-            //        foreach (QPanel panel in panelsData.Where(p => p.PanelSN == panelData.PanelSN && p.PanelID != panelData.PanelID))
+            //        PanelsData.Move(PanelsData.IndexOf(panelData), PanelsData.IndexOf(panelData) - 1);
+            //        foreach (QPanel panel in PanelsData.Where(p => p.PanelSN == panelData.PanelSN && p.PanelID != panelData.PanelID))
             //        {
             //            ++panel.PanelSN;
             //        }
             //        string query = $"Update [Quotation].[QuotationsPanels] Set PanelSN = PanelSN + 1 Where PanelSN = {panelData.PanelSN} And QuotationID = {panelData.QuotationID} And PanelID != {panelData.PanelID}; " +
             //                       $"Update [Quotation].[QuotationsPanels] Set PanelSN = PanelSN - 1 Where PanelID = {panelData.PanelID}; ";
-            //        using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //        using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             //        {
             //            connection.Execute(query);
             //        }
@@ -206,17 +200,17 @@ namespace Core.Windows.QuotationsWindows
         {
             //if (PanelsList.SelectedItem is QPanel panelData)
             //{
-            //    if (panelData.PanelSN < panelsData.Count && panelsData.Count != 1)
+            //    if (panelData.PanelSN < PanelsData.Count && PanelsData.Count != 1)
             //    {
             //        panelData.PanelSN += 1;
-            //        panelsData.Move(panelsData.IndexOf(panelData), panelsData.IndexOf(panelData) + 1);
-            //        foreach (QPanel panel in panelsData.Where(p => p.PanelSN == panelData.PanelSN && p.PanelID != panelData.PanelID))
+            //        PanelsData.Move(PanelsData.IndexOf(panelData), PanelsData.IndexOf(panelData) + 1);
+            //        foreach (QPanel panel in PanelsData.Where(p => p.PanelSN == panelData.PanelSN && p.PanelID != panelData.PanelID))
             //        {
             //            --panel.PanelSN;
             //        }
             //        string query = $"Update [Quotation].[QuotationsPanels] Set PanelSN = PanelSN - 1 Where PanelSN = {panelData.PanelSN} And QuotationID = {panelData.QuotationID} And PanelID != {panelData.PanelID}; " +
             //                       $"Update [Quotation].[QuotationsPanels] Set PanelSN = PanelSN + 1 Where PanelID = {panelData.PanelID}; ";
-            //        using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //        using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             //        {
             //            connection.Execute(query);
             //        }
@@ -230,7 +224,7 @@ namespace Core.Windows.QuotationsWindows
             //    MessageBoxResult result = CMessageBox.Show("Deleting", $"Are you sure you want to \ndelete {panelData.PanelName} ?", CMessageBoxButton.YesNo, CMessageBoxImage.Warning);
             //    if (result == MessageBoxResult.Yes)
             //    {
-            //        using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //        using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             //        {
             //            string query = $"Delete From [Quotation].[QuotationsPanels] Where PanelID = {panelData.PanelID}; " +
             //                           $"Delete From [Quotation].[QuotationsPanelsItems] Where PanelID = {panelData.PanelID}; " +
@@ -239,13 +233,13 @@ namespace Core.Windows.QuotationsWindows
             //            connection.Execute(query);
             //        }
 
-            //        foreach (QPanel panel in panelsData.Where(p => p.PanelSN > panelData.PanelSN))
+            //        foreach (QPanel panel in PanelsData.Where(p => p.PanelSN > panelData.PanelSN))
             //        {
             //            --panel.PanelSN;
             //        }
 
-            //        panelsData.Remove(panelData);
-            //        QuotationData.QuotationCost = panelsData.Sum(p => p.PanelsPrice);
+            //        PanelsData.Remove(panelData);
+            //        QuotationData.QuotationCost = PanelsData.Sum(p => p.PanelsPrice);
             //    }
             //}
         }
@@ -271,14 +265,14 @@ namespace Core.Windows.QuotationsWindows
             //    QuotationPanelNameWindow panelNameWindow = new QuotationPanelNameWindow()
             //    {
             //        PanelData = panelData,
-            //        PanelsData = panelsData,
+            //        PanelsData = PanelsData,
             //    };
             //    panelNameWindow.ShowDialog();
             //}
         }
         private void TargetPrice_Click(object sender, RoutedEventArgs e)
         {
-            Price.PlacementTarget = (sender as Button);
+            Price.PlacementTarget = (sender as System.Windows.Controls.Button);
             Price.IsOpen = true;
         }
         private void NewProfit_Click(object sender, RoutedEventArgs e)
@@ -290,40 +284,40 @@ namespace Core.Windows.QuotationsWindows
             //    return;
             //}
 
-            //if (panelsData.Sum(p => p.PanelsPrice) == 0)
+            //if (PanelsData.Sum(p => p.PanelsPrice) == 0)
             //{
             //    Price.IsOpen = false;
             //    CMessageBox.Show("Price Error", "Can't change zero price", CMessageBoxButton.OK, CMessageBoxImage.Warning);
             //    return;
             //}
 
-            //if (panelsData.Count() == 0)
+            //if (PanelsData.Count() == 0)
             //{
             //    Price.IsOpen = false;
             //    return;
             //}
 
-            //if (panelsData.Where(p => p.PanelType != "Ready Made Panel").Count() != 0)
+            //if (PanelsData.Where(p => p.PanelType != "Ready Made Panel").Count() != 0)
             //{
             //    string query = "";
-            //    double quotationPrice = panelsData.Sum(p => p.PanelsPrice) * (1 - QuotationData.Discount / 100);
-            //    double readyMadePanelsPrice = panelsData.Where(p => p.PanelType == "Ready Made Panel").Sum(p => p.PanelsPrice) * (1 - QuotationData.Discount / 100);
-            //    double otherpanelsPrice = panelsData.Where(p => p.PanelType != "Ready Made Panel").Sum(p => p.PanelsPrice) * (1 - QuotationData.Discount / 100);
+            //    double quotationPrice = PanelsData.Sum(p => p.PanelsPrice) * (1 - QuotationData.Discount / 100);
+            //    double readyMadePanelsPrice = PanelsData.Where(p => p.PanelType == "Ready Made Panel").Sum(p => p.PanelsPrice) * (1 - QuotationData.Discount / 100);
+            //    double otherpanelsPrice = PanelsData.Where(p => p.PanelType != "Ready Made Panel").Sum(p => p.PanelsPrice) * (1 - QuotationData.Discount / 100);
 
             //    double targetPriceWithoutReadyMadePanels = targetPrice - readyMadePanelsPrice;
 
             //    double pp = targetPriceWithoutReadyMadePanels / otherpanelsPrice;
 
-            //    foreach (QPanel panelData in panelsData.Where(p => p.PanelType != "Ready Made Panel" && p.PanelsPrice != 0))
+            //    foreach (QPanel panelData in PanelsData.Where(p => p.PanelType != "Ready Made Panel" && p.PanelsPrice != 0))
             //    {
             //        panelData.PanelProfit = 100 - (100 / pp) * (1 - panelData.PanelProfit / 100);
             //        query += $"Update [Quotation].[QuotationsPanels] set PanelProfit = {panelData.PanelProfit} Where PanelID = {panelData.PanelID}; ";
             //    }
 
-            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //    using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             //        connection.Execute(query);
 
-            //    QuotationData.QuotationCost = panelsData.Sum(p => p.PanelsPrice);
+            //    QuotationData.QuotationCost = PanelsData.Sum(p => p.PanelsPrice);
             //    Price.IsOpen = false;
             //}
         }
@@ -414,7 +408,7 @@ namespace Core.Windows.QuotationsWindows
             //{
             //    UserData = UserData,
             //    QuotationToUpdate = QuotationData,
-            //    PanelsData = panelsData,
+            //    PanelsData = PanelsData,
             //};
             //libraryOfPanelsWindow.ShowDialog();
         }
@@ -424,7 +418,7 @@ namespace Core.Windows.QuotationsWindows
             //LoadingControl.Visibility = Visibility.Visible;
             //Events.DoingEvent.DoEvents();
 
-            //using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             //{
             //    var items = QItemController.QuotationRecalculateItems(connection, QuotationData.QuotationID);
 
@@ -450,7 +444,7 @@ namespace Core.Windows.QuotationsWindows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             //{
             //    UserData.QuotationID = null;
             //    UserController.UpdateQuotationID(connection, UserData);
@@ -460,7 +454,7 @@ namespace Core.Windows.QuotationsWindows
         private void QuotationItems_ClicK(object sender, RoutedEventArgs e)
         {
             //List<QItem> items;
-            //using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             //{
             //    string query = $"SELECT Quotation.QuotationsPanels.QuotationID, Quotation.QuotationsPanelsItems.Category, Quotation.QuotationsPanelsItems.Code, Quotation.QuotationsPanelsItems.Description, " +
             //                   $"SUM(Quotation.QuotationsPanelsItems.ItemQty) AS ItemQty " +
@@ -513,7 +507,7 @@ namespace Core.Windows.QuotationsWindows
             //if (PanelsList.SelectedItem is QPanel panel)
             //{
             //    List<QItem> items;
-            //    using (SqlConnection connection = new SqlConnection(DatabaseAI.ConnectionString))
+            //    using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
             //    {
             //        string query = $"SELECT Quotation.QuotationsPanels.QuotationID, Quotation.QuotationsPanelsItems.PanelID, Quotation.QuotationsPanelsItems.Category, Quotation.QuotationsPanelsItems.Code, Quotation.QuotationsPanelsItems.Description, " +
             //                       $"SUM(Quotation.QuotationsPanelsItems.ItemQty) AS ItemQty " +

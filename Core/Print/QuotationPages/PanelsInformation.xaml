@@ -1,0 +1,157 @@
+﻿<UserControl x:Class="Core.Print.QuotationPages.PanelsInformation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             FontSize="14"
+             Background="White"
+             FontFamily="Calibri (Body)"
+             Height="auto"
+             Width="750">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="Black"/>
+        </Style>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+    <StackPanel Orientation="Vertical">
+        <Grid Height="0.5cm" Background="Transparent"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="165"/>
+                <ColumnDefinition Width="87"/>
+                <ColumnDefinition Width="87"/>
+                <ColumnDefinition Width="87"/>
+                <ColumnDefinition Width="87"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="87"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.6cm"/>
+                <RowDefinition Height="0.6cm"/>
+                <RowDefinition Height="0.6cm"/>
+                <RowDefinition Height="0.6cm"/>
+                <RowDefinition Height="0.6cm"/>
+            </Grid.RowDefinitions>
+
+            <Border BorderThickness="1,1,1,1" Grid.Row="0" Grid.Column="0" Background="#4f81bd">
+                <TextBlock Text="No." FontWeight="Bold" Foreground="White" Margin="5,0"/>
+            </Border>
+            <Border BorderThickness="1,0,1,1" Grid.Row="1" Grid.Column="0" Background="#4f81bd">
+                <TextBlock Text="Panel Name:" FontWeight="Bold" Foreground="White" Margin="5,0"/>
+            </Border>
+            <Border BorderThickness="1,0,1,1" Grid.Row="2" Grid.Column="0" Background="#4f81bd">
+                <TextBlock Text="Earthing System:" FontWeight="Bold" Foreground="White" Margin="5,0"/>
+            </Border>
+            <Border BorderThickness="1,0,1,1" Grid.Row="3" Grid.Column="0" Background="#4f81bd">
+                <TextBlock Text="Enclosure Type:" FontWeight="Bold" Foreground="White" Margin="5,0"/>
+            </Border>
+            <Border BorderThickness="1,0,1,1" Grid.Row="4" Grid.Column="0" Background="#4f81bd">
+                <TextBlock Text="Enclosure Size:" FontWeight="Bold" Foreground="White" Margin="5,0"/>
+            </Border>
+
+            <Border BorderThickness="0,1,1,1" Grid.Row="0" Grid.Column="1" Height="23" VerticalAlignment="Top">
+                <TextBlock Text="{Binding PanelSN}" FontWeight="Bold" HorizontalAlignment="Left" Margin="5,0" Foreground="#4f81bd"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4">
+                <TextBlock Text="{Binding PanelName}" FontWeight="Bold" Margin="5,0" Foreground="#4f81bd"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+                <TextBlock Text="{Binding EarthingSystem}" FontWeight="Bold" HorizontalAlignment="Left" Margin="5,0" Foreground="#4f81bd"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
+                <TextBlock Text="{Binding EnclosureType}" FontWeight="Bold" HorizontalAlignment="Left" Margin="5,0" Foreground="#4f81bd"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="4" Grid.Column="1">
+                <TextBlock Text="{Binding EnclosureHeight}" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#4f81bd"/>
+            </Border>
+
+
+            <Border BorderThickness="0,1,1,1" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3">
+                <TextBlock x:Name="Continue" x:FieldModifier="public" Text="Continue" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#4f81bd" Visibility="Collapsed"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="4" Grid.Column="2">
+                <TextBlock Text="{Binding EnclosureWidth}" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#4f81bd"/>
+            </Border>
+
+
+            <Border BorderThickness="0,0,1,1" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2"/>
+            <Border BorderThickness="0,0,1,1" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2">
+                <TextBlock Text="{Binding EnclosureInstallation}" FontWeight="Bold" Margin="5,0" Foreground="#4f81bd"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="4" Grid.Column="3">
+                <TextBlock Text="{Binding EnclosureDepth}" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#4f81bd"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="4" Grid.Column="4">
+                <TextBlock Text="(HXWXD)cm" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Border>
+
+            <Border BorderThickness="0,1,1,1" Grid.Row="0" Grid.Column="5" Background="#4f81bd">
+                <TextBlock Text="QTY." FontWeight="Bold" Foreground="White" Margin="5,0"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="1" Grid.Column="5" Background="#4f81bd">
+                <TextBlock Text="Operation Voltage:" FontWeight="Bold" Foreground="White" Margin="5,0"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="2" Grid.Column="5" Background="#4f81bd">
+                <TextBlock Text="Frequency:" FontWeight="Bold" Foreground="White" Margin="5,0"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="3" Grid.Column="5" Background="#4f81bd">
+                <TextBlock Text="Degree of Protaction:" FontWeight="Bold" Foreground="White" Margin="5,0"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="4" Grid.Column="5" Background="#4f81bd">
+                <TextBlock Text="Installation:" FontWeight="Bold" Foreground="White" Margin="5,0"/>
+            </Border>
+
+            <Border BorderThickness="0,1,1,1" Grid.Row="0" Grid.Column="6">
+                <TextBlock Text="{Binding PanelQty}" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#4f81bd"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="1" Grid.Column="6">
+                <TextBlock Text="{Binding Source}" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#4f81bd"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="2" Grid.Column="6">
+                <TextBlock Text="{Binding Frequency}" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#4f81bd"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="3" Grid.Column="6">
+                <TextBlock Text="{Binding EnclosureIP}" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#4f81bd"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="4" Grid.Column="6">
+                <TextBlock Text="{Binding EnclosureLocation}" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#4f81bd"/>
+            </Border>
+
+        </Grid>
+        <Grid x:Name="Details">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="55"/>
+                <ColumnDefinition Width="348"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="87"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.6cm"/>
+            </Grid.RowDefinitions>
+
+            <Border BorderThickness="1,0,1,1" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <TextBlock Text="Articales" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="0" Grid.Column="2">
+                <TextBlock Text="Descriptions" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="0" Grid.Column="3">
+                <TextBlock Text="QTY" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="0" Grid.Column="4">
+                <TextBlock Text="Brand" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Border>
+            <Border BorderThickness="0,0,1,1" Grid.Row="0" Grid.Column="5">
+                <TextBlock Text="Remarks" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Border>
+
+        </Grid>
+    </StackPanel>
+</UserControl>

@@ -32,7 +32,6 @@ namespace Core.Data.QuotationsData
         public bool IsUsed { get; set; }
         public bool IsDefault { get; set; }
 
-
         public static void GetDefaultTerms(SqlConnection connection, int quotationId)
         {
             var list = new List<Term>()

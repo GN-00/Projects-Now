@@ -20,6 +20,7 @@ namespace Core.Windows.QuotationsWindows
         public User UserData { get; set; }
         public bool OpenPanelsWindow { get; set; }
         public Quotation QuotationData { get; set; }
+        public PanelsWindow PanelsWindow { get; set; }
 
         ObservableCollection<Contact> projectContacts;
         CollectionViewSource viewProjectContacts;
@@ -142,11 +143,14 @@ namespace Core.Windows.QuotationsWindows
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+            if (PanelsWindow == null)
             {
-                UserData.QuotationId = UserData.InquiryId = null;
-                connection.UserAccessUpdate(UserData, nameof(UserData.QuotationId));
-                connection.UserAccessUpdate(UserData, nameof(UserData.InquiryId));
+                using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
+                {
+                    UserData.QuotationId = UserData.InquiryId = null;
+                    connection.UserAccessUpdate(UserData, nameof(UserData.QuotationId));
+                    connection.UserAccessUpdate(UserData, nameof(UserData.InquiryId));
+                }
             }
         }
     }
