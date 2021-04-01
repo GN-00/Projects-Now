@@ -1,0 +1,1257 @@
+﻿<Window x:Class="Core.Windows.QuotationsWindows.PanelWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:CN="clr-namespace:Core.Controls"
+        mc:Ignorable="d"
+        Title="Panel"
+        Style="{StaticResource WindowStyle}"
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen"
+        Height="560"
+        Width="1040">
+    <Window.Resources>
+        <Style x:Key="TabStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Width" Value="130"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="InputStyle" BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="InputComboBoxStyle" BasedOn="{StaticResource ComboBoxStyle}" TargetType="{x:Type ComboBox}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="InputStyleDatePicker" BasedOn="{StaticResource DatePickerStyle}" TargetType="{x:Type DatePicker}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="LabelStyle" TargetType="{x:Type Label}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="Blue"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+        </Style>
+
+        <Style x:Key="CheckBoxStyle" BasedOn="{StaticResource CheckBoxStyle}" TargetType="{x:Type CheckBox}">
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+    </Window.Resources>
+    <Border x:Name="WindowBorder" Style="{StaticResource WindowBorderStyle}">
+        <Grid Background="#FFF1F1F1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="55"/>
+            </Grid.RowDefinitions>
+            <CN:WindowControls/>
+
+            <Grid Background="#FFF1F1F1" Margin="150,30,0,0">
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="5" Opacity="0.3" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+                </Grid.Effect>
+            </Grid>
+
+            <TabControl Height="470"
+                        Background="White"
+                        BorderThickness="0"
+                        BorderBrush="Transparent"
+                        TabStripPlacement="Left"
+                        VerticalAlignment="Top"
+                        Margin="19,30,0,0">
+
+                <TabItem Height="42" Selector.IsSelected="True">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="General" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+                    <StackPanel Orientation="Vertical">
+
+                        <TextBlock Text="General Information" FontSize="32" FontStyle="Italic" Foreground="#FF9211E8" Margin="20" VerticalAlignment="Center" />
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                            <Label Content="Name " Width="100" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.PanelName}" CharacterCasing="Upper" MinWidth="270" MaxWidth="600" Style="{StaticResource InputStyle}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,25,0,0">
+                            <Label Content="Type " Style="{StaticResource LabelStyle}" Width="100"/>
+                            <ComboBox x:Name="PanelType"
+                                  Width="270"
+                                  Text="{Binding newQPanelData.PanelType}"
+                                  SelectedValuePath="Text"
+                                  IsEditable="True"
+                                  SelectedValue="{Binding newQPanelData.PanelType}"
+                                  Style="{StaticResource InputComboBoxStyle}">
+                                <ComboBoxItem>Power Panel</ComboBoxItem>
+                                <ComboBoxItem>Control Panel</ComboBoxItem>
+                                <ComboBoxItem>Ready Made Panel</ComboBoxItem>
+                                <ComboBoxItem>ECB</ComboBoxItem>
+                                <ComboBoxItem>ATS</ComboBoxItem>
+                                <ComboBoxItem>MTS</ComboBoxItem>
+                                <ComboBoxItem>MCC</ComboBoxItem>
+                                <ComboBoxItem>PFC</ComboBoxItem>
+                                <ComboBoxItem>Synchronizing Panel</ComboBoxItem>
+                                <ComboBoxItem>Fuse Panel</ComboBoxItem>
+                                <ComboBoxItem>Junction Box</ComboBoxItem>
+                                <ComboBoxItem>Label</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,25,0,0">
+                            <Label Content="Qty " Width="100" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.PanelQty}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center" LostFocus="QTY_LostFocus" PreviewKeyDown="IntOnly_PreviewKeyDown"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,25,0,0">
+                            <Label Content="Profit " Width="100" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.PanelProfit}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center" LostFocus="Profit_Discount_LostFocus" PreviewKeyDown="DoubleOnly_PreviewKeyDown"/>
+                            <Label Content="% " Width="100" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </TabItem>
+
+                <TabItem Height="42">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Enclosure" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+                    <Grid>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Enclosure Information"
+                                   FontSize="32"
+                                   FontWeight="Light"
+                                   FontStyle="Italic"
+                                   FontFamily="Times New Roman"
+                                   Foreground="#FF9211E8"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Left"
+                                   Margin="20,20,0,0">
+                            </TextBlock>
+                            <StackPanel Orientation="Horizontal" Margin="0,25,0,0">
+                                <Label Content="Type " Width="110" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox x:Name="EnclosureType"
+                                      IsEditable="True"
+                                      Width="250"
+                                      DisplayMemberPath="EnclosureType"
+                                      Text="{Binding newQPanelData.EnclosureType}"
+                                      SelectedValuePath="Text"
+                                      SelectedValue="{Binding newQPanelData.EnclosureType}"
+                                      Style="{StaticResource InputComboBoxStyle}" >
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                                <Label Content="Height " Width="110" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding newQPanelData.EnclosureHeight}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center" PreviewKeyDown="DoubleOnly_PreviewKeyDown"/>
+                                <Label Content="cm " Width="35" Style="{StaticResource LabelStyle}"/>
+
+                                <Label Content="Width " Width="80" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding newQPanelData.EnclosureWidth}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center" PreviewKeyDown="DoubleOnly_PreviewKeyDown"/>
+                                <Label Content="cm " Width="35" Style="{StaticResource LabelStyle}"/>
+
+                                <Label Content="Depth " Width="80" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding newQPanelData.EnclosureDepth}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center" PreviewKeyDown="DoubleOnly_PreviewKeyDown"/>
+                                <Label Content="cm " Width="35" Style="{StaticResource LabelStyle}"/>
+
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,50,0,0">
+                                <Label Content="Metal Type " Width="110" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox x:Name="EnclosureMetalType"
+                                      IsEditable="True"
+                                      Width="180"
+                                      DisplayMemberPath="EnclosureMetalType"
+                                      Text="{Binding newQPanelData.EnclosureMetalType}"
+                                      SelectedValuePath="Text"
+                                      SelectedValue="{Binding newQPanelData.EnclosureMetalType}"
+                                      Style="{StaticResource InputComboBoxStyle}" >
+                                </ComboBox>
+                                <Label Content="Color " Width="120" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox x:Name="EnclosureColor"
+                                      IsEditable="True"
+                                      Width="180"
+                                      DisplayMemberPath="EnclosureColor"
+                                      Text="{Binding newQPanelData.EnclosureColor}"
+                                      SelectedValuePath="Text"
+                                      SelectedValue="{Binding newQPanelData.EnclosureColor}"
+                                      Style="{StaticResource InputComboBoxStyle}" >
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,25,0,0">
+                                <Label Content="IP " Width="110" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox IsEditable="True"
+                                      x:Name="EnclosureIP"
+                                      Width="180"
+                                      DisplayMemberPath="EnclosureIP"
+                                      Text="{Binding newQPanelData.EnclosureIP}"
+                                      SelectedValuePath="Text"
+                                      SelectedValue="{Binding newQPanelData.EnclosureIP}"
+                                      Style="{StaticResource InputComboBoxStyle}" >
+                                </ComboBox>
+
+                                <Label Content="Form " Width="120" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox IsEditable="True"
+                                      x:Name="EnclosureForm"
+                                      Width="180"
+                                      DisplayMemberPath="EnclosureForm"
+                                      Text="{Binding newQPanelData.EnclosureForm}"
+                                      SelectedValuePath="Text"
+                                      SelectedValue="{Binding newQPanelData.EnclosureForm}"
+                                      Style="{StaticResource InputComboBoxStyle}" >
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,25,0,0">
+                                <Label Content="Location" Width="110" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox IsEditable="True"
+                                      Width="180"
+                                      Text="{Binding newQPanelData.EnclosureLocation}"
+                                      SelectedValuePath="Text"
+                                      SelectedValue="{Binding newQPanelData.EnclosureLocation}"
+                                      Style="{StaticResource InputComboBoxStyle}" >
+                                    <ComboBoxItem>Indoor</ComboBoxItem>
+                                    <ComboBoxItem>Outdoor</ComboBoxItem>
+                                </ComboBox>
+                                <Label Content="Instulation" Width="120" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox IsEditable="True"
+                                      Width="180"
+                                      Text="{Binding newQPanelData.EnclosureInstallation}"
+                                      SelectedValuePath="Text"
+                                      SelectedValue="{Binding newQPanelData.EnclosureInstallation}"
+                                      Style="{StaticResource InputComboBoxStyle}" >
+                                    <ComboBoxItem>Wall Mounted</ComboBoxItem>
+                                    <ComboBoxItem>Floor Standing</ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,25,0,0">
+                                <Label Content="Functional " Width="110" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox IsEditable="True"
+                                      x:Name="EnclosureFunctional"
+                                      Width="180"
+                                      DisplayMemberPath="EnclosureFunctional"
+                                      Text="{Binding newQPanelData.EnclosureFunctional}"
+                                      SelectedValuePath="Text"
+                                      SelectedValue="{Binding newQPanelData.EnclosureFunctional}"
+                                      Style="{StaticResource InputComboBoxStyle}" >
+                                </ComboBox>
+                                <Label Content="Front Door " Width="120" Style="{StaticResource LabelStyle}" Visibility="Collapsed"/>
+                                <ComboBox Visibility="Collapsed"
+                                      IsEditable="True"
+                                      x:Name="EnclosureDoor"
+                                      Width="180"
+                                      DisplayMemberPath="EnclosureDoor"
+                                      Text="{Binding newQPanelData.EnclosureDoor}"
+                                      SelectedValuePath="Text"
+                                      SelectedValue="{Binding newQPanelData.EnclosureDoor}"
+                                      Style="{StaticResource InputComboBoxStyle}" >
+                                </ComboBox>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </Grid>
+
+
+                </TabItem>
+
+                <TabItem Height="42">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Power &amp; Busbar" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Power Supply"
+                                   FontSize="32"
+                                   FontWeight="Light"
+                                   FontStyle="Italic"
+                                   FontFamily="Times New Roman"
+                                   Foreground="#FF9211E8"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Left"
+                                   Margin="20,10,0,0">
+                        </TextBlock>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,25,0,0">
+                            <Label Content="Source" Width="140" Style="{StaticResource LabelStyle}"/>
+                            <ComboBox x:Name="Source"
+                                  IsEditable="True"
+                                  Width="200"
+                                  DisplayMemberPath="Source"
+                                  Text="{Binding newQPanelData.Source}"
+                                  SelectedValuePath="Text"
+                                  SelectedValue="{Binding newQPanelData.Source}"
+                                  Style="{StaticResource InputComboBoxStyle}" >
+                            </ComboBox>
+                            <Label Content="Icu" Width="140" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.EnclosureHeight}" Width="200" Style="{StaticResource InputStyle}" TextAlignment="Center" PreviewKeyDown="DoubleOnly_PreviewKeyDown"/>
+                            <Label Content="kA" Width="40" Style="{StaticResource LabelStyle}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,25,0,0">
+                            <Label Content="Frequency" Width="140" Style="{StaticResource LabelStyle}"/>
+                            <ComboBox IsEditable="True" 
+                                  Width="200" 
+                                  Text="{Binding newQPanelData.Frequency}"
+                                  SelectedValuePath="Text"
+                                  SelectedValue="{Binding newQPanelData.Frequency}"
+                                  Style="{StaticResource InputComboBoxStyle}">
+                                <ComboBoxItem>50Hz</ComboBoxItem>
+                                <ComboBoxItem>60Hz</ComboBoxItem>
+                            </ComboBox>
+                            <Label Content="Operation" Width="140" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.PowerSupplyOperation}" Width="200" Style="{StaticResource InputStyle}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,25,0,0">
+                            <Label Content="Neuteral" Width="140" Style="{StaticResource LabelStyle}"/>
+                            <ComboBox x:Name="EarthingSystem" 
+                                  IsEditable="True" 
+                                  Width="200" 
+                                  Text="{Binding newQPanelData.EarthingSystem}"
+                                  SelectedValuePath="Text"
+                                  SelectedValue="{Binding newQPanelData.EarthingSystem}"
+                                  Style="{StaticResource InputComboBoxStyle}">
+                                <ComboBoxItem>-</ComboBoxItem>
+                                <ComboBoxItem>TNS</ComboBoxItem>
+                                <ComboBoxItem>TNC</ComboBoxItem>
+                                <ComboBoxItem>TT</ComboBoxItem>
+                                <ComboBoxItem>IT</ComboBoxItem>
+                            </ComboBox>
+                            <Label Content="Direct Current" Width="140" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.DirectCurrent}" Width="200" Style="{StaticResource InputStyle}"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Busbar "
+                                   FontSize="32"
+                                   FontWeight="Light"
+                                   FontStyle="Italic"
+                                   FontFamily="Times New Roman"
+                                   Foreground="#FF9211E8"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Left"
+                                   Margin="20,10,0,0">
+                        </TextBlock>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Busbar Material" Width="140" Style="{StaticResource LabelStyle}"/>
+                            <ComboBox IsEditable="True" 
+                                  Width="200"
+                                  Text="{Binding newQPanelData.Busbar}"
+                                  SelectedValuePath="Text"
+                                  SelectedValue="{Binding newQPanelData.Busbar}"
+                                  Style="{StaticResource InputComboBoxStyle}">
+                                <ComboBoxItem>Bare Copper</ComboBoxItem>
+                                <ComboBoxItem>Tin Plated</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,25,0,0">
+                            <Label Content="Horizontal" Width="140" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.BusbarHorizontal}" Width="200" Style="{StaticResource InputStyle}"/>
+                            <Label Content="Vertical" Width="140" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.BusbarVertical}" Width="200" Style="{StaticResource InputStyle}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,25,0,0">
+                            <Label Content="Neutral Size" Width="140" Style="{StaticResource LabelStyle}"/>
+                            <ComboBox IsEditable="True" 
+                                  Width="200"
+                                  Text="{Binding newQPanelData.NeutralSize}"
+                                  SelectedValuePath="Text"
+                                  SelectedValue="{Binding newQPanelData.NeutralSize}"
+                                  Style="{StaticResource InputComboBoxStyle}">
+                                <ComboBoxItem>Full of Phase</ComboBoxItem>
+                                <ComboBoxItem>Half of Phase</ComboBoxItem>
+                            </ComboBox>
+                            <Label Content="Earth Size" Width="140" Style="{StaticResource LabelStyle}"/>
+                            <ComboBox x:Name="EarthSize" 
+                                  IsEditable="True" 
+                                  Width="200" 
+                                  Text="{Binding newQPanelData.EarthSize}"
+                                  SelectedValuePath="Text"
+                                  SelectedValue="{Binding newQPanelData.EarthSize}"
+                                  Style="{StaticResource InputComboBoxStyle}">
+                                <ComboBoxItem>Full of Phase</ComboBoxItem>
+                                <ComboBoxItem>Half of Phase</ComboBoxItem>
+                                <ComboBoxItem>Half of Neutral</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </TabItem>
+
+                <TabItem Height="42">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Auxiliary" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Supply Of Auxiliary "
+                                   FontSize="32"
+                                   FontWeight="Light"
+                                   FontStyle="Italic"
+                                   FontFamily="Times New Roman"
+                                   Foreground="#FF9211E8"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Left"
+                                   Margin="20,20,0,0">
+                        </TextBlock>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,25,0,0">
+                            <Label Content="Signalling: Voltage" Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.SignallingVoltage}" Width="200" Style="{StaticResource InputStyle}" />
+                            <Label Content="Origin" Width="100" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.SignallingSource}" Width="200" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Control: Voltage" Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.ControlVoltage}" Width="200" Style="{StaticResource InputStyle}" />
+                            <Label Content="Origin" Width="100" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.ControlSource}" Width="200" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Sensors: Voltage" Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.SensorsVoltage}" Width="200" Style="{StaticResource InputStyle}" />
+                            <Label Content="Origin" Width="100" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.SensorsSource}" Width="200" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Lighting: Voltage" Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.LightingVoltage}" Width="200" Style="{StaticResource InputStyle}" />
+                            <Label Content="Origin" Width="100" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.LightingSource}" Width="200" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <TextBlock Text="Auxiliary Wiring"
+                                   FontSize="32"
+                                   FontWeight="Light"
+                                   FontStyle="Italic"
+                                   FontFamily="Times New Roman"
+                                   Foreground="#FF9211E8"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Left"
+                                   Margin="20,20,0,0">
+                        </TextBlock>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Voltage: Section" Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.AuxiliaryVoltageSection}" Width="90" Style="{StaticResource InputStyle}" TextAlignment="Center" PreviewKeyDown="DoubleOnly_PreviewKeyDown" />
+                            <Label Content="mm²" Width="50" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <Label Content="Color" Width="70" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.AuxiliaryVoltageColor}" Width="90" Style="{StaticResource InputStyle}" />
+                            <Label Content="Type" Width="100" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.AuxiliaryVoltageType}" Width="100" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Voltage: Section" Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.AuxiliaryCurrentSection}" Width="90" Style="{StaticResource InputStyle}"  TextAlignment="Center" PreviewKeyDown="DoubleOnly_PreviewKeyDown"/>
+                            <Label Content="mm²" Width="50" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <Label Content="Color" Width="70" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.AuxiliaryCurrentColor}" Width="90" Style="{StaticResource InputStyle}" />
+                            <Label Content="Type" Width="100" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.AuxiliaryCurrentType}" Width="100" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </TabItem>
+
+                <TabItem Height="42">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Instruments" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Indicating Instrument "
+                                   FontSize="32"
+                                   FontWeight="Light"
+                                   FontStyle="Italic"
+                                   FontFamily="Times New Roman"
+                                   Foreground="#FF9211E8"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Left"
+                                   Margin="20,20,0,0">
+                        </TextBlock>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,25,0,0">
+                            <Label Content="Type " Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.IndicationType}" Width="200" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Size " Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.IndicationSize}" Width="200" Style="{StaticResource InputStyle}" />
+                            <Label Content="mm²" Width="50" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Other " Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.IndicationOther}" Width="200" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Meter Relay " Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.MeterRelay}" Width="200" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <TextBlock Text="Push Buttons / Lamps"
+                                   FontSize="32"
+                                   FontWeight="Light"
+                                   FontStyle="Italic"
+                                   FontFamily="Times New Roman"
+                                   Foreground="#FF9211E8"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Left"
+                                   Margin="20,20,0,0">
+                        </TextBlock>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Push Button: ON " Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.PushButtonON}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center" PreviewKeyDown="DoubleOnly_PreviewKeyDown" />
+                            <Label Content="OFF " Width="70" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.PushButtonOFF}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center" />
+                            <Label Content="Reset " Width="70" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.PushButtonReset}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Lamps: ON " Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.SignallingON}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center" PreviewKeyDown="DoubleOnly_PreviewKeyDown" />
+                            <Label Content="OFF " Width="70" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.SignallingOFF}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center"/>
+                            <Label Content="Trip " Width="70" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.SignallingTrip}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center"/>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </TabItem>
+
+                <TabItem Height="42">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Apparatus" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel HorizontalAlignment="Left" Margin="20,0,0,0" Orientation="Vertical">
+
+                        <StackPanel Background="DarkGray" Orientation="Horizontal" Margin="10,10,0,0">
+                            <Label Content="" Width="120" Style="{StaticResource LabelStyle}" Foreground="White"/>
+                            <Label Content="Incoming" Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Center" Foreground="White"/>
+                            <Label Content="Outgoing" Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Center" Foreground="White"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="10,0,0,0">
+                            <Label Content="Fixed " Width="120" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingFixed}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingFixed}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
+                            <Label Content="Plug-In " Width="120" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingPlugIn}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingPlugIn}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="10,5,0,0">
+                            <Label Content="Drawout " Width="120" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingDrawout}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingDrawout}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
+                            <Label Content="Motorized " Width="120" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingMotorized}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingMotorized}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="10,5,0,0">
+                            <Label Content="Behind Door " Width="120" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingBehindDoor}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingBehindDoor}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
+                            <Label Content="Through Plate " Width="120" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingThroughPlate}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingThroughPlate}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="10,5,0,0">
+                            <Label Content="InterLock " Width="120" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingInterLock}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingInterLock}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
+                            <Label Content="Padlocking " Width="120" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingPadlocking}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingPadlocking}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="10,5,0,0">
+                            <Label Content="Shutter " Width="120" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingShutter}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingShutter}"  Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
+                            <Label Content="Through Door " Width="120" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingThroughDoor}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingThroughDoor}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="10,5,0,0">
+                            <Label Content="Through Cover " Width="120" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingThroughCover}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingThroughCover}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </TabItem>
+
+                <TabItem Height="42">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Connections" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical" Margin="20,0,0,0">
+
+                        <StackPanel Background="DarkGray" HorizontalAlignment="Left" Orientation="Horizontal" Margin="10,5,0,0">
+                            <Label Content="" Width="200" Style="{StaticResource LabelStyle}"/>
+                            <Label Content="Incoming" Width="200" Style="{StaticResource LabelStyle}" Foreground="White" HorizontalContentAlignment="Center"/>
+                            <Label Content="Outgoing" Width="200" Style="{StaticResource LabelStyle}" Foreground="White" HorizontalContentAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,0,0">
+                            <Label Content="Direct up to 200A " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingDirect}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingDirect}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                            <Label Content="Terminal Blocks " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingTerminalBlocks}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingTerminalBlocks}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,0,0">
+                            <Label Content="Busbur Links " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingBusbarLinks}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingBusbarLinks}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                            <Label Content="Front Access " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingFront}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingFront}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="10,0,0,0">
+                            <Label Content="Rear Access " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingRear}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingRear}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                            <Label Content="(Left/Right) Access " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingLeftRight}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingLeftRight}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="10,0,0,0">
+                            <Label Content="Entry Top By Cables " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingTopCables}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingTopCables}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                            <Label Content="Entry Top By Busduct " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingTopBusduct}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingTopBusduct}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="10,0,0,0">
+                            <Label Content="Entry Bottom By Cables " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingBottomCables}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingBottomCables}"  Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                            <Label Content="Accessories Screws " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingScrews}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingScrews}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="10,0,0,0">
+                            <Label Content="Accessories Gland Plate " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingGlandPlate}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingGlandPlate}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                            <Label Content="Accessories Cable Gland " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingCableGland}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingCableGland}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="10,0,0,0">
+                            <Label Content="Accessories Shrouding " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.IncomingShrouding}" Style="{StaticResource CheckBoxStyle}"/>
+                            <CheckBox IsChecked="{Binding newQPanelData.OutgoingShrouding}" Style="{StaticResource CheckBoxStyle}"/>
+                        </StackPanel>
+
+
+                    </StackPanel>
+
+                </TabItem>
+
+                <TabItem Height="42">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Circuit Marking" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Circuit Marking "
+                                   FontSize="32"
+                                   FontWeight="Light"
+                                   FontStyle="Italic"
+                                   FontFamily="Times New Roman"
+                                   Foreground="#FF9211E8"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Left"
+                                   Margin="20,20,0,0">
+                        </TextBlock>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,25,0,0">
+                            <Label Content="Background Color " Width="180" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.LabelBackground}" Width="200" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Font Color " Width="180" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.LabelFont}" Width="200" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Background="DarkGray" HorizontalAlignment="Left" Height="35" Orientation="Horizontal" Margin="40,25,0,0">
+                            <Label Content="" Width="150" Style="{StaticResource LabelStyle}"/>
+                            <Label Content="Type " Width="100" Style="{StaticResource LabelStyle}" Foreground="White" HorizontalContentAlignment="Center"/>
+                            <Label Content="" Width="50" Style="{StaticResource LabelStyle}"/>
+                            <Label Content="Fixing " Width="100" Style="{StaticResource LabelStyle}" Foreground="White" HorizontalContentAlignment="Center"/>
+                            <Label Content="" Width="50" Style="{StaticResource LabelStyle}"/>
+                            <Label Content="Language " Width="100" Style="{StaticResource LabelStyle}" Foreground="White" HorizontalContentAlignment="Center"/>
+                            <Label Content="" Width="20" Style="{StaticResource LabelStyle}"/>
+                        </StackPanel>
+
+                        <StackPanel Height="45" Orientation="Horizontal" Margin="40,0,0,0">
+                            <Label Content="External Labels " Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.ExternalLabelType}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center"/>
+                            <Label Content="" Width="50" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.ExternalLabelFixeing}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center"/>
+                            <Label Content="" Width="50" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.ExternalLabelLanguage}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center"/>
+                            <Label Content="" Width="20" Style="{StaticResource LabelStyle}"/>
+                        </StackPanel>
+
+                        <StackPanel Background="LightGray" HorizontalAlignment="Left" Height="45" Orientation="Horizontal" Margin="40,0,0,0">
+                            <Label Content="Interal Labels " Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.InternalLabelType}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center" />
+                            <Label Content="" Width="50" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.InternalLabelFixeing}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center"/>
+                            <Label Content="" Width="50" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.InternalLabelLanguage}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center"/>
+                            <Label Content="" Width="20" Style="{StaticResource LabelStyle}"/>
+                        </StackPanel>
+
+                        <StackPanel Height="45" Orientation="Horizontal" Margin="40,0,0,0">
+                            <Label Content="Equipment Labels " Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.EquipmentLabelType}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center"/>
+                            <Label Content="" Width="50" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.EquipmentLabelFixeing}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center"/>
+                            <Label Content="" Width="50" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.EquipmentLabelLanguage}" Width="100" Style="{StaticResource InputStyle}" TextAlignment="Center"/>
+                            <Label Content="" Width="20" Style="{StaticResource LabelStyle}"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Height="42">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Climate" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Climatic Conditions "
+                               FontSize="32"
+                               FontWeight="Light"
+                               FontStyle="Italic"
+                               FontFamily="Times New Roman"
+                               Foreground="#FF9211E8"
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="Left"
+                               Margin="20,20,0,0">
+                        </TextBlock>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,25,0,0">
+                            <Label Content="Type of Climate " Width="220" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.ClimateType}" Width="250" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Type of Atmosphere " Width="220" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.AtmosphereType}" Width="250" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Pollution Risk " Width="220" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.PollutionRisks}" Width="250" Style="{StaticResource InputStyle}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Ambient Temperature " Width="220" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.AmbientTemperature }" Width="100" Style="{StaticResource InputStyle}" HorizontalContentAlignment="Center" PreviewKeyDown="DoubleOnly_PreviewKeyDown" />
+                            <Label Content="C˚" Width="50" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Relative Humidity " Width="220" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.RelativeHumidity}" Width="100" Style="{StaticResource InputStyle}" HorizontalContentAlignment="Center" PreviewKeyDown="DoubleOnly_PreviewKeyDown"  />
+                            <Label Content="%" Width="50" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,15,0,0">
+                            <Label Content="Altitude (Above Sea Level)" Width="220" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.SeaLevel}" Width="100" Style="{StaticResource InputStyle}" HorizontalContentAlignment="Center" PreviewKeyDown="DoubleOnly_PreviewKeyDown"  />
+                            <Label Content="M" Width="50" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                        </StackPanel>
+
+
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Height="42">
+                    <TabItem.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="5,0,0,5">
+                                            <TextBlock x:Name="TB" Text="Particular Note" Style="{StaticResource TabStyle}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                <Setter TargetName="TB" Property="TextBlock.Foreground" Value="Red"/>
+                                                <Setter TargetName="Border" Property="Border.Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" Direction="-90" ShadowDepth="1" BlurRadius="5" Opacity="0.8" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="Red"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+
+                    <StackPanel Orientation="Vertical">
+
+                        <TextBlock Text="Particular Note "
+                               FontSize="32"
+                               FontWeight="Light"
+                               FontStyle="Italic"
+                               FontFamily="Times New Roman"
+                               Foreground="#FF9211E8"
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="Left"
+                               Margin="20,20,0,0">
+                        </TextBlock>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <Label Content="Apparatus Defind " Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.ApparatusDefind}" Width="100" Style="{StaticResource InputStyle}" HorizontalContentAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <Label Content="Weight " Width="150" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding newQPanelData.Weight}" Width="100" Style="{StaticResource InputStyle}" HorizontalContentAlignment="Center" />
+                            <Label Content="kg" Width="50" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                        </StackPanel>
+
+                        <StackPanel Background="DarkGray" HorizontalAlignment="Left" Orientation="Horizontal" Margin="30,15,0,0">
+                            <Label Content="Drawing: " Width="250" Style="{StaticResource LabelStyle}" Foreground="White" HorizontalContentAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="30,0,0,0">
+                            <CheckBox IsChecked="{Binding newQPanelData.ForInformation}" Width="50" Style="{StaticResource CheckBoxStyle}"/>
+                            <Label Content="For Information " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="30,0,0,0">
+                            <CheckBox IsChecked="{Binding newQPanelData.ForProduction}" Width="50" Style="{StaticResource CheckBoxStyle}"/>
+                            <Label Content="For Approval " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="30,0,0,0">
+                            <CheckBox IsChecked="{Binding newQPanelData.ForApproval}" Width="50" Style="{StaticResource CheckBoxStyle}"/>
+                            <Label Content="For Production " Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel Background="#FFF1F1F1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="30,0,0,0">
+                            <CheckBox IsChecked="{Binding newQPanelData.AsManufactured}" Width="50" Style="{StaticResource CheckBoxStyle}"/>
+                            <Label Content="As Manufactured" Width="200" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Left"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <Label Content="Remarks " Width="120" Style="{StaticResource LabelStyle}" HorizontalContentAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="35,0,0,0">
+                            <TextBox Text="{Binding newQPanelData.Remarks}" Width="300" Style="{StaticResource InputStyle}" MaxHeight="110" MinHeight="30" TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </TabItem>
+
+            </TabControl>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+                <Button Click="Save_Click" Style="{StaticResource SaveButton}"/>
+                <Button Click="Cancel_Click" Style="{StaticResource CancelButton}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

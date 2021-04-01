@@ -123,12 +123,14 @@
     <Compile Include="Data\QuotationsData\Panel.cs" />
     <Compile Include="Data\QuotationsData\Quotation.cs" />
     <Compile Include="Data\QuotationsData\Term.cs" />
+    <Compile Include="Data\StoreData\Reference.cs" />
     <Compile Include="Data\UpdateController.cs" />
     <Compile Include="Data\UserData\Employee.cs" />
     <Compile Include="Data\UserData\Estimator.cs" />
     <Compile Include="Data\UserData\Salesman.cs" />
     <Compile Include="Data\UserData\User.cs" />
     <Compile Include="Enums\Actions.cs" />
+    <Compile Include="Enums\ItemTypes.cs" />
     <Compile Include="Enums\Statuses.cs" />
     <Compile Include="Enums\Tables.cs" />
     <Compile Include="Enums\TermsTypes.cs" />
@@ -279,8 +281,20 @@
     <Compile Include="Windows\MessageWindows\MessageWindow.xaml.cs">
       <DependentUpon>MessageWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\QuotationsWindows\ItemsWindows\ItemsWindow.xaml.cs">
+      <DependentUpon>ItemsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\QuotationsWindows\ItemsWindows\ItemWindow.xaml.cs">
+      <DependentUpon>ItemWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\QuotationsWindows\ItemsWindows\NewItemWindow.xaml.cs">
+      <DependentUpon>NewItemWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\QuotationsWindows\PanelsWindow.xaml.cs">
       <DependentUpon>PanelsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\QuotationsWindows\PanelWindow.xaml.cs">
+      <DependentUpon>PanelWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\QuotationsWindows\PriceWindow.xaml.cs">
       <DependentUpon>PriceWindow.xaml</DependentUpon>
@@ -483,7 +497,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\QuotationsWindows\ItemsWindows\ItemsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QuotationsWindows\ItemsWindows\ItemWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QuotationsWindows\ItemsWindows\NewItemWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\QuotationsWindows\PanelsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QuotationsWindows\PanelWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -979,6 +1009,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
